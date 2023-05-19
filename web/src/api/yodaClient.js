@@ -15,7 +15,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -151,7 +151,7 @@ export default class YodaClient extends BindingClass {
 //    }
 //
 //    /**
-//     * Search for a soong.
+//     * Search for a song.
 //     * @param criteria A string containing search criteria to pass to the API.
 //     * @returns The playlists that match the search criteria.
 //     */

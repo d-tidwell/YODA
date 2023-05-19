@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Actor as Alyce
+Alyce --> FrontendMethod: createDictation
+FrontendMethod --> s3PreAuthorizedRequest: create request object
+s3PreAuthorizedRequest --> s3PreAuthorizedLambda: requestHandler
+s3PreAuthorizedLambda --> s3AuthorizedActivity: runActivity
+s3AuthorizedActivity --> s3ClientPresignedUrl: generateUrl (string)
+s3ClientPresignedUrl --> s3AuthorizedActivity: return (string)
+s3AuthorizedActivity --> s3AuthorizedResponse: convert to response object
+s3AuthorizedResponse --> FrontendMethod:returns the presigned URL
+Alyce --> FrontendMethod: start recording Audio
+FrontendMethod --> Navigator.mediaDevices:actual audio stream paired with signed s3 request initialized
+Navigator.mediaDevices --> MediaRecorder: blobs of Audio
+Alyce --> FrontendMethod: stop recording
+FrontendMethod --> Navigator.mediaDevices: kill stream and consolidate
+MediaRecorder --> UploadAudio: convert blobs and upload as .mp3
+UploadAudio --> XMLHttpRequest: with presigned URL make PUT request on s3 bucket
+XMLHttpRequest --> DictationVerifyRequest: poll upload verification
+DictationVerifyRequest --> FrontendMethod:capture s3 string verification
+FrontendMethod --> Alyce:verification notification from upload to s3
+FrontendMethod --> DictationLambda: send get request details (S3 URL string)
+DictationLambda --> DictationActivity: call poll method on s3 to get availability confirmed
+DictationActivity --> TranscribeJob: initialize and run job
+TranscribeJob --> ExecutorService: execute in thread batch
+ExecutorService --> DictationActivity: report job success
+DictationActivity --> PHRDao: updatePHRStatus
+DictationActivity --> ModelConverter: convert Response
+ModelConverter --> DictationActivity: return status
+DictationActivity --> DictationResponse: return response
+DictationResponse --> FrontendMethod: transcribed artifact in process
+FrontendMethod --> Alyce: display status of dictation text
+
+@enduml

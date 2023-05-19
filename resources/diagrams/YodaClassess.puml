@@ -1,0 +1,112 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'abstract class AbstractList
+'abstract AbstractCollection
+'interface List
+'interface Collection
+'
+'List <|-- AbstractList
+'Collection <|-- AbstractCollection
+'
+'Collection <|- List
+'AbstractCollection <|- AbstractList
+'AbstractList <|-- ArrayList
+'
+'class ArrayList {
+'Object[] elementData
+'size()
+'}
+'
+'enum TimeUnit {
+'DAYS
+'HOURS
+'MINUTES
+'}
+
+
+class Provider {
+    String name (Primary Key)
+    String medicalSpecialty (Sort Key)
+    Deque pendingPatients (ArrayDeque)
+}
+
+class PHR {
+    String patientId (string Primary Key)
+    String providerName (string)
+    String date (string Sort Key)
+    String status (waiting, submitted, pending, complete) (string)
+    String age (string)
+    String dictationId (string)
+}
+
+class Dictation {
+    String dictationId (string Primary Key)
+    String date (string Sort key)
+    String type (pre, post, inVisit) (string)
+    String dictationText (S3 URL) (string)
+    String dictationAudio (S3 URL) (string)
+}
+
+class ProviderModel {
+    String name (Primary Key)
+    String medicalSpecialty (Sort Key)
+    Deque pendingPatients (ArrayDeque)
+}
+
+class PHRModel {
+    String patientId (string Primary Key)
+    String providerName (string)
+    String date (string Sort Key)
+    String status (waiting, submitted, pending, complete) (string)
+    String age (string)
+    String dictationId (string)
+}
+
+class DictationModel {
+    String dictationId (string Primary Key)
+    String date (string Sort key)
+    String type (pre, post, inVisit) (string)
+    String dictationText (S3 URL) (string)
+    String dictationAudio (S3 URL) (string)
+}
+class XLambdaRequestObjects {
+    String passedVariables
+}
+
+class XResponseObjects {
+    String jsonToReturn
+}
+
+
+
+class YRequestObject {
+    String params
+
+}
+
+class YRequestObject.Builder {
+    - DAO
+    + handleRequest(): YResult
+}
+
+class YServiceActivity{
+    handleRequest
+}
+YRequestObject.Builder --|> YRequestObject
+XLambdaRequestObjects <|-- XLambdaActivityRunner
+XLambdaActivityRunner <|-- YRequestObject
+YRequestObject --|> YServiceActivity
+
+class YDAO{
+}
+YDAO --|> YServiceActivity
+Provider --|> YDAO
+PHR --|> YDAO
+Dicatation --|> YDAO
+
+
+class XLambdaActivityRunner {
+    XRequestObjects: XResponseObjects
+}
+@enduml
