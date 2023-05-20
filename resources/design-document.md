@@ -134,7 +134,7 @@ _DictionModel_
 
 ## 6.3 _Get Endpoints_
 
-    endpoint: /provider/audio/${filename}
+    endpoint: /dictation/audio/${filename}
 
     Generates a presigned URL to upload the file to s3 the filename
 
@@ -161,7 +161,7 @@ _DictionModel_
     returns set of PHR id's
 
 
-## 6.3 _Put Endpoint_
+## 6.4 _Put Endpoint_
 
     endpoint: /patient/PHR/update/{$id}/
 

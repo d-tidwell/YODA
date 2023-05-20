@@ -8,7 +8,10 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    id 'java'
+    id "checkstyle"
+    id 'jacoco'
+    id 'com.adarshr.test-logger' version '3.2.0'
 }
 
 group 'com.nashss.se.yodaservice'
@@ -23,11 +26,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nashss.se.shared-java:test-infrastructure:1.+'
-    implementation 'com.nashss.se.shared-java:nss-resources:1.+'
-    implementation 'com.nashss.se.shared-java:lesson-plan-resources:1.+'
-    implementation 'com.nashss.se.shared-java:java-project-resources:1.+'
-
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
 
@@ -55,12 +53,52 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport' // make sure report is always generated
     jacoco {
         destinationFile = file("$buildDir/jacoco/${name}.exec")
     }
 }
+/* checkstyle */
 
-application {
-    // Define the main class for the application.
-    mainClass = 'YodaServiceLambda.App'
+// Applies Checkstyle plugin quality checks on project’s Java source files and generates reports from these checks.
+checkstyle {
+    toolVersion '8.17'
+
+    // Expect the checkstyle config to be in a either the current directory or
+    //  a parent, grandparent or great-grandparent directory of the root project
+    // NOTE: The purpose of putting checkstyle config in a higher directory is to
+    //       share the same config among multiple projects.
+    def configFilePath = 'checkstyle/checkstyle.xml'
+    for (int attempts = 0; attempts < 4; attempts++) {
+        configFile = rootProject.file(configFilePath)
+
+        if (configFile.exists()) {
+            break;
+        }
+
+        configFilePath = '../' + configFilePath
+    }
+
+    def checkstyleDir = configFile.toPath().parent
+    def suppressionFile = new File("$checkstyleDir/suppressions.xml")
+    configProperties.put('checkstyle.suppression.filter', suppressionFile) // This property is refereced in `checkstyle.xml`
+
+    sourceSets = [sourceSets.main]
+}
+
+// If we are running the task 'staticchecks', do not ignore failures, otherwise ignore
+checkstyleMain.doFirst {
+    ignoreFailures = !gradle.taskGraph.allTasks.any({ it.name ==~ /.*staticchecks/ })
+}
+
+check.dependsOn jacocoTestCoverageVerification
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                //minimum = 0.8
+                minimum = 0.0
+            }
+        }
+    }
 }

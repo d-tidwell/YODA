@@ -1,4 +1,4 @@
-package com.nashss.se.musicplaylistservice.dynamodb;
+package com.nashss.se.yodaservice.dynamodb;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
@@ -37,3 +37,4 @@ public class DynamoDbClientProvider {
                 .build();
     }
 }
+
