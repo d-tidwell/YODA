@@ -2,40 +2,43 @@ package com.nashss.se.yodaservice.activity.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
-@JsonDeserialize(builder = GetAllPHRRequest.Builder.class)
-public class GetAllPHRRequest {
+@JsonDeserialize(builder = GetPatientRequest.class)
+public class GetPatientRequest{
 
     private final String patientId;
 
-    private GetAllPHRRequest(String patientId) {
+    public GetPatientRequest(String patientId, String patientAge) {
         this.patientId = patientId;
     }
 
     public String getPatientId() {
-        return this.patientId;
+        return patientId;
     }
 
     @Override
     public String toString() {
-        return "GetAllPHRRequest{" +
+        return "GetPatientRequest{" +
                 "patientId='" + patientId + '\'' +
                 '}';
     }
+
+
     public static Builder builder() {
         return new Builder();
     }
+
     @JsonPOJOBuilder
     public static class Builder {
         private String patientId;
+
 
         public Builder withPatientId(String patientId) {
             this.patientId = patientId;
             return this;
         }
 
-        public GetAllPHRRequest build() {
-            return new GetAllPHRRequest(patientId);
+        public GetPatientRequest build() {
+            return new GetPatientRequest(patientId);
         }
+
     }
-}

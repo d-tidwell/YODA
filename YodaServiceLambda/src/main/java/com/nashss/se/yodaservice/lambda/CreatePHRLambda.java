@@ -10,17 +10,18 @@ public class CreatePHRLambda
         implements RequestHandler<AuthenticatedLambdaRequest<CreatePHRRequest>, LambdaResponse> {
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<CreatePHRRequest> input, Context context) {
+        CreatePHRRequest unauthenticatedRequest = input.fromBody(CreatePHRRequest.class);
         return super.runActivity(
-                () -> {
-                    CreatePHRRequest unauthenticatedRequest = input.fromBody(CreatePHRRequest.class);
-                    return input.fromUserClaims(claims ->
+                () ->
+                    input.fromPath(path ->
                             CreatePHRRequest.builder()
-                                    .withName(unauthenticatedRequest.getName())
-                                    .withTags(unauthenticatedRequest.getTags())
-                                    .withCustomerId(claims.get("email"))
-                                    .withCustomerName(claims.get("name"))
-                                    .build());
-                },
+                                    .withPatientId(path.get("patientId"))
+                                    .withProviderName(unauthenticatedRequest.getProviderName())
+                                    .withDate(unauthenticatedRequest.getDate())
+                                    .withStatus(unauthenticatedRequest.getStatus())
+                                    .withAge(unauthenticatedRequest.getAge())
+                                    .withDictationId(unauthenticatedRequest.getDictationId())
+                                    .build()),
                 (request, serviceComponent) ->
                         serviceComponent.provideCreatePHRActivity().handleRequest(request)
         );

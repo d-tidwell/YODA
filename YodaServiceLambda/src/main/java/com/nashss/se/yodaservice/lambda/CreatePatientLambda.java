@@ -17,6 +17,7 @@ extends LambdaActivityRunner<CreatePatientRequest, CreatePatientResult>
                     return input.fromUserClaims(claims ->
                             CreatePatientRequest.builder()
                                     .withPatientName(unauthenticatedRequest.getPatientName())
+                                    .withPatientAge(unauthenticatedRequest.getPatientAge())
                                     .build());
                 },
                 (request, serviceComponent) ->
