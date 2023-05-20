@@ -1,7 +1,7 @@
 package com.nashss.se.yodaservice.activity;
 
-import com.nashss.se.yodaservice.activity.requests.UpdatePHRRequest;
-import com.nashss.se.yodaservice.activity.results.UpdatePHRResult;
+import com.nashss.se.yodaservice.activity.requests.UpdateDictationRequest;
+import com.nashss.se.yodaservice.activity.results.UpdateDictationResult;
 import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 
-public class UpdatePHRActivity{
+public class UpdateDictationActivity{
 
     private final Logger log = LogManager.getLogger();
 
@@ -20,15 +20,15 @@ public class UpdatePHRActivity{
     private final DictationDAO dicDao;
 
     @Inject
-    public UpdatePHRActivity(PatientDAO patientDAO, PHRDAO phrdao, DictationDAO dicDao) {
+    public UpdateDictationActivity(PatientDAO patientDAO, PHRDAO phrdao, DictationDAO dicDao) {
         this.patientDAO = patientDAO;
         this.dicDao = dicDao;
         this.phrdao = phrdao;
     }
 
-    public UpdatePHRResult handleRequest(final UpdatePHRRequest request){
+    public UpdateDictationResult handleRequest(final UpdateDictationRequest request){
 
-        return UpdatePHRResult.builder()
+        return UpdateDictationResult.builder()
                 .build();
     }
 }

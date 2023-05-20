@@ -16,10 +16,7 @@ extends LambdaActivityRunner<CreatePatientRequest, CreatePatientResult>
                     CreatePatientRequest unauthenticatedRequest = input.fromBody(CreatePatientRequest.class);
                     return input.fromUserClaims(claims ->
                             CreatePatientRequest.builder()
-                                    .withName(unauthenticatedRequest.getName())
-                                    .withTags(unauthenticatedRequest.getTags())
-                                    .withCustomerId(claims.get("email"))
-                                    .withCustomerName(claims.get("name"))
+                                    .withPatientName(unauthenticatedRequest.getPatientName())
                                     .build());
                 },
                 (request, serviceComponent) ->

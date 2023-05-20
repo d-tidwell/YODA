@@ -1,15 +1,15 @@
 package com.nashss.se.yodaservice.activity.results;
 
-public class UpdatePHRResult {
+public class AddPatientToProviderResult {
     private final boolean success;
 
-    public UpdatePHRResult(boolean success) {
+    public AddPatientToProviderResult(boolean success) {
         this.success = success;
     }
 
     @Override
     public String toString() {
-        return "UpdatePHRResult{" +
+        return "AddPatientToProvideResult{" +
                 "success=" + success +
                 "}";
     }
@@ -27,8 +27,8 @@ public class UpdatePHRResult {
             return this;
         }
 
-        public UpdatePHRResult build() {
-            return new UpdatePHRResult(success);
+        public AddPatientToProviderResult build() {
+            return new AddPatientToProviderResult(success);
         }
     }
 

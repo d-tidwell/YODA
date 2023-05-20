@@ -111,7 +111,7 @@ _DictionModel_
 
     Creates a new patient record
 
-    data: name, PCP 
+    data: name 
 
     returns: boolean on success
 
@@ -132,6 +132,16 @@ _DictionModel_
 
     returns: status of PHR
 
+
+    endpoint: provider/{providerId}/{patientId}
+
+    Adds patient to provider docket of pending patients
+
+    data:none 
+
+    response: boolean
+
+
 ## 6.3 _Get Endpoints_
 
     endpoint: /dictation/audio/${filename}
@@ -140,7 +150,7 @@ _DictionModel_
 
     is the object key for retrieval
 
-    data: .mp3 file, filename
+    data: filename
 
     response: presigned URL of file
 

@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = GetAllPHRRequest.Builder.class)
-public class GetPresigneds3Request {
+public class UpdateDictationRequest {
 
     private final String fileName;
 
-    private GetPresigneds3Request(String fileName) {
+    private UpdateDictationRequest(String fileName) {
         this.fileName = fileName;
     }
 
@@ -18,7 +18,7 @@ public class GetPresigneds3Request {
 
     @Override
     public String toString() {
-        return "GetPresigneds3Request{" +
+        return "UpdateDictationRequest{" +
                 "fileName='" + fileName + '\'' +
                 '}';
     }
@@ -32,8 +32,8 @@ public class GetPresigneds3Request {
             return this;
         }
 
-        public GetPresigneds3Request build() {
-            return new GetPresigneds3Request(fileName);
+        public UpdateDictationRequest build() {
+            return new UpdateDictationRequest(fileName);
         }
     }
 }
