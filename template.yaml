@@ -394,6 +394,26 @@ Resources:
               Path: /patient/{patientId}
               Method: get
 
+    GetPHRLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        Role: !GetAtt AccessRole.Arn
+        CodeUri: YodaServiceLambda
+        Handler: com.nashss.se.yodaservice.lambda.GetPHRLambda::handleRequest
+        Runtime: java11
+        Architectures:
+          - x86_64
+        MemorySize: 512
+        Environment:
+          Variables:
+            JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+        Events:
+          MusicPlaylistService:
+            Type: Api
+            Properties:
+              Path: /patient/phr/single/{phrId}
+              Method: get
+
     UpdatePHRLambda:
       Type: AWS::Serverless::Function
       Properties:

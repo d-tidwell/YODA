@@ -184,7 +184,7 @@ _DictionModel_
     returns all patient details
 
 
-    endppoint: /patient/phr/${phrId}
+    endppoint: /patient/phr/single/${phrId}
     
     Retrieves PHR by Id
 
@@ -226,6 +226,7 @@ _Provider_
 + pendingPatients (ArrayDeque)
 
 _PHR_ (Patient Health Record)
++ phrId (primary key)
 + patientId (string Primary Key)
 + providerName (string)
 + date (string Sort Key)
@@ -234,7 +235,7 @@ _PHR_ (Patient Health Record)
 + dictationId (string)
 
 _PHR_ GSI (Global Secondary Index)
-+ dictationId (Primary Key)
++ providerName (Primary Key)
 + status (Secondary Key)
 
 _Dictation_ (holds S3 references of audio and text objects for speed referencing)

@@ -1,6 +1,8 @@
 package com.nashss.se.yodaservice.dependency;
 
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.yodaservice.activity.*;
+import com.nashss.se.yodaservice.activity.requests.GetPHRRequest;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -31,4 +33,6 @@ public interface ServiceComponent {
     GetProviderActivity provideGetProviderActivity();
 
     GetPatientActivity provideGetPatientActivity();
+
+    GetPHRActivity provideGetPHRActivity();
 }
