@@ -42,6 +42,6 @@ public class GetProviderResult {
             return this;
         }
 
-        GetProviderResult build() { return new GetProviderResult(name, medicalSpecialty, pendingPatients);}
+        public GetProviderResult build() { return new GetProviderResult(name, medicalSpecialty, pendingPatients);}
     }
 }

@@ -18,6 +18,7 @@ public class GetPresigneds3Result {
                 "fileName='" + fileName + '\'' +
                 '}';
     }
+    public static Builder builder(){return new Builder();}
     public static class Builder {
         private String fileName;
 

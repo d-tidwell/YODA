@@ -3,11 +3,11 @@ package com.nashss.se.yodaservice.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = GetPatientRequest.class)
-public class GetPatientRequest{
+public class GetPatientRequest {
 
     private final String patientId;
 
-    public GetPatientRequest(String patientId, String patientAge) {
+    public GetPatientRequest(String patientId) {
         this.patientId = patientId;
     }
 
@@ -42,3 +42,6 @@ public class GetPatientRequest{
         }
 
     }
+}
+
+
