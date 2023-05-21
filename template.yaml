@@ -517,7 +517,7 @@ Resources:
         AttributeDefinitions:
           - AttributeName: "dictationId"
             AttributeType: "S"
-          - AttributeName: "dictationId"
+          - AttributeName: "date"
             AttributeType: "S"
           - AttributeName: "type"
             AttributeType: "S"
