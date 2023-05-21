@@ -217,6 +217,7 @@ _DictionModel_
 _Patient_ (Identification and Provider Linking)
 + id (string Primary Key)
 + name (string)
++ age (string)
 
 
 _Provider_
@@ -231,7 +232,6 @@ _PHR_ (Patient Health Record)
 + providerName (string)
 + date (string Sort Key)
 + status (waiting, submitted, pending, complete) (string)
-+ age (string)
 + dictationId (string)
 
 _PHR_ GSI (Global Secondary Index)

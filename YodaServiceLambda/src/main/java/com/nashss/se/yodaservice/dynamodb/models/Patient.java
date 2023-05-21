@@ -9,6 +9,8 @@ public class Patient {
     private String patientId;
     private String name;
 
+    private String age;
+
     @DynamoDBHashKey(attributeName = "patientId")
     public String getPatientId() {
         return patientId;
@@ -22,5 +24,12 @@ public class Patient {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    @DynamoDBAttribute(attributeName = "age")
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
     }
 }

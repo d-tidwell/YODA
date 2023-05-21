@@ -2,9 +2,13 @@ package com.nashss.se.yodaservice.activity;
 
 import com.nashss.se.yodaservice.activity.requests.CreatePHRRequest;
 import com.nashss.se.yodaservice.activity.results.CreatePHRResult;
+import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
+import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.enums.PHRStatus;
+import com.nashss.se.yodaservice.utils.UUIDGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,18 +21,33 @@ public class CreatePHRActivity{
 
     private final ProviderDAO providerDAO;
 
+    private final DictationDAO dictationDAO;
+
     private final PHRDAO phrdao;
 
     @Inject
-    public CreatePHRActivity(PatientDAO patientDAO, ProviderDAO providerDAO, PHRDAO phrdao) {
+    public CreatePHRActivity(PatientDAO patientDAO, ProviderDAO providerDAO, PHRDAO phrdao, DictationDAO dictationDAO) {
         this.patientDAO = patientDAO;
         this.providerDAO = providerDAO;
         this.phrdao = phrdao;
+        this.dictationDAO = dictationDAO;
     }
 
     public CreatePHRResult handleRequest(final CreatePHRRequest request){
-
+        patientDAO.getPatient(request.getPatientId());
+        providerDAO.getProvider(request.getProviderName());
+        dictationDAO.getDictation(request.getDictationId(), request.getDate());
+        String PHRid = request.getPatientId() + request.getDate() + UUIDGenerator.generateUniqueId();
+        PHR newPHR = new PHR();
+        newPHR.setPhrId(PHRid);
+        newPHR.setPatientId(request.getPatientId());
+        newPHR.setProviderName(request.getProviderName());
+        newPHR.setDictationId(request.getDictationId());
+        newPHR.setDate(request.getDate());
+        newPHR.setStatus(PHRStatus.CREATED.toString());
+        boolean status = phrdao.savePHR(newPHR);
         return CreatePHRResult.builder()
+                .withstatus(String.valueOf(status))
                 .build();
     }
 }
