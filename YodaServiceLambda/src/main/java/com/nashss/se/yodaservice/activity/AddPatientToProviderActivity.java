@@ -9,23 +9,23 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 
-//public class AddPatientToProviderActivity {
-//
-//    private final Logger log = LogManager.getLogger();
-//
-//    private final PatientDAO patientDAO;
-//
-//    private final ProviderDAO providerDAO;
-//
-//    @Inject
-//    public AddPatientToProviderActivity(PatientDAO patientDAO, ProviderDAO providerDAO) {
-//        this.patientDAO = patientDAO;
-//        this.providerDAO = providerDAO;
-//    }
-//
-//    public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request){
-//
-//        return AddPatientToProviderResult.builder()
-//                .build();
-//    }
-//}
+public class AddPatientToProviderActivity {
+
+    private final Logger log = LogManager.getLogger();
+
+    private final PatientDAO patientDAO;
+
+    private final ProviderDAO providerDAO;
+
+    @Inject
+    public AddPatientToProviderActivity(PatientDAO patientDAO, ProviderDAO providerDAO) {
+        this.patientDAO = patientDAO;
+        this.providerDAO = providerDAO;
+    }
+
+    public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request){
+
+        return AddPatientToProviderResult.builder()
+                .build();
+    }
+}

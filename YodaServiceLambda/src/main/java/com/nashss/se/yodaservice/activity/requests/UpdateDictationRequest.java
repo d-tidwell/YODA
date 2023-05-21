@@ -6,34 +6,34 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = GetAllPHRRequest.Builder.class)
 public class UpdateDictationRequest {
 
-    private final String fileName;
+    private final String PhrId;
 
-    private UpdateDictationRequest(String fileName) {
-        this.fileName = fileName;
+    private UpdateDictationRequest(String PhrId) {
+        this.PhrId = PhrId;
     }
 
-    public String getfileName() {
-        return this.fileName;
+    public String getPhrId() {
+        return this.PhrId;
     }
 
     @Override
     public String toString() {
         return "UpdateDictationRequest{" +
-                "fileName='" + fileName + '\'' +
+                "PhrId='" + PhrId + '\'' +
                 '}';
     }
-
+    public static Builder builder(){return new Builder();}
     @JsonPOJOBuilder
     public static class Builder {
-        private String fileName;
+        private String PhrId;
 
-        public Builder withfileName(String fileName) {
-            this.fileName = fileName;
+        public Builder withPhrId(String PhrId) {
+            this.PhrId = PhrId;
             return this;
         }
 
         public UpdateDictationRequest build() {
-            return new UpdateDictationRequest(fileName);
+            return new UpdateDictationRequest(PhrId);
         }
     }
 }

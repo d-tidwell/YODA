@@ -5,21 +5,22 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = UpdatePHRRequest.Builder.class)
 public class UpdatePHRRequest {
-
+    private final String patientId;
     private final String providerName;
     private final String date;
     private final String status;
     private final String age;
     private final String dictationId;
 
-    public UpdatePHRRequest(String providerName, String date, String status, String age, String dictationId) {
+    public UpdatePHRRequest(String patientId, String providerName, String date, String status, String age, String dictationId) {
+        this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
         this.age = age;
         this.dictationId = dictationId;
     }
-
+    public String getPatientId(){return patientId;}
     public String getProviderName() {
         return providerName;
     }
@@ -43,6 +44,7 @@ public class UpdatePHRRequest {
     @Override
     public String toString() {
         return "UpdatePHRRequest{" +
+                "patientId='" + patientId + '\'' +
                 "providerName='" + providerName + '\'' +
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
@@ -57,12 +59,18 @@ public class UpdatePHRRequest {
 
     @JsonPOJOBuilder
     public static class Builder {
+
+        private String patientId;
         private String providerName;
         private String date;
         private String status;
         private String age;
         private String dictationId;
 
+        public Builder withPatientId(String patientId) {
+            this.patientId = patientId;
+            return this;
+        }
         public Builder withProviderName(String providerName) {
             this.providerName = providerName;
             return this;
@@ -89,7 +97,9 @@ public class UpdatePHRRequest {
         }
 
         public UpdatePHRRequest build() {
-            return new UpdatePHRRequest(providerName, date, status, age, dictationId);
+            return new UpdatePHRRequest(patientId, providerName, date, status, age, dictationId);
         }
+
+
     }
 }

@@ -36,7 +36,7 @@ public class GetPHRRangeRequest {
                 ", to='" + to + '\'' +
                 '}';
     }
-
+    public static Builder builder(){return new Builder();}
     @JsonPOJOBuilder
     public static class Builder {
         private String patientId;

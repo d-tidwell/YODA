@@ -76,6 +76,7 @@ _PatientModel_
 + name (string)
 
 _ProviderModel_
++ providerId (String)
 + name (string)
 + medicalSpecialty (string)
 + patientsToBeSeen (list)
@@ -111,11 +112,12 @@ _DictionModel_
 
     Creates a new patient record
 
-    data: name 
+    data: name, age ...
 
     returns: boolean on success
 
-    endpoint: provider/addPatientToBeSeen/${patientId}
+
+    endpoint: provider/addPatientToProvider/${patientId}
 
     Adds a patient to a providers docket
 
@@ -133,15 +135,6 @@ _DictionModel_
     returns: status of PHR
 
 
-    endpoint: provider/{providerId}/{patientId}
-
-    Adds patient to provider docket of pending patients
-
-    data:none 
-
-    response: boolean
-
-
 ## 6.3 _Get Endpoints_
 
     endpoint: /dictation/audio/${filename}
@@ -150,7 +143,7 @@ _DictionModel_
 
     is the object key for retrieval
 
-    data: filename
+    data: 
 
     response: presigned URL of file
 
@@ -164,16 +157,44 @@ _DictionModel_
 
 
 
-    endpoint: /patient/PHR/byDateRange/${range}
+    endpoint: /patient/PHR/byDateRange/${patientId}
+    
+    data: from, to
 
     Retrieves all PHR's within a date range sorted by status
 
     returns set of PHR id's
 
+    
+    endpoint: /provider/${providerEmail}
+
+    Retrieve Provider Details
+
+    data:
+
+    returns all provider details
+
+    
+    endpoint /patient/{patientId}
+
+    Retrieve Patient Details
+
+    data:
+
+    returns all patient details
+
+
+    endppoint: /patient/phr/single/${phrId}
+    
+    Retrieves PHR by Id
+
+    data:
+
+    returns: PHR detail level
 
 ## 6.4 _Put Endpoint_
 
-    endpoint: /patient/PHR/update/{$id}/
+    endpoint: /patient/PHR/update/{$patientId}/
 
     Allows editing of PHR by id
 
@@ -198,12 +219,14 @@ _Patient_ (Identification and Provider Linking)
 + name (string)
 
 
-_Provider_ 
+_Provider_
++ providerId (String)
 + name (string Primary Key)
 + medicalSpecialty 
 + pendingPatients (ArrayDeque)
 
 _PHR_ (Patient Health Record)
++ phrId (primary key)
 + patientId (string Primary Key)
 + providerName (string)
 + date (string Sort Key)
@@ -212,7 +235,7 @@ _PHR_ (Patient Health Record)
 + dictationId (string)
 
 _PHR_ GSI (Global Secondary Index)
-+ date (Primary Key)
++ providerName (Primary Key)
 + status (Secondary Key)
 
 _Dictation_ (holds S3 references of audio and text objects for speed referencing)

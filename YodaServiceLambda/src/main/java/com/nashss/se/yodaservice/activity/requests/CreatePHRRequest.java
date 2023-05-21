@@ -5,14 +5,15 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = CreatePHRRequest.Builder.class)
 public class CreatePHRRequest {
-    
+    private final String patientId;
     private final String providerName;
     private final String date;
     private final String status;
     private final String age;
     private final String dictationId;
     
-    public CreatePHRRequest(String providerName, String date, String status, String age, String dictationId) {
+    public CreatePHRRequest(String patientId, String providerName, String date, String status, String age, String dictationId) {
+        this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
@@ -40,29 +41,39 @@ public class CreatePHRRequest {
         return dictationId;
     }
 
+    public String getPatientId() {
+        return patientId;
+    }
+
     @Override
     public String toString() {
         return "CreatePHRRequest{" +
-                "providerName='" + providerName + '\'' +
+                "patientId='" + patientId + '\'' +
+                ", providerName='" + providerName + '\'' +
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
                 ", age='" + age + '\'' +
                 ", dictationId='" + dictationId + '\'' +
                 '}';
     }
-    
+
     public static Builder builder() {
         return new Builder();
     }
 
     @JsonPOJOBuilder
     public static class Builder {
+        private String patientId;
         private String providerName;
         private String date;
         private String status;
         private String age;
         private String dictationId;
 
+        public Builder withPatientId(String patientId) {
+            this.patientId = patientId;
+            return this;
+        }
         public Builder withProviderName(String providerName) {
             this.providerName = providerName;
             return this;
@@ -89,7 +100,7 @@ public class CreatePHRRequest {
         }
 
         public CreatePHRRequest build() {
-            return new CreatePHRRequest(providerName, date, status, age, dictationId);
+            return new CreatePHRRequest(patientId, providerName, date, status, age, dictationId);
         }
     }
 }

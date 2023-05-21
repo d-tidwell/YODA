@@ -25,7 +25,7 @@ public class GetAllPHRResult {
         private List<String> PHRId;
 
         public Builder withPHRId(List<String> PHRId){
-            this.PHRId = PHRId;
+            this.PHRId = List.copyOf(PHRId);
             return this;
         }
 

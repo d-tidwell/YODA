@@ -1,11 +1,8 @@
 package com.nashss.se.yodaservice.dependency;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.nashss.se.yodaservice.activity.AddPatientToProviderActivity;
-import com.nashss.se.yodaservice.activity.CreatePatientActivity;
-import com.nashss.se.yodaservice.activity.requests.AddPatientToProviderRequest;
-import com.nashss.se.yodaservice.activity.requests.CreatePHRRequest;
-import com.nashss.se.yodaservice.activity.requests.CreatePatientRequest;
+import com.nashss.se.yodaservice.activity.*;
+import com.nashss.se.yodaservice.activity.requests.GetPHRRequest;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -21,5 +18,21 @@ public interface ServiceComponent {
 
     CreatePatientActivity provideCreatePatientActivity();
 
-    CreatePHRRequest provideCreatePHRActivity();
+    CreatePHRActivity provideCreatePHRActivity();
+
+    GetAllPHRActivity provideGetAllPHRActivity();
+
+    GetPHRRangeActivity provideGetPHRRangeActivity();
+
+    GetPresigneds3Activity provideGetPresigneds3Activity();
+
+    UpdateDictationActivity provideUpdateDictationActivity();
+
+    UpdatePHRActivity provideUpdatePHRActivity();
+
+    GetProviderActivity provideGetProviderActivity();
+
+    GetPatientActivity provideGetPatientActivity();
+
+    GetPHRActivity provideGetPHRActivity();
 }
