@@ -1,11 +1,14 @@
 package com.nashss.se.yodaservice.activity.results;
 
+import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.models.PHRModel;
+
 import java.util.List;
 
 public class GetAllPHRResult {
-    private final List<String> PHRId;
+    private final List<PHRModel> PHRId;
 
-    public GetAllPHRResult(List<String> PHRId) {
+    public GetAllPHRResult(List<PHRModel> PHRId) {
         this.PHRId = PHRId;
     }
 
@@ -22,10 +25,10 @@ public class GetAllPHRResult {
     }
 
     public static class Builder {
-        private List<String> PHRId;
+        private List<PHRModel> PHRId;
 
-        public Builder withPHRId(List<String> PHRId){
-            this.PHRId = List.copyOf(PHRId);
+        public Builder withPHRId(List<PHRModel> PHRId){
+            this.PHRId = PHRId;
             return this;
         }
 

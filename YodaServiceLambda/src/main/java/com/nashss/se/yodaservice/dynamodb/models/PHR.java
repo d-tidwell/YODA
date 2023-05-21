@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 @DynamoDBTable(tableName = "phrs")
@@ -23,6 +24,7 @@ public class PHR {
         this.phrId = phrId;
     }
     @DynamoDBAttribute(attributeName = "patientId")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "PatientDateIndex")
     public String getPatientId() {
         return patientId;
     }
@@ -39,7 +41,8 @@ public class PHR {
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
-    @DynamoDBAttribute(attributeName = "date")
+    @DynamoDBRangeKey(attributeName = "date")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "PatientDateIndex", attributeName = "date")
     public String getDate() {
         return date;
     }

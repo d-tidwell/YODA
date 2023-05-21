@@ -217,20 +217,20 @@ Resources:
                   Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/providers"
 
           - PolicyName: 'AccessphrsTable'
-              PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  - Effect: Allow
-                    Action: dynamodb:*
-                    Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs"
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action: dynamodb:*
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs"
 
           - PolicyName: 'AccessDictationTable'
-              PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  - Effect: Allow
-                    Action: dynamodb:*
-                    Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations"
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action: dynamodb:*
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations"
     #-----------------------------------------------------
     # Lambda Functions Configuration
     #-----------------------------------------------------
@@ -492,6 +492,8 @@ Resources:
             AttributeType: "S"
           - AttributeName: "providerName"
             AttributeType: "S"
+          - AttributeName: "patientId"
+            AttributeType: "S"
           - AttributeName: "status"
             AttributeType: "S"
         KeySchema:
@@ -505,6 +507,14 @@ Resources:
               - AttributeName: "providerName"
                 KeyType: "HASH"
               - AttributeName: "status"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+          - IndexName: "PatientDateIndex"
+            KeySchema:
+              - AttributeName: "patientId"
+                KeyType: "HASH"
+              - AttributeName: "date"
                 KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"

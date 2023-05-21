@@ -12,7 +12,7 @@ public class GetProviderRequest {
         this.providerId = providerId;
     }
 
-    public String getProviderId(String providerId){
+    public String getProviderId(){
         return providerId;
     }
 

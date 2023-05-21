@@ -153,7 +153,7 @@ _DictionModel_
 
     Retrieves all PHR's for patient by id
 
-    returns set of PHR id's
+    returns set of PHR's
 
 
 
@@ -228,15 +228,19 @@ _Provider_
 
 _PHR_ (Patient Health Record)
 + phrId (primary key)
-+ patientId (string Primary Key)
++ patientId (string)
 + providerName (string)
 + date (string Sort Key)
 + status (waiting, submitted, pending, complete) (string)
 + dictationId (string)
 
-_PHR_ GSI (Global Secondary Index)
+_PHR_ GSI (Global Secondary Index by ProviderStatusIndex)
 + providerName (Primary Key)
 + status (Secondary Key)
+
+_PHR_ GSI (Global Secondary Index by PatientDateIndex)
++ patientId (Primary Key)
++ date (Secondary Key)
 
 _Dictation_ (holds S3 references of audio and text objects for speed referencing)
 + dictationId (string Primary Key)
@@ -245,7 +249,7 @@ _Dictation_ (holds S3 references of audio and text objects for speed referencing
 + dictationText (S3 URL) (string)
 + dictationAudio (S3 URL) (string)
 
-_Dictation GSI_
+_Dictation GSI_(DateTypeIndex)
 + date primary 
 + type sort
 
