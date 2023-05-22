@@ -6,6 +6,7 @@ import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 
+import com.nashss.se.yodaservice.dynamodb.models.PHR;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,8 +29,12 @@ public class UpdatePHRActivity {
     }
 
     public UpdatePHRResult handleRequest(final UpdatePHRRequest request) {
-        //Pending Dictation link
+        //Pending Dictation link check for text in bucket idk??? just an edit criteria idk what we need yet
+        PHR phr = phrdao.getPHRsByPHRId(request.getPhrId());
+        phr.setStatus(request.getStatus());
+        boolean response = phrdao.savePHR(phr);
         return UpdatePHRResult.builder()
+                .withSuccess(response)
                 .build();
     }
 }

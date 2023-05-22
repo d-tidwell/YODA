@@ -451,7 +451,7 @@ Resources:
           MusicPlaylistService:
             Type: Api
             Properties:
-              Path: /patient/PHR/update/{patientId}
+              Path: /patient/PHR/update/{phrId}
               Method: put
 
     UpdateDictationLambda:
