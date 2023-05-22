@@ -9,7 +9,7 @@ public class PHRModel {
     private String date;
     private String status;
 
-    public PHRModel(String phrId, String patientId, String providerName, String date, String status, String dictationId) {
+    public PHRModel(String phrId, String patientId, String providerName, String date, String status) {
         this.phrId = phrId;
         this.patientId = patientId;
         this.providerName = providerName;
@@ -42,12 +42,12 @@ public class PHRModel {
         if (this == o) return true;
         if (!(o instanceof PHRModel)) return false;
         PHRModel phrModel = (PHRModel) o;
-        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) && getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) && getStatus().equals(phrModel.getStatus()));
+        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) && getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) && getStatus().equals(phrModel.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPhrId(), getPatientId(), getProviderName(), getDate(), getStatus(), getDictationId());
+        return Objects.hash(getPhrId(), getPatientId(), getProviderName(), getDate(), getStatus());
     }
 
     @Override
@@ -101,5 +101,5 @@ public class PHRModel {
         }
     }
 
-    }
 }
+

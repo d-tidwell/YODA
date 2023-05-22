@@ -31,6 +31,7 @@ public class UpdateDictationRequest {
                 "fileName='" + fileName + '\'' +
                 '}';
     }
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
 
     @JsonPOJOBuilder

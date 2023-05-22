@@ -22,7 +22,7 @@ public class GetProviderRequest {
                 "providerId='" + providerId + '\'' +
                 '}';
     }
-
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
 
     @JsonPOJOBuilder

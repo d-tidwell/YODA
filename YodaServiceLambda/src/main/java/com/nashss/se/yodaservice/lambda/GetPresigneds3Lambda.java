@@ -12,8 +12,8 @@ public class GetPresigneds3Lambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetPresigneds3Request> input, Context context) {
         return super.runActivity(
                 () -> input.fromPath(path -> GetPresigneds3Request.builder()
-                                    .withfileName(path.get("filename"))
-                                    .withPhrid(path.get("PhrId"))
+                                    .withFileName(path.get("filename"))
+                                    .withPhrId(path.get("PhrId"))
                                     .withDate(path.get("date"))
                                     .build()),
                 (request, serviceComponent) ->

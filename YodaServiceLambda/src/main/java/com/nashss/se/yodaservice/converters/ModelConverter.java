@@ -15,7 +15,6 @@ public class ModelConverter {
                 .providerName(phr.getProviderName())
                 .date(phr.getDate())
                 .status(phr.getStatus())
-                .dictationId(phr.getDictationId())
                 .build();
     }
     public static List<PHRModel> convertListPHRtoModels(List<PHR> dynamoObj) {
@@ -26,7 +25,6 @@ public class ModelConverter {
                         .providerName(phr.getProviderName())
                         .date(phr.getDate())
                         .status(phr.getStatus())
-                        .dictationId(phr.getDictationId())
                         .build())
                 .collect(Collectors.toList());
     }

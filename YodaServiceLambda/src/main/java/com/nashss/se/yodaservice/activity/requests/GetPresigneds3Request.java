@@ -63,5 +63,6 @@ public class GetPresigneds3Request {
         public GetPresigneds3Request build() {
             return new GetPresigneds3Request(fileName, phrId, date);
         }
+
     }
 }

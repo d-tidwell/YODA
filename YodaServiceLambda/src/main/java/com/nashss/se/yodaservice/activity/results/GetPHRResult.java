@@ -26,7 +26,7 @@ public class GetPHRResult {
                 ", dictationId='" + dictationId + '\'' +
                 '}';
     }
-    
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
     
     public static class Builder{

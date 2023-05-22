@@ -5,11 +5,11 @@ import com.nashss.se.yodaservice.activity.results.AddPatientToProviderResult;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Deque;
 
 public class AddPatientToProviderActivity {
@@ -26,7 +26,7 @@ public class AddPatientToProviderActivity {
         this.providerDAO = providerDAO;
     }
 
-    public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request){
+    public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request) {
         patientDAO.getPatient(request.getPatientId());
         Provider provider = providerDAO.getProvider(request.getProviderName());
         Deque<String> q = provider.getPendingPatients();

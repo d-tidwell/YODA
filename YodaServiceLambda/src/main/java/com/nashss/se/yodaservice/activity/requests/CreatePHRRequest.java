@@ -61,7 +61,7 @@ public class CreatePHRRequest {
         private String date;
         private String status;
         private String age;
-
+        //CHECKSTYLE:OFF:Builder
         public Builder withPatientId(String patientId) {
             this.patientId = patientId;
             return this;

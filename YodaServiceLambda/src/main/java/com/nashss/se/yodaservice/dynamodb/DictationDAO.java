@@ -2,6 +2,7 @@ package com.nashss.se.yodaservice.dynamodb;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.nashss.se.yodaservice.dynamodb.models.Dictation;
 import com.nashss.se.yodaservice.exceptions.DictationNotFoundException;
@@ -10,8 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import java.net.URL;
-import java.util.Date;
 import java.util.Objects;
 
 public class DictationDAO {
@@ -33,21 +32,18 @@ public class DictationDAO {
         return dic;
     }
 
-    public String generatePresignedUrl(String filename) {
-        Date expiration = new Date();
-        long expTimeMillis = expiration.getTime();
-        expTimeMillis += 1000 * 60 * 60; // Add 1 hour.
-        expiration.setTime(expTimeMillis);
-
-        // Generate the presigned URL.
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucketName, "/audio/" + filename)
-                        .withMethod(HttpMethod.PUT)
-                        .withExpiration(expiration);
-
-        URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
-
-        return url.toString();
+    public boolean createDictation(String dictationId, String phRid, String date){
+        Dictation newDic = new Dictation();
+        newDic.setDictationId(dictationId);
+        newDic.setPhrId(phRid);
+        newDic.setDate(date);
+        try {
+            this.dynamoDbMapper.save(newDic);
+            return true;
+        } catch (AmazonDynamoDBException e) {
+            log.error(String.format("Create Dictation Error %s, %s", newDic.toString(), e));
+        }
+        return false;
     }
 }
-}
+

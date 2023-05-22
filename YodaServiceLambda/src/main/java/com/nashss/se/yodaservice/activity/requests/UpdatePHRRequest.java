@@ -52,7 +52,7 @@ public class UpdatePHRRequest {
                 ", dictationId='" + dictationId + '\'' +
                 '}';
     }
-
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
