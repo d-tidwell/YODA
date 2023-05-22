@@ -27,7 +27,7 @@ public class GetPresigneds3Activity{
     }
 
     public GetPresigneds3Result handleRequest(final GetPresigneds3Request request){
-
+        //Pending some R&D
         return GetPresigneds3Result.builder()
                 .build();
     }

@@ -5,6 +5,9 @@ import com.nashss.se.yodaservice.activity.results.UpdateDictationResult;
 import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
+import com.nashss.se.yodaservice.dynamodb.models.Dictation;
+import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.enums.PHRStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +30,10 @@ public class UpdateDictationActivity{
     }
 
     public UpdateDictationResult handleRequest(final UpdateDictationRequest request){
-
+        PHR existingRecord = phrdao.getPHR(request.getPhrId(), request.getPhrDate());
+        Dictation dictation = dicDao.getDictation(request.getFileName(), existingRecord.getDate());
+//        existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
+        //pending presigned flow and some R&D
         return UpdateDictationResult.builder()
                 .build();
     }

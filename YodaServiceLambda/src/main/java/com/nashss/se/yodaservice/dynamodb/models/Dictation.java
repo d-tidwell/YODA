@@ -10,6 +10,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 @DynamoDBTable(tableName = "dictations")
 public class Dictation {
     private String dictationId;
+    private String phrId;
     private String date;
     private String type;
     private String dictationText;
@@ -18,7 +19,9 @@ public class Dictation {
     public String getDictationId() {
         return dictationId;
     }
-
+    @DynamoDBAttribute(attributeName = "phrId")
+    public String getPhrId(){return this.phrId;}
+    public void setPhrId(String phrId){this.phrId = phrId;}
     public void setDictationId(String dictationId) {
         this.dictationId = dictationId;
     }

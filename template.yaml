@@ -439,7 +439,7 @@ Resources:
       Properties:
         Role: !GetAtt AccessRole.Arn
         CodeUri: YodaServiceLambda
-        Handler: com.nashss.se.yodaservice.lambda.UpdatePlaylistLambda::handleRequest
+        Handler: com.nashss.se.yodaservice.lambda.UpdateDictationLambda::handleRequest
         Runtime: java11
         Architectures:
           - x86_64
@@ -451,7 +451,7 @@ Resources:
           MusicPlaylistService:
             Type: Api
             Properties:
-              Path: /dictate/{phrId}
+              Path: /dictate/{PhrId}/{PhrDate}/{fileName}
               Method: put
 
     #-----------------------------------------------------

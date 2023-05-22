@@ -8,7 +8,6 @@ public class PHRModel {
     private String providerName;
     private String date;
     private String status;
-    private String dictationId;
 
     public PHRModel(String phrId, String patientId, String providerName, String date, String status, String dictationId) {
         this.phrId = phrId;
@@ -16,7 +15,6 @@ public class PHRModel {
         this.providerName = providerName;
         this.date = date;
         this.status = status;
-        this.dictationId = dictationId;
     }
 
     public String getPhrId() {
@@ -34,21 +32,17 @@ public class PHRModel {
     public String getDate() {
         return date;
     }
-
     public String getStatus() {
         return status;
     }
 
-    public String getDictationId() {
-        return dictationId;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PHRModel)) return false;
         PHRModel phrModel = (PHRModel) o;
-        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) && getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) && getStatus().equals(phrModel.getStatus()) && getDictationId().equals(phrModel.getDictationId());
+        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) && getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) && getStatus().equals(phrModel.getStatus()));
     }
 
     @Override
@@ -64,7 +58,6 @@ public class PHRModel {
                 ", providerName='" + providerName + '\'' +
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
-                ", dictationId='" + dictationId + '\'' +
                 '}';
     }
 
@@ -103,13 +96,8 @@ public class PHRModel {
             return this;
         }
 
-        public Builder dictationId(String dictationId) {
-            this.dictationId = dictationId;
-            return this;
-        }
-
         public PHRModel build() {
-            return new PHRModel(phrId, patientId, providerName, date, status, dictationId);
+            return new PHRModel(phrId, patientId, providerName, date, status);
         }
     }
 

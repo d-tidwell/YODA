@@ -14,7 +14,6 @@ public class PHR {
     private String providerName;
     private String date;
     private String status;
-    private String dictationId;
     @DynamoDBHashKey(attributeName = "phrId")
     public String getPhrId() {
         return phrId;
@@ -60,12 +59,4 @@ public class PHR {
         this.status = status;
     }
 
-    @DynamoDBAttribute(attributeName = "dictationId")
-    public String getDictationId() {
-        return dictationId;
-    }
-
-    public void setDictationId(String dictationId) {
-        this.dictationId = dictationId;
-    }
 }

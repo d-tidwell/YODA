@@ -21,28 +21,23 @@ public class CreatePHRActivity{
 
     private final ProviderDAO providerDAO;
 
-    private final DictationDAO dictationDAO;
-
     private final PHRDAO phrdao;
 
     @Inject
-    public CreatePHRActivity(PatientDAO patientDAO, ProviderDAO providerDAO, PHRDAO phrdao, DictationDAO dictationDAO) {
+    public CreatePHRActivity(PatientDAO patientDAO, ProviderDAO providerDAO, PHRDAO phrdao) {
         this.patientDAO = patientDAO;
         this.providerDAO = providerDAO;
         this.phrdao = phrdao;
-        this.dictationDAO = dictationDAO;
     }
 
     public CreatePHRResult handleRequest(final CreatePHRRequest request){
         patientDAO.getPatient(request.getPatientId());
         providerDAO.getProvider(request.getProviderName());
-        dictationDAO.getDictation(request.getDictationId(), request.getDate());
-        String PHRid = request.getPatientId() + request.getDate() + UUIDGenerator.generateUniqueId();
+        String PHRid = request.getPatientId() + "_" + request.getDate() + "_" + UUIDGenerator.generateUniqueId();
         PHR newPHR = new PHR();
         newPHR.setPhrId(PHRid);
         newPHR.setPatientId(request.getPatientId());
         newPHR.setProviderName(request.getProviderName());
-        newPHR.setDictationId(request.getDictationId());
         newPHR.setDate(request.getDate());
         newPHR.setStatus(PHRStatus.CREATED.toString());
         boolean status = phrdao.savePHR(newPHR);

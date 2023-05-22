@@ -20,7 +20,6 @@ public class CreatePHRLambda
                                     .withDate(unauthenticatedRequest.getDate())
                                     .withStatus(unauthenticatedRequest.getStatus())
                                     .withAge(unauthenticatedRequest.getAge())
-                                    .withDictationId(unauthenticatedRequest.getDictationId())
                                     .build()),
                 (request, serviceComponent) ->
                         serviceComponent.provideCreatePHRActivity().handleRequest(request)

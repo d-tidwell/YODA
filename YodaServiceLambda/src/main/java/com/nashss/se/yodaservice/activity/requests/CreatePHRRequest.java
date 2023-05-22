@@ -10,15 +10,13 @@ public class CreatePHRRequest {
     private final String date;
     private final String status;
     private final String age;
-    private final String dictationId;
     
-    public CreatePHRRequest(String patientId, String providerName, String date, String status, String age, String dictationId) {
+    public CreatePHRRequest(String patientId, String providerName, String date, String status, String age) {
         this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
         this.age = age;
-        this.dictationId = dictationId;
     }
 
     public String getProviderName() {
@@ -37,10 +35,6 @@ public class CreatePHRRequest {
         return age;
     }
 
-    public String getDictationId() {
-        return dictationId;
-    }
-
     public String getPatientId() {
         return patientId;
     }
@@ -53,7 +47,6 @@ public class CreatePHRRequest {
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
                 ", age='" + age + '\'' +
-                ", dictationId='" + dictationId + '\'' +
                 '}';
     }
 
@@ -68,7 +61,6 @@ public class CreatePHRRequest {
         private String date;
         private String status;
         private String age;
-        private String dictationId;
 
         public Builder withPatientId(String patientId) {
             this.patientId = patientId;
@@ -94,13 +86,8 @@ public class CreatePHRRequest {
             return this;
         }
 
-        public Builder withDictationId(String dictationId) {
-            this.dictationId = dictationId;
-            return this;
-        }
-
         public CreatePHRRequest build() {
-            return new CreatePHRRequest(patientId, providerName, date, status, age, dictationId);
+            return new CreatePHRRequest(patientId, providerName, date, status, age);
         }
     }
 }
