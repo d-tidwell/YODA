@@ -2,6 +2,7 @@ package com.nashss.se.yodaservice.dependency;
 
 import com.nashss.se.yodaservice.activity.*;
 
+import com.nashss.se.yodaservice.activity.requests.RemovePatientFromProviderRequest;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -34,4 +35,6 @@ public interface ServiceComponent {
     GetPatientActivity provideGetPatientActivity();
 
     GetPHRActivity provideGetPHRActivity();
+
+    RemovePatientFromProviderActivity provideRemovePatientFromProviderActivity();
 }

@@ -48,7 +48,8 @@ public class UpdateDictationActivity {
         //which dictation test it is there
         Dictation dictation = dicDao.getDictation(request.getFileName(), existingRecord.getDate());
         //create a job name
-        String transcribeJobName = "text/" + request.getPhrId() + request.getPhrDate();
+        String transcribeJobName = "text/" + existingRecord.getProviderName() +request.getPhrId() +
+                request.getPhrDate();
         //get a URL
         String audioFileUrl = s3client.getUrl(bucketName,request.getFileName()).toString();
         //build a job
@@ -65,8 +66,9 @@ public class UpdateDictationActivity {
         existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
         //save the phr change
         phrdao.savePHR(existingRecord);
-        //set the url for the text file
+        //set the url for the text file & type
         dictation.setDictationText(transcribeJobName);
+        dictation.setType(request.getType());
         //save the dictation changes
         dicDao.afterTranscriptionUpdate(dictation);
         return UpdateDictationResult.builder()

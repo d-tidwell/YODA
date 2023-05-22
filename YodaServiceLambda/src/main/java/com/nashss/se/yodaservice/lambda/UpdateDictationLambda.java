@@ -16,6 +16,7 @@ public class UpdateDictationLambda
                     .withPhrId(path.get("phrId"))
                     .withPhrDate(path.get("phrDate"))
                     .withFileName(path.get("fileName"))
+                    .withType(path.get("type"))
                     .build()),
             (request, serviceComponent) ->
                     serviceComponent.provideUpdateDictationActivity().handleRequest(request)

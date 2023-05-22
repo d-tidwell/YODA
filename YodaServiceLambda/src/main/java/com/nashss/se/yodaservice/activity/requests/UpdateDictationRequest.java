@@ -9,11 +9,13 @@ public class UpdateDictationRequest {
     private final String phrId;
     private final String phrDate;
     private final String fileName;
+    private final String type;
 
-    private UpdateDictationRequest(String phrId, String phrDate, String fileName) {
+    private UpdateDictationRequest(String phrId, String phrDate, String fileName, String type) {
         this.phrId = phrId;
         this.phrDate = phrDate;
         this.fileName = fileName;
+        this.type = type;
     }
 
     public String getPhrId() {
@@ -28,12 +30,17 @@ public class UpdateDictationRequest {
         return this.fileName;
     }
 
+    public String getType() {
+        return this.type;
+    }
+
     @Override
     public String toString() {
         return "UpdateDictationRequest{" +
                 "phrId='" + phrId + '\'' +
                 "phrDate='" + phrDate + '\'' +
                 "fileName='" + fileName + '\'' +
+                "type='" + type + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder
@@ -44,6 +51,7 @@ public class UpdateDictationRequest {
         private String phrId;
         private String phrDate;
         private String fileName;
+        private String type;
 
         public Builder withPhrId(String phrId) {
             this.phrId = phrId;
@@ -57,10 +65,14 @@ public class UpdateDictationRequest {
             this.fileName = fileName;
             return this;
         }
+        public Builder withType(String type) {
+            this.type = type;
+            return this;
+        }
 
 
         public UpdateDictationRequest build() {
-            return new UpdateDictationRequest(phrId, phrDate, fileName);
+            return new UpdateDictationRequest(phrId, phrDate, fileName, type);
         }
     }
 }

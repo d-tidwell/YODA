@@ -211,6 +211,12 @@ _DictionModel_
 
     returns: status of job
 
+    endpoint: provider/remove/{patientId}
+
+    Removes patient from provider stack
+
+    return: boolean, success
+
 
 # 7. Tables
 
