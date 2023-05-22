@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class ModelConverter {
 
-    public static PHRModel phrConvertSingle(PHR phr){
+    public static PHRModel phrConvertSingle(PHR phr) {
         return PHRModel.builder()
                 .phrId(phr.getPhrId())
                 .patientId(phr.getPatientId())

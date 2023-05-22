@@ -36,7 +36,7 @@ public class DictationDAO {
         newDic.setDictationId(dictationId);
         newDic.setPhrId(phRid);
         newDic.setDate(date);
-        newDic.setDictationText("audio/"+dictationId);
+        newDic.setDictationText("audio/" + dictationId);
         try {
             this.dynamoDbMapper.save(newDic);
             return true;

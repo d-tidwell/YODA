@@ -231,9 +231,11 @@ Resources:
                 - Effect: Allow
                   Action: dynamodb:*
                   Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations"
+
     #-----------------------------------------------------
     # Lambda Functions Configuration
     #-----------------------------------------------------
+
     CreatePatientLambda:
       Type: AWS::Serverless::Function
       Properties:
@@ -291,7 +293,7 @@ Resources:
           YodaServiceLambda:
             Type: Api
             Properties:
-              Path: /provider/{providerId}/{patientId}
+              Path: /provider/{providerName}/{patientId}
               Method: post
 
     RemovePatientFromProviderLambda:

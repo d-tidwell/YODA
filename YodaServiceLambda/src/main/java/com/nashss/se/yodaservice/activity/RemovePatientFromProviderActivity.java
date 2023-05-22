@@ -5,6 +5,7 @@ import com.nashss.se.yodaservice.activity.results.RemovePatientFromProviderResul
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

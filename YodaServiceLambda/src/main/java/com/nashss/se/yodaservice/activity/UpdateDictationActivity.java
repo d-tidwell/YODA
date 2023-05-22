@@ -48,10 +48,10 @@ public class UpdateDictationActivity {
         //which dictation test it is there
         Dictation dictation = dicDao.getDictation(request.getFileName(), existingRecord.getDate());
         //create a job name
-        String transcribeJobName = "text/" + existingRecord.getProviderName() +request.getPhrId() +
+        String transcribeJobName = "text/" + existingRecord.getProviderName() + request.getPhrId() +
                 request.getPhrDate();
         //get a URL
-        String audioFileUrl = s3client.getUrl(bucketName,request.getFileName()).toString();
+        String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
         //build a job
         StartMedicalTranscriptionJobRequest jobRequest = StartMedicalTranscriptionJobRequest.builder()
                 .medicalTranscriptionJobName(transcribeJobName)

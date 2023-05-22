@@ -17,7 +17,7 @@ public class AddPatientToProviderLambda
         return super.runActivity(
             () -> input.fromPath(path -> AddPatientToProviderRequest.builder()
                     .withPatientId(path.get("patientId"))
-                    .withProviderName(path.get("providerId"))
+                    .withProviderName(path.get("providerName"))
                     .build()),
             (request, serviceComponent) ->
                     serviceComponent.provideAddPatientToProviderActivity().handleRequest(request)

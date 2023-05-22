@@ -130,7 +130,7 @@ _DictionModel_
 
     Creates a new PHR for patient by provider and adds to providers pending
 
-    data: providerName, date, status, age
+    data: patientId, providerName, date
 
     returns: status of PHR
 

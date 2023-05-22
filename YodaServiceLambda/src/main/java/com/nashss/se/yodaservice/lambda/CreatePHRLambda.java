@@ -19,8 +19,6 @@ public class CreatePHRLambda
                                 .withPatientId(path.get("patientId"))
                                 .withProviderName(unauthenticatedRequest.getProviderName())
                                 .withDate(unauthenticatedRequest.getDate())
-                                .withStatus(unauthenticatedRequest.getStatus())
-                                .withAge(unauthenticatedRequest.getAge())
                                 .build()),
             (request, serviceComponent) ->
                     serviceComponent.provideCreatePHRActivity().handleRequest(request)
