@@ -214,23 +214,23 @@ Resources:
               Statement:
                 - Effect: Allow
                   Action: dynamodb:*
-                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/provider"
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/providers"
 
           - PolicyName: 'AccessphrsTable'
-              PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  - Effect: Allow
-                    Action: dynamodb:*
-                    Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs"
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action: dynamodb:*
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs"
 
           - PolicyName: 'AccessDictationTable'
-              PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  - Effect: Allow
-                    Action: dynamodb:*
-                    Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations"
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action: dynamodb:*
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations"
     #-----------------------------------------------------
     # Lambda Functions Configuration
     #-----------------------------------------------------
@@ -293,6 +293,26 @@ Resources:
             Properties:
               Path: /provider/{providerId}/{patientId}
               Method: post
+
+    RemovePatientFromProviderLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        Role: !GetAtt AccessRole.Arn
+        CodeUri: YodaServiceLambda
+        Handler: com.nashss.se.yodaservice.lambda.RemovePatientFromProviderLambda::handleRequest
+        Runtime: java11
+        Architectures:
+          - x86x64
+        MemorySize: 512
+        Environment:
+          Variables:
+            JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+        Events:
+          YodaServiceLambda:
+            Type: Api
+            Properties:
+              Path: /provider/remove/{patientId}/{providerName}
+              Method: put
 
     GetPresignedS3Lambda:
       Type: AWS::Serverless::Function
@@ -431,7 +451,7 @@ Resources:
           MusicPlaylistService:
             Type: Api
             Properties:
-              Path: /patient/PHR/update/{patientId}
+              Path: /patient/PHR/update/{phrId}
               Method: put
 
     UpdateDictationLambda:
@@ -439,7 +459,7 @@ Resources:
       Properties:
         Role: !GetAtt AccessRole.Arn
         CodeUri: YodaServiceLambda
-        Handler: com.nashss.se.yodaservice.lambda.UpdatePlaylistLambda::handleRequest
+        Handler: com.nashss.se.yodaservice.lambda.UpdateDictationLambda::handleRequest
         Runtime: java11
         Architectures:
           - x86_64
@@ -451,7 +471,7 @@ Resources:
           MusicPlaylistService:
             Type: Api
             Properties:
-              Path: /dictate/{phrId}
+              Path: /dictate/{PhrId}/{PhrDate}/{fileName}
               Method: put
 
     #-----------------------------------------------------
@@ -492,6 +512,8 @@ Resources:
             AttributeType: "S"
           - AttributeName: "providerName"
             AttributeType: "S"
+          - AttributeName: "patientId"
+            AttributeType: "S"
           - AttributeName: "status"
             AttributeType: "S"
         KeySchema:
@@ -505,6 +527,14 @@ Resources:
               - AttributeName: "providerName"
                 KeyType: "HASH"
               - AttributeName: "status"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+          - IndexName: "PatientDateIndex"
+            KeySchema:
+              - AttributeName: "patientId"
+                KeyType: "HASH"
+              - AttributeName: "date"
                 KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"

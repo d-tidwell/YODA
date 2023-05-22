@@ -3,7 +3,7 @@ package com.nashss.se.yodaservice.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = AddPatientToProviderRequest.Builder.class)
-public class AddPatientToProviderRequest{
+public class AddPatientToProviderRequest {
 
     private final String patientId;
 
@@ -29,7 +29,7 @@ public class AddPatientToProviderRequest{
                 ", providerName='" + providerName + '\'' +
                 '}';
     }
-
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }

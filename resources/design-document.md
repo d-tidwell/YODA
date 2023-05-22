@@ -130,7 +130,7 @@ _DictionModel_
 
     Creates a new PHR for patient by provider and adds to providers pending
 
-    data: providerName, date, status, age, dictationId
+    data: providerName, date, status, age
 
     returns: status of PHR
 
@@ -153,7 +153,7 @@ _DictionModel_
 
     Retrieves all PHR's for patient by id
 
-    returns set of PHR id's
+    returns set of PHR's
 
 
 
@@ -203,13 +203,19 @@ _DictionModel_
     returns: boolean success
 
 
-    endpoint: /dictate/${phrId}/
+    endpoint: /dictate/${phrId}/{phrIdDate}
 
     Triggers dication flow
 
-    data: pHRId to check
+    data: pHRId, date
 
-    returns: status of object
+    returns: status of job
+
+    endpoint: provider/remove/{patientId}
+
+    Removes patient from provider stack
+
+    return: boolean, success
 
 
 # 7. Tables
@@ -217,7 +223,7 @@ _DictionModel_
 _Patient_ (Identification and Provider Linking)
 + id (string Primary Key)
 + name (string)
-
++ age (string)
 
 _Provider_
 + providerId (String)
@@ -227,25 +233,28 @@ _Provider_
 
 _PHR_ (Patient Health Record)
 + phrId (primary key)
-+ patientId (string Primary Key)
++ patientId (string)
 + providerName (string)
 + date (string Sort Key)
 + status (waiting, submitted, pending, complete) (string)
-+ age (string)
-+ dictationId (string)
 
-_PHR_ GSI (Global Secondary Index)
+_PHR_ GSI (Global Secondary Index by ProviderStatusIndex)
 + providerName (Primary Key)
 + status (Secondary Key)
 
+_PHR_ GSI (Global Secondary Index by PatientDateIndex)
++ patientId (Primary Key)
++ date (Secondary Key)
+
 _Dictation_ (holds S3 references of audio and text objects for speed referencing)
 + dictationId (string Primary Key)
++ phrId (association)
 + date (string Sort key)
 + type (pre, post, inVisit) (string)
 + dictationText (S3 URL) (string)
 + dictationAudio (S3 URL) (string)
 
-_Dictation GSI_
+_Dictation GSI_(DateTypeIndex)
 + date primary 
 + type sort
 

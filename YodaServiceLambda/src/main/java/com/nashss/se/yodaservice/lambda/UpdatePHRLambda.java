@@ -14,16 +14,12 @@ public class UpdatePHRLambda
 
         UpdatePHRRequest unauthenticatedRequest = input.fromBody(UpdatePHRRequest.class);
         return super.runActivity(
-                () -> input.fromPath(path -> UpdatePHRRequest.builder()
-                                    .withProviderName(unauthenticatedRequest.getProviderName())
-                                    .withPatientId(path.get("patientId"))
-                                    .withDate(unauthenticatedRequest.getDate())
-                                    .withStatus(unauthenticatedRequest.getStatus())
-                                    .withAge(unauthenticatedRequest.getAge())
-                                    .withDictationId(unauthenticatedRequest.getDictationId())
-                                    .build()),
-                (request, serviceComponent) ->
-                        serviceComponent.provideUpdatePHRActivity().handleRequest(request)
+            () -> input.fromPath(path -> UpdatePHRRequest.builder()
+                                .withPhrId(path.get("phrId"))
+                                .withStatus(unauthenticatedRequest.getStatus())
+                                .build()),
+            (request, serviceComponent) ->
+                    serviceComponent.provideUpdatePHRActivity().handleRequest(request)
         );
     }
 }

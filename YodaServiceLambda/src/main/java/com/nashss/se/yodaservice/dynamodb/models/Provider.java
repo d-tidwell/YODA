@@ -5,9 +5,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Set;
+
 
 @DynamoDBTable(tableName = "providers")
 public class Provider {
@@ -44,7 +45,7 @@ public class Provider {
         return new ArrayDeque<>(pendingPatients);
     }
 
-    public void setPendingPatients(List<String> pendingPatients) {
-        this.pendingPatients = pendingPatients;
+    public void setPendingPatients(Deque<String> pendingPatients) {
+        this.pendingPatients = new ArrayList<String>(pendingPatients);
     }
 }

@@ -11,7 +11,7 @@ public class GetPHRRequest {
         this.phrId = phrId;
     }
 
-    public String getPhrId(String phrId){
+    public String getPhrId() {
         return phrId;
     }
 
@@ -21,7 +21,7 @@ public class GetPHRRequest {
                 "phrId='" + phrId + '\'' +
                 '}';
     }
-
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
 
     @JsonPOJOBuilder

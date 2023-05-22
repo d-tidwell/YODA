@@ -6,34 +6,74 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = GetAllPHRRequest.Builder.class)
 public class UpdateDictationRequest {
 
-    private final String PhrId;
+    private final String phrId;
+    private final String phrDate;
+    private final String fileName;
+    private final String type;
 
-    private UpdateDictationRequest(String PhrId) {
-        this.PhrId = PhrId;
+    private UpdateDictationRequest(String phrId, String phrDate, String fileName, String type) {
+        this.phrId = phrId;
+        this.phrDate = phrDate;
+        this.fileName = fileName;
+        this.type = type;
     }
 
     public String getPhrId() {
-        return this.PhrId;
+        return this.phrId;
+    }
+
+    public String getPhrDate() {
+        return this.phrDate;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
     @Override
     public String toString() {
         return "UpdateDictationRequest{" +
-                "PhrId='" + PhrId + '\'' +
+                "phrId='" + phrId + '\'' +
+                "phrDate='" + phrDate + '\'' +
+                "fileName='" + fileName + '\'' +
+                "type='" + type + '\'' +
                 '}';
     }
-    public static Builder builder(){return new Builder();}
+    //CHECKSTYLE:OFF:Builder
+    public static Builder builder(){return new Builder(); }
+
     @JsonPOJOBuilder
     public static class Builder {
-        private String PhrId;
+        private String phrId;
+        private String phrDate;
+        private String fileName;
+        private String type;
 
-        public Builder withPhrId(String PhrId) {
-            this.PhrId = PhrId;
+        public Builder withPhrId(String phrId) {
+            this.phrId = phrId;
+            return this;
+        }
+        public Builder withPhrDate(String phrDate) {
+            this.phrDate = phrDate;
+            return this;
+        }
+        public Builder withFileName(String fileName) {
+            this.fileName = fileName;
+            return this;
+        }
+        public Builder withType(String type) {
+            this.type = type;
             return this;
         }
 
+
         public UpdateDictationRequest build() {
-            return new UpdateDictationRequest(PhrId);
+            return new UpdateDictationRequest(phrId, phrDate, fileName, type);
         }
     }
 }
+

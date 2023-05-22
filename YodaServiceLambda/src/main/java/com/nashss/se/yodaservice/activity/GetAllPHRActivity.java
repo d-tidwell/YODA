@@ -2,34 +2,38 @@ package com.nashss.se.yodaservice.activity;
 
 import com.nashss.se.yodaservice.activity.requests.GetAllPHRRequest;
 import com.nashss.se.yodaservice.activity.results.GetAllPHRResult;
+import com.nashss.se.yodaservice.converters.ModelConverter;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
-import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
+import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.models.PHRModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import javax.inject.Inject;
 
-public class GetAllPHRActivity{
+
+
+public class GetAllPHRActivity {
 
     private final Logger log = LogManager.getLogger();
-
     private final PatientDAO patientDAO;
-
-    private final ProviderDAO providerDAO;
-
     private final PHRDAO phrdao;
 
     @Inject
-    public GetAllPHRActivity(PatientDAO patientDAO, ProviderDAO providerDAO, PHRDAO phrdao) {
+    public GetAllPHRActivity(PatientDAO patientDAO, PHRDAO phrdao) {
         this.patientDAO = patientDAO;
-        this.providerDAO = providerDAO;
         this.phrdao = phrdao;
     }
 
-    public GetAllPHRResult handleRequest(final GetAllPHRRequest request){
-
+    public GetAllPHRResult handleRequest(final GetAllPHRRequest request) {
+        patientDAO.getPatient(request.getPatientId());
+        List<PHR> all = phrdao.getPhrsForPatient(request.getPatientId());
+        List<PHRModel> results = ModelConverter.convertListPHRtoModels(all);
         return GetAllPHRResult.builder()
+                .withPhrId(results)
                 .build();
     }
 }

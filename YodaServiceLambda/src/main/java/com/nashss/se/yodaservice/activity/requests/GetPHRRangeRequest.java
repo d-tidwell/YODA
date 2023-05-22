@@ -36,6 +36,7 @@ public class GetPHRRangeRequest {
                 ", to='" + to + '\'' +
                 '}';
     }
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
     @JsonPOJOBuilder
     public static class Builder {

@@ -1,18 +1,20 @@
 package com.nashss.se.yodaservice.activity.results;
 
+import com.nashss.se.yodaservice.models.PHRModel;
+
 import java.util.List;
 
-public class GetPHRRangeResult{
-    private final List<String> PHRId;
+public class GetPHRRangeResult {
+    private final List<PHRModel> phrId;
 
-    public GetPHRRangeResult(List<String> PHRId) {
-        this.PHRId = PHRId;
+    public GetPHRRangeResult(List<PHRModel> phrId) {
+        this.phrId = phrId;
     }
 
     @Override
     public String toString() {
         return "GetPHRRangeResult{" +
-                "PHRId=" + PHRId +
+                "PHRModels=" + phrId +
                 '}';
     }
 
@@ -22,16 +24,17 @@ public class GetPHRRangeResult{
     }
 
     public static class Builder {
-        private List<String> PHRId;
+        private List<PHRModel> phrId;
 
-        public Builder withPHRId(List<String> PHRId){
-            this.PHRId = PHRId;
+        public Builder withPhrId(List<PHRModel> phrId){
+            this.phrId = phrId;
             return this;
         }
 
         public GetPHRRangeResult build() {
-            return new GetPHRRangeResult(PHRId);
+            return new GetPHRRangeResult(phrId);
         }
     }
 
 }
+

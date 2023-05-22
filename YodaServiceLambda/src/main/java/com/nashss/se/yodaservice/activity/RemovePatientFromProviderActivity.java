@@ -1,20 +1,17 @@
 package com.nashss.se.yodaservice.activity;
 
-import com.nashss.se.yodaservice.activity.requests.AddPatientToProviderRequest;
-import com.nashss.se.yodaservice.activity.results.AddPatientToProviderResult;
+import com.nashss.se.yodaservice.activity.requests.RemovePatientFromProviderRequest;
+import com.nashss.se.yodaservice.activity.results.RemovePatientFromProviderResult;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Deque;
 import javax.inject.Inject;
+import java.util.Deque;
 
-
-
-public class AddPatientToProviderActivity {
+public class RemovePatientFromProviderActivity {
 
     private final Logger log = LogManager.getLogger();
 
@@ -23,19 +20,19 @@ public class AddPatientToProviderActivity {
     private final ProviderDAO providerDAO;
 
     @Inject
-    public AddPatientToProviderActivity(PatientDAO patientDAO, ProviderDAO providerDAO) {
+    public RemovePatientFromProviderActivity(PatientDAO patientDAO, ProviderDAO providerDAO) {
         this.patientDAO = patientDAO;
         this.providerDAO = providerDAO;
     }
 
-    public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request) {
+    public RemovePatientFromProviderResult handleRequest(final RemovePatientFromProviderRequest request) {
         patientDAO.getPatient(request.getPatientId());
         Provider provider = providerDAO.getProvider(request.getProviderName());
         Deque<String> q = provider.getPendingPatients();
-        q.addLast(request.getPatientId());
+        q.remove(request.getPatientId());
         provider.setPendingPatients(q);
         boolean success = providerDAO.updatePending(provider);
-        return AddPatientToProviderResult.builder()
+        return RemovePatientFromProviderResult.builder()
                 .withSuccess(success)
                 .build();
     }

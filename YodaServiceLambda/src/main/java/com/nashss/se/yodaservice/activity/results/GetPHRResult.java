@@ -5,16 +5,14 @@ public class GetPHRResult {
     private final String providerName;
     private final String date;
     private final String status;
-    private final String age;
     private final String dictationId;
 
 
-    public GetPHRResult(String patientId, String providerName, String date, String status, String age, String dictationId) {
+    public GetPHRResult(String patientId, String providerName, String date, String status, String dictationId) {
         this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
-        this.age = age;
         this.dictationId = dictationId;
     }
 
@@ -25,11 +23,10 @@ public class GetPHRResult {
                 ", providerName='" + providerName + '\'' +
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
-                ", age='" + age + '\'' +
                 ", dictationId='" + dictationId + '\'' +
                 '}';
     }
-    
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
     
     public static class Builder{
@@ -37,7 +34,6 @@ public class GetPHRResult {
         private  String providerName;
         private  String date;
         private  String status;
-        private  String age;
         private  String dictationId;
 
         public Builder withPatientId(String patientId){
@@ -50,9 +46,7 @@ public class GetPHRResult {
         }
         public Builder withDate(String date){this.date = date; return this;}
         public Builder withStatus(String status){this.status = status; return this;}
-        public Builder withAge(String age){this.age = age; return this;}
-        public Builder withDicationId(String dicationId){this.dictationId = dicationId; return this;}
-
-        public GetPHRResult build() {return new GetPHRResult(patientId, providerName, date, status, age, dictationId);}
+        public Builder withDictationId(String dictationId){this.dictationId = dictationId; return this;}
+        public GetPHRResult build() {return new GetPHRResult(patientId, providerName, date, status, dictationId);}
     }
 }

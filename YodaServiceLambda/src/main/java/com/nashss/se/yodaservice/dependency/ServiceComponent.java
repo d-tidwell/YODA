@@ -1,8 +1,8 @@
 package com.nashss.se.yodaservice.dependency;
 
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.yodaservice.activity.*;
-import com.nashss.se.yodaservice.activity.requests.GetPHRRequest;
+
+import com.nashss.se.yodaservice.activity.requests.RemovePatientFromProviderRequest;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -11,7 +11,7 @@ import javax.inject.Singleton;
  * Dagger component for providing dependency injection in the Yoda MD Service.
  */
 @Singleton
-@Component(modules = {DaoModule.class, MetricsModule.class})
+@Component(modules = { DaoModule.class, MetricsModule.class})
 public interface ServiceComponent {
 
     AddPatientToProviderActivity provideAddPatientToProviderActivity();
@@ -35,4 +35,6 @@ public interface ServiceComponent {
     GetPatientActivity provideGetPatientActivity();
 
     GetPHRActivity provideGetPHRActivity();
+
+    RemovePatientFromProviderActivity provideRemovePatientFromProviderActivity();
 }

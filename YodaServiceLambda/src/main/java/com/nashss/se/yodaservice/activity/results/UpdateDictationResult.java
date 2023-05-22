@@ -13,7 +13,7 @@ public class UpdateDictationResult {
                 "status='" + status + '\'' +
                 '}';
     }
-
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
 
     public static class Builder {

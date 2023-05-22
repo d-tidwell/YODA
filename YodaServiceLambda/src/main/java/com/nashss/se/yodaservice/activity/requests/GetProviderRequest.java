@@ -12,7 +12,7 @@ public class GetProviderRequest {
         this.providerId = providerId;
     }
 
-    public String getProviderId(String providerId){
+    public String getProviderId() {
         return providerId;
     }
 
@@ -22,7 +22,7 @@ public class GetProviderRequest {
                 "providerId='" + providerId + '\'' +
                 '}';
     }
-
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
 
     @JsonPOJOBuilder
