@@ -4,13 +4,16 @@ import com.nashss.se.yodaservice.activity.requests.GetProviderRequest;
 import com.nashss.se.yodaservice.activity.results.GetProviderResult;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
+import javax.inject.Inject;
 
-public class GetProviderActivity{
+
+
+public class GetProviderActivity {
 
     private final Logger log = LogManager.getLogger();
     private final ProviderDAO providerDAO;
@@ -20,7 +23,7 @@ public class GetProviderActivity{
         this.providerDAO = providerDAO;
     }
 
-    public GetProviderResult handleRequest(final GetProviderRequest request){
+    public GetProviderResult handleRequest(final GetProviderRequest request) {
         Provider provider = providerDAO.getProvider(request.getProviderId());
         return GetProviderResult.builder()
                 .withName(provider.getName())

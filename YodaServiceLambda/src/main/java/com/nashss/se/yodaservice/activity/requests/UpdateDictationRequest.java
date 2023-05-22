@@ -6,46 +6,51 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = GetAllPHRRequest.Builder.class)
 public class UpdateDictationRequest {
 
-    private final String PhrId;
-    private final String PhrDate;
+    private final String phrId;
+    private final String phrDate;
     private final String fileName;
 
-    private UpdateDictationRequest(String PhrId, String phrDate, String fileName) {
-        this.PhrId = PhrId;
-        this.PhrDate = phrDate;
+    private UpdateDictationRequest(String phrId, String phrDate, String fileName) {
+        this.phrId = phrId;
+        this.phrDate = phrDate;
         this.fileName = fileName;
     }
 
     public String getPhrId() {
-        return this.PhrId;
+        return this.phrId;
     }
 
-    public String getPhrDate() {return PhrDate;}
-    public String getFileName(){return this.fileName;}
+    public String getPhrDate() {
+        return this.phrDate;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
 
     @Override
     public String toString() {
         return "UpdateDictationRequest{" +
-                "PhrId='" + PhrId + '\'' +
-                "PhrDate='" + PhrDate + '\'' +
+                "phrId='" + phrId + '\'' +
+                "phrDate='" + phrDate + '\'' +
                 "fileName='" + fileName + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder(){return new Builder();}
+    public static Builder builder(){return new Builder(); }
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String PhrId;
-        private String PhrDate;
+        private String phrId;
+        private String phrDate;
         private String fileName;
 
-        public Builder withPhrId(String PhrId) {
-            this.PhrId = PhrId;
+        public Builder withPhrId(String phrId) {
+            this.phrId = phrId;
             return this;
         }
-        public Builder withPhrDate(String PhrDate) {
-            this.PhrDate = PhrDate;
+        public Builder withPhrDate(String phrDate) {
+            this.phrDate = phrDate;
             return this;
         }
         public Builder withFileName(String fileName) {
@@ -55,7 +60,8 @@ public class UpdateDictationRequest {
 
 
         public UpdateDictationRequest build() {
-            return new UpdateDictationRequest(PhrId, PhrDate, fileName);
+            return new UpdateDictationRequest(phrId, phrDate, fileName);
         }
     }
 }
+

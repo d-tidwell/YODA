@@ -1,6 +1,6 @@
 package com.nashss.se.yodaservice.exceptions;
 
-public class PatientNotFoundException extends RuntimeException{
+public class PatientNotFoundException extends RuntimeException {
     /**
      * Exception to throw when a provided value has invalid attribute values.
      */

@@ -1,14 +1,16 @@
 package com.nashss.se.yodaservice.dynamodb;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import com.nashss.se.yodaservice.dynamodb.models.Patient;
 import com.nashss.se.yodaservice.exceptions.PatientNotFoundException;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.Objects;
+import javax.inject.Inject;
 
 public class PatientDAO {
     private final Logger log = LogManager.getLogger();
@@ -19,18 +21,18 @@ public class PatientDAO {
         this.dynamoDbMapper = dynamoDbMapper;
     }
 
-    public Patient getPatient(String patientId){
+    public Patient getPatient(String patientId) {
         Patient patient = this.dynamoDbMapper.load(Patient.class, patientId);
 
-        if(Objects.isNull(patient)){
+        if (Objects.isNull(patient)) {
             log.info(String.format("PatientNotFoundException, %s", patientId));
             throw new PatientNotFoundException("Could not find patient");
         }
         return patient;
     }
 
-    public boolean savePatient(Patient newPatient){
-        try{
+    public boolean savePatient(Patient newPatient) {
+        try {
             this.dynamoDbMapper.save(newPatient);
         } catch (AmazonDynamoDBException e) {
             log.error("Save Patient Error", e);
@@ -40,3 +42,5 @@ public class PatientDAO {
     }
 
 }
+
+

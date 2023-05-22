@@ -12,7 +12,8 @@ public class UpdatePHRRequest {
     private final String age;
     private final String dictationId;
 
-    public UpdatePHRRequest(String patientId, String providerName, String date, String status, String age, String dictationId) {
+    public UpdatePHRRequest(String patientId, String providerName, String date,
+                            String status, String age, String dictationId) {
         this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
@@ -20,7 +21,11 @@ public class UpdatePHRRequest {
         this.age = age;
         this.dictationId = dictationId;
     }
-    public String getPatientId(){return patientId;}
+
+    public String getPatientId() {
+        return patientId;
+    }
+
     public String getProviderName() {
         return providerName;
     }

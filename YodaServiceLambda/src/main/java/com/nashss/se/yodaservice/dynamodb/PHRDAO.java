@@ -1,21 +1,23 @@
 package com.nashss.se.yodaservice.dynamodb;
 
+import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.exceptions.PHRNotFoundException;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.nashss.se.yodaservice.dynamodb.models.PHR;
-import com.nashss.se.yodaservice.exceptions.PHRNotFoundException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 public class PHRDAO {
     private final Logger log = LogManager.getLogger();
@@ -26,32 +28,32 @@ public class PHRDAO {
         this.dynamoDbMapper = dynamoDbMapper;
     }
 
-    public PHR getPHR(String PHRId, String date){
-        PHR phr = this.dynamoDbMapper.load(PHR.class, PHRId, date);
+    public PHR getPHR(String phrId, String date) {
+        PHR phr = this.dynamoDbMapper.load(PHR.class, phrId, date);
 
-        if(Objects.isNull(phr)){
-            log.info(String.format("PHRNotFoundException, %s", PHRId));
+        if (Objects.isNull(phr)) {
+            log.info(String.format("PHRNotFoundException, %s", phrId));
             throw new PHRNotFoundException("Could not find PHR");
         }
         return phr;
     }
-    public PHR getPHRsByPHRId(String PHRId){
+    public PHR getPHRsByPHRId(String phrId) {
         DynamoDBQueryExpression<PHR> queryExpression = new DynamoDBQueryExpression<PHR>()
                 .withKeyConditionExpression("PHRId = :phrId")
-                .withExpressionAttributeValues(Collections.singletonMap(":phrId", new AttributeValue().withS(PHRId)));
+                .withExpressionAttributeValues(Collections.singletonMap(":phrId", new AttributeValue().withS(phrId)));
 
         PaginatedQueryList<PHR> result = this.dynamoDbMapper.query(PHR.class, queryExpression);
 
-        if(result.isEmpty()){
-            log.info(String.format("PHRNotFoundException, %s", PHRId));
+        if (result.isEmpty()) {
+            log.info(String.format("PHRNotFoundException, %s", phrId));
             throw new PHRNotFoundException("Could not find PHR");
         }
 
         return result.get(0);
     }
 
-    public boolean savePHR(PHR newPHR){
-        try{
+    public boolean savePHR(PHR newPHR) {
+        try {
             this.dynamoDbMapper.save(newPHR);
         } catch (AmazonDynamoDBException e) {
             log.error("Save PHR Error", e);
@@ -61,7 +63,7 @@ public class PHRDAO {
     }
 
     public List<PHR> getPhrsForPatient(String patientId) {
-        HashMap<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
         eav.put(":v1", new AttributeValue().withS(patientId));
 
         DynamoDBQueryExpression<PHR> queryExpression = new DynamoDBQueryExpression<PHR>()
@@ -87,7 +89,7 @@ public class PHRDAO {
 
         PaginatedQueryList<PHR> result = this.dynamoDbMapper.query(PHR.class, queryExpression);
 
-        if(result.isEmpty()){
+        if (result.isEmpty()) {
             log.info(String.format("PHRNotFoundException, %s", patientId));
             throw new PHRNotFoundException("Could not find PHR");
         }

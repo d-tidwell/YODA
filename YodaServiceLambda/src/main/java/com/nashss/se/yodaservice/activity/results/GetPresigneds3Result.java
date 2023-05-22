@@ -2,34 +2,34 @@ package com.nashss.se.yodaservice.activity.results;
 
 public class GetPresigneds3Result {
 
-    private final String URL;
+    private final String url;
 
     private GetPresigneds3Result(String fileName) {
-        this.URL = fileName;
+        this.url = fileName;
     }
 
-    public String getURL() {
-        return this.URL;
+    public String geturl() {
+        return this.url;
     }
 
     @Override
     public String toString() {
         return "GetPresigneds3Result{" +
-                "URL='" + URL + '\'' +
+                "url='" + url + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
     public static class Builder {
-        private String URL;
+        private String url;
 
-        public Builder withURL(String fileName) {
-            this.URL = URL;
+        public Builder withUrl(String fileName) {
+            this.url = url;
             return this;
         }
 
         public GetPresigneds3Result build() {
-            return new GetPresigneds3Result(URL);
+            return new GetPresigneds3Result(url);
         }
     }
 }

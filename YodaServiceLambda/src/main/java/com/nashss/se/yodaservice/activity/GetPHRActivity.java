@@ -5,6 +5,7 @@ import com.nashss.se.yodaservice.activity.results.GetPHRResult;
 import com.nashss.se.yodaservice.converters.ModelConverter;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 import com.nashss.se.yodaservice.models.PHRModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +19,7 @@ public class GetPHRActivity {
         this.phrdao = phrdao;
     }
 
-    public GetPHRResult handleRequest(final GetPHRRequest request){
+    public GetPHRResult handleRequest(final GetPHRRequest request) {
         PHRModel result = ModelConverter.phrConvertSingle(phrdao.getPHRsByPHRId(request.getPhrId()));
         return GetPHRResult.builder()
                 .withPatientId(result.getPatientId())

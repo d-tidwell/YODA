@@ -36,8 +36,8 @@ public class GetPresigneds3Request {
                 ", date=" + date +
                 '}';
     }
-
-    public static Builder builder(){return new Builder();}
+    //CHECKSTYLE:OFF:Builder
+    public static Builder builder() { return new Builder(); }
 
     @JsonPOJOBuilder
     public static class Builder {

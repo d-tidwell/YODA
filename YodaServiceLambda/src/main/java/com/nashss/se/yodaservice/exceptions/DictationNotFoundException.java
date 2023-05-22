@@ -1,6 +1,6 @@
 package com.nashss.se.yodaservice.exceptions;
 
-public class DictationNotFoundException extends RuntimeException{
+public class DictationNotFoundException extends RuntimeException {
     /**
      * Exception to throw when a provided value has invalid attribute values.
      */

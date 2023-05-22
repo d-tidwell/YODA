@@ -11,11 +11,12 @@ public class GetAllPHRLambda
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetAllPHRRequest> input, Context context) {
         return super.runActivity(
-                () -> input.fromPath(path -> GetAllPHRRequest.builder()
-                                    .withPatientId(path.get("patientId"))
-                                    .build()),
-                (request, serviceComponent) ->
-                        serviceComponent.provideGetAllPHRActivity().handleRequest(request)
+            () -> input.fromPath(path -> GetAllPHRRequest.builder()
+                                .withPatientId(path.get("patientId"))
+                                .build()),
+            (request, serviceComponent) ->
+                    serviceComponent.provideGetAllPHRActivity().handleRequest(request)
         );
     }
 }
+

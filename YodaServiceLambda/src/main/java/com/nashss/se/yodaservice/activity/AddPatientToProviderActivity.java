@@ -9,8 +9,10 @@ import com.nashss.se.yodaservice.dynamodb.models.Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.Deque;
+import javax.inject.Inject;
+
+
 
 public class AddPatientToProviderActivity {
 

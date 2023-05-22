@@ -11,7 +11,7 @@ public class GetPHRRequest {
         this.phrId = phrId;
     }
 
-    public String getPhrId(){
+    public String getPhrId() {
         return phrId;
     }
 

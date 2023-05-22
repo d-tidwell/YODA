@@ -20,8 +20,14 @@ public class Dictation {
         return dictationId;
     }
     @DynamoDBAttribute(attributeName = "phrId")
-    public String getPhrId(){return this.phrId;}
-    public void setPhrId(String phrId){this.phrId = phrId;}
+    public String getPhrId() {
+        return this.phrId;
+    }
+
+    public void setPhrId(String phrId) {
+        this.phrId = phrId;
+    }
+
     public void setDictationId(String dictationId) {
         this.dictationId = dictationId;
     }

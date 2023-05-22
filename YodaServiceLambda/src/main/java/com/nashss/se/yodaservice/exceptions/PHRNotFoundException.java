@@ -1,6 +1,6 @@
 package com.nashss.se.yodaservice.exceptions;
 
-public class PHRNotFoundException extends RuntimeException{
+public class PHRNotFoundException extends RuntimeException {
     /**
      * Exception to throw when a provided value has invalid attribute values.
      */

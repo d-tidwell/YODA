@@ -32,6 +32,7 @@ public class PHRModel {
     public String getDate() {
         return date;
     }
+
     public String getStatus() {
         return status;
     }
@@ -39,10 +40,16 @@ public class PHRModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PHRModel)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PHRModel)) {
+            return false;
+        }
         PHRModel phrModel = (PHRModel) o;
-        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) && getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) && getStatus().equals(phrModel.getStatus());
+        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) &&
+                getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) &&
+                getStatus().equals(phrModel.getStatus());
     }
 
     @Override
@@ -60,8 +67,10 @@ public class PHRModel {
                 ", status='" + status + '\'' +
                 '}';
     }
-
-    public static Builder builder(){return new Builder();}
+    //CHECKSTYLE:OFF:Builder
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static class Builder {
         private String phrId;
