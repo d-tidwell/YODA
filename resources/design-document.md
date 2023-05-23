@@ -290,8 +290,8 @@ _Patient_ (Identification and Provider Linking)
 _Provider_
 + providerId (String)
 + name (string Primary Key)
-+ medicalSpecialty 
-+ pendingPatients (ArrayDeque)
++ medicalSpecialty (String)
++ pendingPatients (StringList)
 
 _PHR_ (Patient Health Record)
 + phrId (primary key)

@@ -23,7 +23,6 @@ module.exports = {
     usedExports: true
   },
   entry: {
-    searchPlaylists: path.resolve(__dirname, 'src', 'pages', 'searchPlaylists.js'),
     testString: path.resolve(__dirname, 'src', 'pages', 'testString.js'),
   },
   output: {

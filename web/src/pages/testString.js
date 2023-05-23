@@ -1,4 +1,4 @@
-import MusicPlaylistClient from '../api/musicPlaylistClient';
+import yodaClient from '../api/yodaClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
@@ -45,6 +45,8 @@ class TestString extends BindingClass {
         this.header.addHeaderToPage();
 
         this.client = new yodaClient();
+
+        this.displaySearchResults();
     }
 
     /**
@@ -92,7 +94,7 @@ class TestString extends BindingClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const testString = new testString();
+    const testString = new TestString();
     testString.mount();
 };
 
