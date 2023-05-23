@@ -45,6 +45,8 @@ class TestString extends BindingClass {
         this.header.addHeaderToPage();
 
         this.client = new yodaClient();
+
+        this.displaySearchResults();
     }
 
     /**

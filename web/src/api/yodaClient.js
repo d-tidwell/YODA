@@ -50,6 +50,7 @@ export default class YodaClient extends BindingClass {
 
             return await this.authenticator.getCurrentUserInfo();
         } catch (error) {
+            console.log(error);
             this.handleError(error, errorCallback)
         }
     }
