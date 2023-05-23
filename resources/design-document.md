@@ -116,6 +116,15 @@ _DictionModel_
 
     returns: boolean on success
 
+    cUrl:
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "patientName": "your_patient_name",
+    "patientAge": your_patient_age
+    }' \
+    https://your-api-endpoint/patient/new
+
 
     endpoint: provider/addPatientToProvider/${patientId}
 
@@ -125,6 +134,9 @@ _DictionModel_
 
     response: boolean if added
 
+    cUrl:
+    curl -X POST https://your-api-endpoint/provider/{providerName}/{patientId}
+
 
     endpoint: /patient/phr/${patientId}/
 
@@ -133,6 +145,15 @@ _DictionModel_
     data: patientId, providerName, date
 
     returns: status of PHR
+
+    cUrl:
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "providerName": "your_provider_name",
+    "date": "yyyy-mm-dd"
+    }' \
+    https://your-api-endpoint/patient/phr/{patientId}
 
 
 ## 6.3 _Get Endpoints_
@@ -147,6 +168,10 @@ _DictionModel_
 
     response: presigned URL of file
 
+    cUrl:
+    curl -X GET \
+    https://api-endpoint/dictation/audio/{filename}?PhrId={PhrId}&date={date}
+
 
 
     endpoint: /patient/PHR/byId/${patientId}
@@ -154,6 +179,9 @@ _DictionModel_
     Retrieves all PHR's for patient by id
 
     returns set of PHR's
+
+    cUrl:
+    curl -X GET https://api-endpoint/patient/byId/{patientId}
 
 
 
@@ -165,14 +193,21 @@ _DictionModel_
 
     returns set of PHR id's
 
+    cUrl:
+    curl -X GET \
+    https://api-endpoint/patient/byDateRange/{patientId}?from=YYYY-MM-DD&to=YYYY-MM-DD
+
     
-    endpoint: /provider/${providerEmail}
+    endpoint: /provider/${providerName}
 
     Retrieve Provider Details
 
     data:
 
     returns all provider details
+
+    cUrl:
+    curl -X GET https://api-endpoint/provider/{providerName}
 
     
     endpoint /patient/{patientId}
@@ -183,6 +218,9 @@ _DictionModel_
 
     returns all patient details
 
+    cUrl:
+    curl -X GET https://api-endpoint/patient/{phrId}
+
 
     endppoint: /patient/phr/single/${phrId}
     
@@ -191,6 +229,9 @@ _DictionModel_
     data:
 
     returns: PHR detail level
+
+    cUrl:
+    curl -X GET https://api-endpoint/patient/phr/single/{phrId}
 
 ## 6.4 _Put Endpoint_
 
@@ -202,20 +243,41 @@ _DictionModel_
     
     returns: boolean success
 
+    cUrl:
+    curl -X PUT \
+        -H "Content-Type: application/json" \
+        -d '{
+        "status": "your_status_value"
+        }' \
+        https://api-endpoint/patient/PHR/update/{phrId}
+
 
     endpoint: /dictate/${phrId}/{phrIdDate}
 
-    Triggers dication flow
+    put request Triggers dication flow
 
     data: pHRId, date
 
     returns: status of job
+
+    cUrl:
+    curl -X PUT \
+    -H "Content-Type: application/json" \
+    }' \
+    https://api-endpoint/dictate/{PhrId}/{PhrDate}/{fileName}/{type}
+
+
 
     endpoint: provider/remove/{patientId}
 
     Removes patient from provider stack
 
     return: boolean, success
+
+    cUrl:
+    curl -X PUT \
+    -H "Content-Type: application/json" \
+    https://api-endpoint/provider/remove/{patientId}/{providerName}
 
 
 # 7. Tables

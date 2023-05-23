@@ -34,7 +34,7 @@ public class UpdateDictationActivity {
     private final String bucketName = "nss-s3-c02-capstone-darek";
     private final String languageCode = "en-US";
     @Inject
-    public UpdateDictationActivity(PatientDAO patientDAO, PHRDAO phrdao, DictationDAO dicDao, ProviderDAO providerDAO) {
+    public UpdateDictationActivity(PHRDAO phrdao, DictationDAO dicDao, ProviderDAO providerDAO) {
         this.dicDao = dicDao;
         this.phrdao = phrdao;
         this.providerDAO = providerDAO;

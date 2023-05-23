@@ -11,16 +11,16 @@ public class GetPHRRangeLambda
         implements RequestHandler<AuthenticatedLambdaRequest<GetPHRRangeRequest>, LambdaResponse> {
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetPHRRangeRequest> input, Context context) {
-        GetPHRRangeRequest unauthenticatedRequest = input.fromBody(GetPHRRangeRequest.class);
         return super.runActivity(
-            () -> input.fromPath(path -> GetPHRRangeRequest.builder()
-                    .withPatientId(path.get("patientId"))
-                    .withFrom(unauthenticatedRequest.getFrom())
-                    .withTo(unauthenticatedRequest.getTo())
-                    .build()),
-            (request, serviceComponent) ->
-                    serviceComponent.provideGetPHRRangeActivity().handleRequest(request)
+                () -> input.fromPathAndQuery((path, query) -> GetPHRRangeRequest.builder()
+                        .withPatientId(path.get("patientId"))
+                        .withFrom(query.get("from"))
+                        .withTo(query.get("to"))
+                        .build()),
+                (request, serviceComponent) ->
+                        serviceComponent.provideGetPHRRangeActivity().handleRequest(request)
         );
     }
+
 }
 
