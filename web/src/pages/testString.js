@@ -29,61 +29,49 @@ class TestString extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'search', 'displaySearchResults'], this);
+        this.bindClassMethods(['mount', 'search', 'displaySearchResults', 'displayProviderDetails'], this);
 
         // Create a enw datastore with an initial "empty" state.
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
         this.header = new Header(this.dataStore);
-        this.dataStore.addChangeListener(this.displaySearchResults);
+
+    }
+
+    async clientLoaded(){
+        const identity = await this.client.getIdentity();
+        this.dataStore.set("providerName",identity.name);
     }
 
     /**
-     * Add the header to the page and load the MusicPlaylistClient.
+     * Add the header to the page and load the YodaClient.
      */
     mount() {
 
         this.header.addHeaderToPage();
 
         this.client = new yodaClient();
-
+        this.clientLoaded();
         this.displaySearchResults();
+        this.displayProviderDetails(this.dataStore.get("name"));
+       
     }
 
     /**
-     * Uses the client to perform the search, 
-     * then updates the datastore with the criteria and results.
-     * @param evt The "event" object representing the user-initiated event that triggered this method.
+     * Remove when done testing!!!!!
      */
-    async search(evt) {
-        // Prevent submitting the from from reloading the page.
-        evt.preventDefault();
-
-        const searchCriteria = document.getElementById('search-criteria').value;
-        const previousSearchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
-
-        // If the user didn't change the search criteria, do nothing
-        if (previousSearchCriteria === searchCriteria) {
-            return;
-        }
-
-        if (searchCriteria) {
-            const results = await this.client.search(searchCriteria);
-
-            this.dataStore.setState({
-                [SEARCH_CRITERIA_KEY]: searchCriteria,
-                [SEARCH_RESULTS_KEY]: results,
-            });
-        } else {
-            this.dataStore.setState(EMPTY_DATASTORE_STATE);
-        }
-    }
-
-    /**
-     * Pulls search results from the datastore and displays them on the html page.
-     */
+   
     displaySearchResults() {
         const tester = this.document.getElementById("testString");
         tester.innerHtml = "test complete";
+    }
+
+     /**
+     * Pulls search results from the datastore and displays them on the html page.
+     */
+    displayProviderDetails(providerName){
+        const response = this.client.getPatientsPending(providerName);
+        const textSpot = document.getElementById("patientsPending");
+        textSpot.innerText = response;
     }
 
 

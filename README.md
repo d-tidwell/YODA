@@ -3,4 +3,4 @@
 
 _Hear you I did. Miss nothing I will._
 
-![artist:Gwenn Seeemel](https://gwennseemel.com/images/2020/2020MaskYoda.jpg)
+![artist:Gwenn Seemel](https://gwennseemel.com/images/2020/2020MaskYoda.jpg)

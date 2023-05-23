@@ -71,7 +71,15 @@ export default class YodaClient extends BindingClass {
 
         return await this.authenticator.getUserToken();
     }
-
+    
+    async getPatientsPending(providerName, errorCallback){
+        try {
+            const response = await this.axiosClient.get(`/provider/${providerName}`);
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+        }
+    }
 //    /**
 //     * Gets the playlist for the given ID.
 //     * @param id Unique identifier for a playlist
