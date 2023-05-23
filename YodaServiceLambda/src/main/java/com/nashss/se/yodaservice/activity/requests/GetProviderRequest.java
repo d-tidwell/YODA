@@ -6,20 +6,20 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = GetProviderRequest.class)
 public class GetProviderRequest {
 
-    private final String providerId;
+    private final String providerName;
 
-    public GetProviderRequest(String providerId) {
-        this.providerId = providerId;
+    public GetProviderRequest(String providerName) {
+        this.providerName = providerName;
     }
 
-    public String getProviderId() {
-        return providerId;
+    public String getproviderName() {
+        return providerName;
     }
 
     @Override
     public String toString() {
         return "GetProviderRequest{" +
-                "providerId='" + providerId + '\'' +
+                "providerName='" + providerName + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder
@@ -27,13 +27,13 @@ public class GetProviderRequest {
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String providerId;
+        private String providerName;
 
-        public Builder withProviderId(String providerId){
-            this.providerId = providerId;
+        public Builder withproviderName(String providerName){
+            this.providerName = providerName;
             return this;
         }
 
-        public GetProviderRequest build(){return new GetProviderRequest(providerId);}
+        public GetProviderRequest build(){return new GetProviderRequest(providerName);}
     }
 }

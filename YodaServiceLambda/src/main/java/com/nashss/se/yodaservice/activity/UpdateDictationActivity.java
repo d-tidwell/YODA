@@ -34,7 +34,7 @@ public class UpdateDictationActivity {
     private final String bucketName = "nss-s3-c02-capstone-darek";
     private final String languageCode = "en-US";
     @Inject
-    public UpdateDictationActivity(PatientDAO patientDAO, PHRDAO phrdao, DictationDAO dicDao, ProviderDAO providerDAO) {
+    public UpdateDictationActivity(PHRDAO phrdao, DictationDAO dicDao, ProviderDAO providerDAO) {
         this.dicDao = dicDao;
         this.phrdao = phrdao;
         this.providerDAO = providerDAO;
@@ -48,10 +48,10 @@ public class UpdateDictationActivity {
         //which dictation test it is there
         Dictation dictation = dicDao.getDictation(request.getFileName(), existingRecord.getDate());
         //create a job name
-        String transcribeJobName = "text/" + existingRecord.getProviderName() +request.getPhrId() +
+        String transcribeJobName = "text/" + existingRecord.getProviderName() + request.getPhrId() +
                 request.getPhrDate();
         //get a URL
-        String audioFileUrl = s3client.getUrl(bucketName,request.getFileName()).toString();
+        String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
         //build a job
         StartMedicalTranscriptionJobRequest jobRequest = StartMedicalTranscriptionJobRequest.builder()
                 .medicalTranscriptionJobName(transcribeJobName)

@@ -13,7 +13,7 @@ public class GetProviderLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetProviderRequest> input, Context context) {
         return super.runActivity(
             () -> input.fromPath(path -> GetProviderRequest.builder()
-                    .withProviderId(path.get("providerId"))
+                    .withProviderName(path.get("providerName"))
                     .build()),
             (request, serviceComponent) ->
                     serviceComponent.provideGetProviderActivity().handleRequest(request)

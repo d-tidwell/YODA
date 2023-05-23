@@ -11,7 +11,6 @@ public class GetPHRLambda
         implements RequestHandler<AuthenticatedLambdaRequest<GetPHRRequest>, LambdaResponse> {
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetPHRRequest> input, Context context) {
-        GetPHRRequest unauthenticatedRequest = input.fromBody(GetPHRRequest.class);
         return super.runActivity(
             () -> input.fromPath(path ->
                             GetPHRRequest.builder()

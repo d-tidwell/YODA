@@ -4,7 +4,6 @@ import com.nashss.se.yodaservice.activity.requests.GetPresigneds3Request;
 import com.nashss.se.yodaservice.activity.results.GetPresigneds3Result;
 import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
-import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.models.PHR;
 import com.nashss.se.yodaservice.enums.PHRStatus;
 
