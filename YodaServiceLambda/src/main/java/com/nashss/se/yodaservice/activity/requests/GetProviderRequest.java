@@ -12,7 +12,7 @@ public class GetProviderRequest {
         this.providerName = providerName;
     }
 
-    public String getproviderName() {
+    public String getProviderName() {
         return providerName;
     }
 
@@ -29,7 +29,7 @@ public class GetProviderRequest {
     public static class Builder {
         private String providerName;
 
-        public Builder withproviderName(String providerName){
+        public Builder withProviderName(String providerName){
             this.providerName = providerName;
             return this;
         }

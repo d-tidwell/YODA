@@ -24,7 +24,7 @@ public class GetProviderActivity {
     }
 
     public GetProviderResult handleRequest(final GetProviderRequest request) {
-        Provider provider = providerDAO.getProvider(request.getProviderId());
+        Provider provider = providerDAO.getProvider(request.getProviderName());
         return GetProviderResult.builder()
                 .withName(provider.getName())
                 .withMedicalSpecialty(provider.getMedicalSpecialty())
