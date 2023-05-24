@@ -11,6 +11,10 @@ public class GetAllPHRResult {
         this.phrId = phrId;
     }
 
+    public List<PHRModel> getPhrId(){
+        return this.phrId;
+    }
+
     @Override
     public String toString() {
         return "GetAllPHRResult{" +

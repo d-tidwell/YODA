@@ -8,6 +8,14 @@ public class GetPatientResult {
         this.age = age;
     }
 
+    public String getName() {
+        return this.name;
+    }
+    
+    public String getAge() {
+        return this.age;
+    }
+
     @Override
     public String toString() {
         return "GetPatientResult{" +
@@ -32,6 +40,5 @@ public class GetPatientResult {
         }
         public GetPatientResult build(){return new GetPatientResult(name, age);}
     }
-
-
 }
+

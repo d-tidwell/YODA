@@ -16,6 +16,7 @@ public class Provider {
     private String name;
     private String medicalSpecialty;
     private List<String> pendingPatients;
+    
     @DynamoDBHashKey(attributeName = "providerId")
     public String getProviderId() {
         return providerId;

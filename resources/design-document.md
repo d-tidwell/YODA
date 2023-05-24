@@ -181,7 +181,7 @@ _DictionModel_
     returns set of PHR's
 
     cUrl:
-    curl -X GET https://api-endpoint/patient/byId/{patientId}
+    curl -X GET  http://127.0.0.1:3000/patient/byId/{patientId}
 
 
 

@@ -8,7 +8,7 @@ Parameters:
   CognitoDomain:
     Type: String
     Description: A name for the cognito Domain
-    Default: "yoda-service-cognito-domain"
+    Default: "yoda-service-login-domain"
 
   S3Bucket:
     Type: String
@@ -484,10 +484,10 @@ Resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: "id"
+          - AttributeName: "patientId"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "id"
+          - AttributeName: "patientId"
             KeyType: "HASH"
         BillingMode: "PAY_PER_REQUEST"
         TableName: "patients"
@@ -499,10 +499,10 @@ Resources:
           - AttributeName: "name"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "id"
+          - AttributeName: "name"
             KeyType: "HASH"
         BillingMode: "PAY_PER_REQUEST"
-        TableName: "providerss"
+        TableName: "providers"
 
     PhrsTable:
       Type: AWS::DynamoDB::Table

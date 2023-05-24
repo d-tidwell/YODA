@@ -3,7 +3,7 @@
     {
       "PutRequest": {
         "Item": {
-          "id": { "S": "TEST_PATIENT1" },
+          "patientId": { "S": "TEST_PATIENT1" },
           "name": { "S": "Sharon" },
           "age": { "S": "85" }
         }
@@ -12,7 +12,7 @@
     {
       "PutRequest": {
         "Item": {
-          "id": { "S": "TEST_PATIENT2" },
+          "patientId": { "S": "TEST_PATIENT2" },
           "name": { "S": "Rob" },
           "age": { "S": "95" }
         }
@@ -21,7 +21,7 @@
     {
       "PutRequest": {
         "Item": {
-          "id": { "S": "TEST_PATIENT3" },
+          "patientId": { "S": "TEST_PATIENT3" },
           "name": { "S": "Liza" },
           "age": { "S": "25" }
         }
@@ -33,7 +33,7 @@
       "PutRequest": {
         "Item": {
           "providerId": { "S": "conversations.and.L@gmail.com" },
-          "providerName": { "S": "Dr.Darek" },
+          "name": { "S": "Dr.Darek" },
           "medicalSpecialty": { "S": "PRIMARYCARE" },
           "pendingPatients": { "SS": ["TEST_PATIENT1", "TEST_PATIENT2","TEST_PATIENT3"] }
         }
@@ -43,7 +43,7 @@
       "PutRequest": {
         "Item": {
           "providerId": { "S": "vavrichyna.lize@gmail.com" },
-          "providerName": { "S": "Dr.Yelyzaveta" },
+          "name": { "S": "Dr.Yelyzaveta" },
           "medicalSpecialty": { "S": "PRIMARYCARE" },
           "pendingPatients": { "SS": ["TEST_PATIENT1", "TEST_PATIENT2", "TESTPATIENT3"] }
         }

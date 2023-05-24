@@ -1,6 +1,6 @@
-import yodaClient from '../api/dannaClient';
+import yodaClient from '../api/yodaClient';
 import BindingClass from "../util/bindingClass";
-import Header from '../components/dannaHeader';
+import Header from '../components/header';
 import DataStore from "../util/DataStore";
 
 class LandingPage extends BindingClass {
@@ -10,7 +10,7 @@ class LandingPage extends BindingClass {
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         // console.log("viewprofile constructor");
-        this.client = new dannaClient();
+        this.client = new yodaClient();
         this.clientLoaded();
     }
 

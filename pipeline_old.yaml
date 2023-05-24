@@ -10,7 +10,7 @@ env:
 
   # STUDENTS: Set these environment variables
   API_BASE_URL: https://0x45z9vty3.execute-api.us-east-2.amazonaws.com/Prod/
-  COGNITO_DOMAIN: change-this-music-playlist--change-this.auth.us-east-2.amazoncognito.com
+  COGNITO_DOMAIN: yoda-service-login-domain.auth.us-east-2.amazoncognito.com
   COGNITO_REDIRECT_SIGNIN: https://dkb01tgsl4xmu.cloudfront.net
   COGNITO_REDIRECT_SIGNOUT: https://dkb01tgsl4xmu.cloudfront.net
 

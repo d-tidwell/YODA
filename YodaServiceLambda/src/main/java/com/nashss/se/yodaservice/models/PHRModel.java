@@ -16,6 +16,7 @@ public class PHRModel {
         this.date = date;
         this.status = status;
     }
+    public PHRModel(){}
 
     public String getPhrId() {
         return phrId;
@@ -78,7 +79,6 @@ public class PHRModel {
         private String providerName;
         private String date;
         private String status;
-        private String dictationId;
 
         public Builder phrId(String phrId) {
             this.phrId = phrId;
