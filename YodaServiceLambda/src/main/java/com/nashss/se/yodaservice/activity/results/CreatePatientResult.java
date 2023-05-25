@@ -1,10 +1,15 @@
 package com.nashss.se.yodaservice.activity.results;
 
 public class CreatePatientResult {
+
     private final boolean success;
 
     public CreatePatientResult(boolean success) {
         this.success = success;
+    }
+
+    public String getSuccess() {
+        return String.valueOf(success);
     }
 
     @Override
