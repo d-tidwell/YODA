@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Deque;
+import java.util.List;
 import javax.inject.Inject;
 
 
@@ -31,8 +32,8 @@ public class AddPatientToProviderActivity {
     public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request) {
         patientDAO.getPatient(request.getPatientId());
         Provider provider = providerDAO.getProvider(request.getProviderName());
-        Deque<String> q = provider.getPendingPatients();
-        q.addLast(request.getPatientId());
+        List<String> q = provider.getPendingPatients();
+        q.add(request.getPatientId());
         provider.setPendingPatients(q);
         boolean success = providerDAO.updatePending(provider);
         return AddPatientToProviderResult.builder()

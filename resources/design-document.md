@@ -123,7 +123,7 @@ _DictionModel_
     "patientName": "your_patient_name",
     "patientAge": your_patient_age
     }' \
-    https://your-api-endpoint/patient/new
+    http://127.0.0.1:3000/patient/new
 
 
     endpoint: provider/addPatientToProvider/${patientId}
@@ -135,7 +135,7 @@ _DictionModel_
     response: boolean if added
 
     cUrl:
-    curl -X POST https://your-api-endpoint/provider/{providerName}/{patientId}
+    curl -X POST http://127.0.0.1:3000/provider/{providerName}/{patientId}
 
 
     endpoint: /patient/phr/${patientId}/
@@ -153,7 +153,7 @@ _DictionModel_
     "providerName": "your_provider_name",
     "date": "yyyy-mm-dd"
     }' \
-    https://your-api-endpoint/patient/phr/{patientId}
+    http://127.0.0.1:3000/patient/phr/{patientId}
 
 
 ## 6.3 _Get Endpoints_
@@ -170,7 +170,7 @@ _DictionModel_
 
     cUrl:
     curl -X GET \
-    https://api-endpoint/dictation/audio/{filename}?PhrId={PhrId}&date={date}
+    http://127.0.0.1:3000/dictation/audio/{filename}?PhrId={PhrId}&date={date}
 
 
 
