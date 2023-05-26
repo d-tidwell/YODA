@@ -3,6 +3,7 @@ package com.nashss.se.yodaservice.activity.results;
 import java.util.List;
 
 public class GetProviderResult {
+
     private final String  name;
     private final String medicalSpecialty;
     private final List<String> pendingPatients;
@@ -12,6 +13,18 @@ public class GetProviderResult {
         this.medicalSpecialty = medicalSpecialty;
         this.pendingPatients = pendingPatients;
     }
+    public String getName() {
+        return name;
+    }
+
+    public String getMedicalSpecialty() {
+        return medicalSpecialty;
+    }
+
+    public List<String> getPendingPatients() {
+        return pendingPatients;
+    }
+
 
     @Override
     public String toString() {
@@ -23,7 +36,7 @@ public class GetProviderResult {
     }
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {return new Builder();}
-    
+
     public static class Builder {
         private  String  name;
         private  String medicalSpecialty;
