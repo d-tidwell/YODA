@@ -7,6 +7,10 @@ public class AddPatientToProviderResult {
         this.success = success;
     }
 
+    public boolean getSuccess() {
+        return success;
+    }
+
     @Override
     public String toString() {
         return "AddPatientToProvideResult{" +
