@@ -7,6 +7,25 @@ public class GetPHRResult {
     private final String status;
     private final String dictationId;
 
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getDictationId() {
+        return dictationId;
+    }
 
     public GetPHRResult(String patientId, String providerName, String date, String status, String dictationId) {
         this.patientId = patientId;
