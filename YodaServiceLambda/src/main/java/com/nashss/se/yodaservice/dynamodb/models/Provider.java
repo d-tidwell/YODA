@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@DynamoDBTable(tableName = "providersZ")
+@DynamoDBTable(tableName = "providers")
 public class Provider {
     private String providerId;
     private String name;
