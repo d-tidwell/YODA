@@ -2,6 +2,7 @@ package com.nashss.se.yodaservice.dependency;
 
 import com.nashss.se.yodaservice.activity.*;
 
+import com.nashss.se.yodaservice.dynamodb.AmazonS3AndTranscribeProviders;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -36,4 +37,5 @@ public interface ServiceComponent {
     GetPHRActivity provideGetPHRActivity();
 
     RemovePatientFromProviderActivity provideRemovePatientFromProviderActivity();
+
 }

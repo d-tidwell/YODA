@@ -1,4 +1,4 @@
-package com.nashss.se.yodaservice;
+package com.nashss.se.yodaservice.activity;
 
 import com.nashss.se.yodaservice.activity.GetPHRActivity;
 import com.nashss.se.yodaservice.activity.GetProviderActivity;

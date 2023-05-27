@@ -1,4 +1,4 @@
-package com.nashss.se.yodaservice;
+package com.nashss.se.yodaservice.activity;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
