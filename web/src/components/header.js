@@ -35,7 +35,7 @@ export default class Header extends BindingClass {
         const homeButton = document.createElement('a');
         homeButton.classList.add('header_home');
         homeButton.href = 'desktop.html';
-        homeButton.innerText = 'Desktop';
+        homeButton.innerText = 'Y.O.D.A. MD';
 
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');

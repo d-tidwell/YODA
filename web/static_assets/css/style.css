@@ -1,8 +1,8 @@
 :root {
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
-    --primary-color: #5D5E5E;
+    --primary-color: #a0f7f79f;
     --secondary-color: #ffffff;
-    --tertiary-color: #F5881F;
+    --tertiary-color: #190493;
     --error-color: #EE3A23;
 }
 
@@ -26,6 +26,7 @@
 .button {
   background-color: var(--tertiary-color);
   border: none;
+  border-radius: 8px;
   color: var(--secondary-color);
   padding: 6px 8px 4px 8px;
   text-align: center;
@@ -76,62 +77,3 @@
     flex-direction: column;
 }
 
-.tags {
-    display: flex;
-    flex-direction: row;
-}
-
-.tag {
-    font-size: 12px;
-    margin: 0 10px;
-    padding: 4px 8px;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    position: relative;
-    border-radius: 16px;
-}
-
-.song {
-    padding: 2px;
-    display: flex;
-}
-
-.song .title {
-    flex: 20%;
-}
-
-.song .album {
-    flex: 80%;
-}
-
-/*
-Flexbox on a lists removes the numbers. We use a counter here to add them back.
-https://stackoverflow.com/a/34316093
-https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters
-*/
-.song:before {
-    counter-increment: section;
-    content: counter(section) ".";
-    position: absolute;
-    margin-left: -40px;
-}
-
-.hidden {
-    display: none;
-}
-
-/* table styles */ 
-
-th, td {
-    padding: 15px;
-    text-align: left;
-}
-
-th {
-    border-bottom: 1px solid var(--primary-color);
-}
-
-a {
-    color: var(--tertiary-color);
-    text-decoration: none;
-}
