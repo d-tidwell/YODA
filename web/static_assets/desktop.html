@@ -1,18 +1,46 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <script type="text/javascript" src="assets/testString.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="assets/testString.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+  <title>Patient and PHR Lists</title>
 </head>
-
-<body class="background">
-    <header class="header" id="header"></header>
-    <div class="card">
-        <h2>Hello World</h2>
-        <p id="testString"></p>
-
+<body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-6">
+          <h3 class="text-center">Patients</h3>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Patient 1
+              <button class="btn btn-primary">Visit</button>
+              <button class="btn btn-primary">Seen</button>
+            </li>
+            <!-- Repeat the li for each patient -->
+          </ul>
+        </div>
+        <div class="col-xs-6">
+          <h3 class="text-center">PHRs</h3>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              PHR 1
+                <button class="btn btn-primary">Sign</button>
+                <button class="btn btn-secondary">Edit</button>
+            </li>
+            <!-- Repeat the li for each PHR -->
+          </ul>
+        </div>
+      </div>
     </div>
-</body>
 
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xM6B5z6W5" crossorigin="anonymous"></script>
+
+</body>
 </html>

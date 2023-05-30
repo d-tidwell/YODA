@@ -11,17 +11,17 @@ public class CreatePatientLambda
         implements RequestHandler<AuthenticatedLambdaRequest<CreatePatientRequest>, LambdaResponse> {
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<CreatePatientRequest> input, Context context) {
+        CreatePatientRequest unauthenticatedRequest = input.fromBody(CreatePatientRequest.class);
         return super.runActivity(
-            () -> {
-                    CreatePatientRequest unauthenticatedRequest = input.fromBody(CreatePatientRequest.class);
-                    return input.fromUserClaims(claims ->
-                            CreatePatientRequest.builder()
-                                    .withPatientName(unauthenticatedRequest.getPatientName())
-                                    .withPatientAge(unauthenticatedRequest.getPatientAge())
-                                    .build());
-            },
-            (request, serviceComponent) ->
-                    serviceComponent.provideCreatePatientActivity().handleRequest(request)
+                () -> {
+                    CreatePatientRequest authenticatedRequest = CreatePatientRequest.builder()
+                            .withPatientName(unauthenticatedRequest.getPatientName())
+                            .withPatientAge(unauthenticatedRequest.getPatientAge())
+                            .build();
+                    return authenticatedRequest;
+                },
+                (request, serviceComponent) ->
+                        serviceComponent.provideCreatePatientActivity().handleRequest(request)
         );
     }
 }

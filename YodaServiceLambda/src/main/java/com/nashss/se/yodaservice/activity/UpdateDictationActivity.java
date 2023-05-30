@@ -1,20 +1,13 @@
 package com.nashss.se.yodaservice.activity;
 
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.nashss.se.yodaservice.enums.PHRStatus;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.transcribe.TranscribeClient;
-import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobRequest;
 import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobResponse;
-import software.amazon.awssdk.services.transcribe.model.Media;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.activity.requests.UpdateDictationRequest;
 import com.nashss.se.yodaservice.activity.results.UpdateDictationResult;
 import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
-import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Dictation;
 import com.nashss.se.yodaservice.dynamodb.models.PHR;
 
@@ -30,16 +23,13 @@ public class UpdateDictationActivity {
     private final DictationDAO dicDao;
     private final ProviderDAO providerDAO;
     private final AmazonS3 s3client;
-    private final TranscribeClient transcribeClient;
-    private final String bucketName = "nss-s3-c02-capstone-darek";
-    private final String languageCode = "en-US";
+
     @Inject
-    public UpdateDictationActivity(PHRDAO phrdao, DictationDAO dicDao, ProviderDAO providerDAO) {
+    public UpdateDictationActivity(PHRDAO phrdao, DictationDAO dicDao, ProviderDAO providerDAO,  AmazonS3 s3client) {
         this.dicDao = dicDao;
         this.phrdao = phrdao;
         this.providerDAO = providerDAO;
-        this.s3client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
-        this.transcribeClient = TranscribeClient.builder().region(Region.US_EAST_2).build();
+        this.s3client = s3client;
     }
 
     public UpdateDictationResult handleRequest(final UpdateDictationRequest request) {
@@ -51,17 +41,14 @@ public class UpdateDictationActivity {
         String transcribeJobName = "text/" + existingRecord.getProviderName() + request.getPhrId() +
                 request.getPhrDate();
         //get a URL
+        String bucketName = "nss-s3-c02-capstone-darek";
         String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
         //build a job
-        StartMedicalTranscriptionJobRequest jobRequest = StartMedicalTranscriptionJobRequest.builder()
-                .medicalTranscriptionJobName(transcribeJobName)
-                .specialty(providerDAO.getProvider(existingRecord.getProviderName()).getMedicalSpecialty())
-                .media(Media.builder().mediaFileUri(audioFileUrl).build())
-                .languageCode(languageCode)
-                .outputBucketName(bucketName)
-                .build();
+        String languageCode = "en-US";
 
-        StartMedicalTranscriptionJobResponse response = transcribeClient.startMedicalTranscriptionJob(jobRequest);
+        StartMedicalTranscriptionJobResponse response = dicDao.startTranscribe(transcribeJobName, audioFileUrl,
+                bucketName, languageCode,
+                providerDAO.getProvider(existingRecord.getProviderName()).getMedicalSpecialty());
         //indicate it is transcribing
         existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
         //save the phr change

@@ -19,6 +19,10 @@ public class RemovePatientFromProviderResult {
         return new RemovePatientFromProviderResult.Builder();
     }
 
+    public boolean getSuccess() {
+        return success;
+    }
+
     public static class Builder {
         private boolean success;
 

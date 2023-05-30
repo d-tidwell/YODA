@@ -28,7 +28,6 @@ class LandingPage extends BindingClass {
 
     async login(){
         await this.client.login();
-
     }
 
 

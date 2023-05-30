@@ -7,6 +7,10 @@ public class UpdatePHRResult {
         this.success = success;
     }
 
+    public boolean withSuccess() {
+        return success;
+    }
+
     @Override
     public String toString() {
         return "UpdatePHRResult{" +

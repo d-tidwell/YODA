@@ -4,9 +4,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-import java.util.ArrayDeque;
+
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 
@@ -16,8 +15,12 @@ public class Provider {
     private String name;
     private String medicalSpecialty;
     private List<String> pendingPatients;
-    
-    @DynamoDBHashKey(attributeName = "providerId")
+
+    public Provider() {
+        this.pendingPatients = new ArrayList<>();  // Initialize pendingPatients as an empty ArrayList
+    }
+
+    @DynamoDBAttribute(attributeName = "providerId")
     public String getProviderId() {
         return providerId;
     }
@@ -25,7 +28,7 @@ public class Provider {
     public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
-    @DynamoDBAttribute(attributeName = "name")
+    @DynamoDBHashKey(attributeName = "name")
     public String getName() {
         return name;
     }
@@ -42,11 +45,11 @@ public class Provider {
         this.medicalSpecialty = medicalSpecialty;
     }
     @DynamoDBAttribute(attributeName = "pendingPatients")
-    public Deque<String> getPendingPatients() {
-        return new ArrayDeque<>(pendingPatients);
+    public List<String> getPendingPatients() {
+        return pendingPatients;
     }
 
-    public void setPendingPatients(Deque<String> pendingPatients) {
-        this.pendingPatients = new ArrayList<String>(pendingPatients);
+    public void setPendingPatients(List<String> pendingPatients) {
+        this.pendingPatients = pendingPatients;
     }
 }

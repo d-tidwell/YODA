@@ -2,13 +2,13 @@ package com.nashss.se.yodaservice.activity.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-@JsonDeserialize(builder = CreatePatientRequest.class)
+@JsonDeserialize(builder = CreatePatientRequest.Builder.class)
 public class CreatePatientRequest {
 
     private final String patientName;
     private final String patientAge;
 
-    public CreatePatientRequest(String patientName, String patientAge) {
+    private CreatePatientRequest(String patientName, String patientAge) {
         this.patientName = patientName;
         this.patientAge = patientAge;
     }
@@ -29,11 +29,9 @@ public class CreatePatientRequest {
                 '}';
     }
 
-    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
-
 
     @JsonPOJOBuilder
     public static class Builder {
@@ -53,7 +51,8 @@ public class CreatePatientRequest {
         public CreatePatientRequest build() {
             return new CreatePatientRequest(patientName, patientAge);
         }
-
     }
 }
+
+
 

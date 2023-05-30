@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patient Health Records</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-4">
+    <!-- Patient Details Section -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <img class="img-fluid" src="image_source.jpg" alt="Patient Image">
+          </div>
+          <div class="col-sm-9">
+            <h2>Patient's Name: John Doe</h2>
+            <p>Age: 45</p>
+            <p>Address: 123 Main Street, Anytown, Anystate 12345</p>
+            <p>Phone number: (123) 456-7890</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHR Details Section -->
+    <div class="accordion" id="phrAccordion">
+      <!-- Existing PHR sections go here -->
+    </div>
+
+    <!-- Control Buttons Section -->
+    <div class="mt-4">
+      <button type="button" id="createPhr" class="btn btn-primary">Create PHR</button>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.getElementById('createPhr').addEventListener('click', function() {
+      // Use a timestamp for a unique ID
+      var id = new Date().getTime();
+
+      // Template for new PHR form
+      var template = `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="phrHeading${id}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#phrCollapse${id}" aria-expanded="false" aria-controls="phrCollapse${id}">
+              New PHR
+            </button>
+          </h2>
+          <div id="phrCollapse${id}" class="accordion-collapse collapse" aria-labelledby="phrHeading${id}" data-bs-parent="#phrAccordion">
+            <div class="accordion-body">
+              <form>
+                <div class="mb-3">
+                  <label for="heartRate${id}" class="form-label">Heart rate</label>
+                  <input type="text" class="form-control" id="heartRate${id}">
+                  <label for="blood${id}" class="form-label">Blood Pressure</label>
+                  <input type="text" class="form-control" id="blood${id}">
+                  <label for="temp${id}" class="form-label">Temperature</label>
+                  <input type="text" class="form-control" id="temp${id}">
+                  <label for="weight${id}" class="form-label">Weight</label>
+                  <input type="text" class="form-control" id="weight${id}">
+                  <label for="height${id}" class="form-label">Height</label>
+                  <input type="text" class="form-control" id="height${id}">
+                </div>
+                <!-- More form fields go here -->
+                <div class="mb-3">
+                  <label for="patientNotes${id}" class="form-label">Patient Notes</label>
+                  <textarea class="form-control" id="patientNotes${id}" rows="3"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary">Record</button>
+                <button type="button" class="btn btn-danger">Stop</button>
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Add new PHR form to the accordion
+      document.getElementById('phrAccordion').innerHTML += template;
+    });
+  </script>
+</body>
+</html>

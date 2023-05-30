@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PHR Editor</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <h2 class="text-center mb-4">Edit PHR</h2>
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label for="heartRate${id}" class="form-label">Heart rate</label>
+              <input type="text" class="form-control" id="heartRate${id}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="blood${id}" class="form-label">Blood Pressure</label>
+              <input type="text" class="form-control" id="blood${id}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="temp${id}" class="form-label">Temperature</label>
+              <input type="text" class="form-control" id="temp${id}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="weight${id}" class="form-label">Weight</label>
+              <input type="text" class="form-control" id="weight${id}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="height${id}" class="form-label">Height</label>
+              <input type="text" class="form-control" id="height${id}">
+            </div>
+            <!-- More form fields go here -->
+          </div>
+          <div class="mb-3">
+            <label for="patientNotes${id}" class="form-label">Patient Notes</label>
+            <textarea class="form-control" id="patientNotes${id}" rows="3"></textarea>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

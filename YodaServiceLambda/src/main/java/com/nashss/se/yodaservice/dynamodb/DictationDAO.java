@@ -8,6 +8,10 @@ import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.amazon.awssdk.services.transcribe.TranscribeClient;
+import software.amazon.awssdk.services.transcribe.model.Media;
+import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobRequest;
+import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobResponse;
 
 import java.util.Objects;
 import javax.inject.Inject;
@@ -15,10 +19,11 @@ import javax.inject.Inject;
 public class DictationDAO {
     private final Logger log = LogManager.getLogger();
     private final DynamoDBMapper dynamoDbMapper;
-
+    private final TranscribeClient transcribeClient;
     @Inject
-    public DictationDAO(DynamoDBMapper dynamoDbMapper) {
+    public DictationDAO(DynamoDBMapper dynamoDbMapper, TranscribeClient transcribeClient) {
         this.dynamoDbMapper = dynamoDbMapper;
+        this.transcribeClient = transcribeClient;
     }
 
     public Dictation getDictation(String dictationId, String date) {
@@ -44,6 +49,20 @@ public class DictationDAO {
             log.error(String.format("Create Dictation Error %s, %s", newDic.toString(), e));
         }
         return false;
+    }
+
+    public StartMedicalTranscriptionJobResponse startTranscribe(String transcribeJobName, String audioFileUrl,
+                                                                String bucketName, String languageCode,
+                                                                String medicalSpecialty){
+        StartMedicalTranscriptionJobRequest jobRequest = StartMedicalTranscriptionJobRequest.builder()
+                .medicalTranscriptionJobName(transcribeJobName)
+                .specialty(medicalSpecialty)
+                .media(Media.builder().mediaFileUri(audioFileUrl).build())
+                .languageCode(languageCode)
+                .outputBucketName(bucketName)
+                .build();
+        StartMedicalTranscriptionJobResponse response = transcribeClient.startMedicalTranscriptionJob(jobRequest);
+        return response;
     }
     public boolean afterTranscriptionUpdate(Dictation dic){
         try {

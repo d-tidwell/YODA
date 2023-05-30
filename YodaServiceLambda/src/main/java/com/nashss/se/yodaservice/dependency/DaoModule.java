@@ -1,5 +1,7 @@
 package com.nashss.se.yodaservice.dependency;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.nashss.se.yodaservice.dynamodb.AmazonS3AndTranscribeProviders;
 import com.nashss.se.yodaservice.dynamodb.DynamoDbClientProvider;
 
 import com.amazonaws.regions.Regions;
@@ -7,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import dagger.Module;
 import dagger.Provides;
+import software.amazon.awssdk.services.transcribe.TranscribeClient;
 
 import javax.inject.Singleton;
 
@@ -24,6 +27,18 @@ public class DaoModule {
     @Provides
     public DynamoDBMapper provideDynamoDBMapper() {
         return new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_EAST_2));
+    }
+
+    @Provides
+    @Singleton
+    public AmazonS3 provideAmazonS3Client() {
+        return AmazonS3AndTranscribeProviders.getAmazonS3Client();
+    }
+
+    @Provides
+    @Singleton
+    public TranscribeClient provideTranscribeClient() {
+        return AmazonS3AndTranscribeProviders.getTranscribeClient();
     }
 }
 

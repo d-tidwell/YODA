@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.util.Deque;
+import java.util.List;
 
 public class RemovePatientFromProviderActivity {
 
@@ -29,7 +30,7 @@ public class RemovePatientFromProviderActivity {
     public RemovePatientFromProviderResult handleRequest(final RemovePatientFromProviderRequest request) {
         patientDAO.getPatient(request.getPatientId());
         Provider provider = providerDAO.getProvider(request.getProviderName());
-        Deque<String> q = provider.getPendingPatients();
+        List<String> q = provider.getPendingPatients();
         q.remove(request.getPatientId());
         provider.setPendingPatients(q);
         boolean success = providerDAO.updatePending(provider);

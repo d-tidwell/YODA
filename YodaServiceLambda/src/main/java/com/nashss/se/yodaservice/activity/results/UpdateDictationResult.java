@@ -16,6 +16,10 @@ public class UpdateDictationResult {
     //CHECKSTYLE:OFF:Builder
     public static Builder builder(){return new Builder();}
 
+    public String getStatus() {
+        return status;
+    }
+
     public static class Builder {
         private String status;
 
