@@ -82,8 +82,7 @@ class TestString extends BindingClass {
      * Pulls search results from the datastore and displays them on the html page.
      */
     displaySearchResults() {
-        const tester = this.document.getElementById("testString");
-        tester.innerHtml = "test complete";
+
     }
 
 

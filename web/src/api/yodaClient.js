@@ -72,6 +72,10 @@ export default class YodaClient extends BindingClass {
         return await this.authenticator.getUserToken();
     }
 
+    async isLoggedIn(){
+        return this.authenticator.isUserLoggedIn();
+    }
+    
 //    /**
 //     * Gets the playlist for the given ID.
 //     * @param id Unique identifier for a playlist

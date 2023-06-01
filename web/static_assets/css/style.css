@@ -2,7 +2,7 @@
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
     --primary-color: #a0f7f79f;
     --secondary-color: #ffffff;
-    --tertiary-color: #190493;
+    --tertiary-color: #2404da;
     --error-color: #EE3A23;
 }
 
@@ -28,7 +28,7 @@
   border: none;
   border-radius: 8px;
   color: var(--secondary-color);
-  padding: 6px 8px 4px 8px;
+  padding: 6px 6px 10px 6px;
   text-align: center;
   font-weight: bold;
   text-decoration: none;
