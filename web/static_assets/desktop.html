@@ -66,16 +66,7 @@
         <div class="row">
 
             <h3 class="text-center">Patients</h3>
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Patient 1
-                <div>
-                  <button class="btn btn-primary">Add</button>
-                  <button class="btn btn-primary">Edit</button>
-                </div>
-              </li>
-              <!-- Repeat the li for each patient -->
-            </ul>
+      
 
             <button class="btn btn-primary my-3" type="button" data-bs-toggle="collapse" data-bs-target="#createPatientForm" aria-expanded="false" aria-controls="createPatientForm">
               Create Patient
@@ -107,63 +98,73 @@
                         <input type="file" class="form-control" id="patientImage" accept="image/*">
                       </div>
                       <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="createPatientSubmit">Submit</button>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
             </div>
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Patient 1
+                <div>
+                  <button class="btn btn-primary">Add</button>
+                  <button class="btn btn-primary">Edit</button>
+                </div>
+              </li>
+              <!-- Repeat the li for each patient -->
+            </ul>
         </div>
       </div>
     </div>
 <!--PATIENTS END-->
 
-      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
-                <!--PHRs BEGIN-->
-        <div class="container py-5">
-          <div class="row justify-content-center">
-            <div class="col-10">
-              <h3 class="text-center">Personal Health Records</h3>
-              <form class="my-3">
-                <div class="mb-3">
-                  <label for="phrId" class="form-label">PHR ID</label>
-                  <input type="text" class="form-control" id="phrId">
-                </div>
-                <div class="mb-3">
-                  <label for="phrDate" class="form-label" >Date</label>
-                  <input type="text" class="form-control" id="phrDate" placeholder="YYYY-MM-DD">
-                </div>
-                <div class="mb-3">
-                  <label for="phrDateRange" class="form-label">Date Range</label>
-                  <input type="text" class="form-control" id="phrDateRange" placeholder="YYYY-MM-DD to YYYY-MM-DD">
-                </div>
-                <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-              </form>
-              
-              <!--PHR items-->
-              <div class="accordion" id="phrAccordion">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                      PHR 1
-                    </button>
-                  </h2>
-                  <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#phrAccordion">
-                    <div class="accordion-body">
-                      <!-- Insert PHR details here -->
-                    </div>
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+              <!--PHRs BEGIN-->
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <h3 class="text-center">Personal Health Records</h3>
+            <form class="my-3">
+              <div class="mb-3">
+                <label for="phrId" class="form-label">PHR ID</label>
+                <input type="text" class="form-control" id="phrId">
+              </div>
+              <div class="mb-3">
+                <label for="phrDate" class="form-label" >Date</label>
+                <input type="text" class="form-control" id="phrDate" placeholder="YYYY-MM-DD">
+              </div>
+              <div class="mb-3">
+                <label for="phrDateRange" class="form-label">Date Range</label>
+                <input type="text" class="form-control" id="phrDateRange" placeholder="YYYY-MM-DD to YYYY-MM-DD">
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary" id="submitPHRSearch">Search</button>
+              </div>
+            </form>
+            
+            <!--PHR items-->
+            <div class="accordion" id="phrAccordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    PHR 1
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#phrAccordion">
+                  <div class="accordion-body">
+                    <!-- Insert PHR details here -->
                   </div>
                 </div>
-                <!-- Repeat the accordion-item for each PHR -->
               </div>
-
+              <!-- Repeat the accordion-item for each PHR -->
             </div>
+
           </div>
         </div>
-        <!--PHRs END-->
+      </div>
+<!--PHRs END-->
 
       </div>
     </div>

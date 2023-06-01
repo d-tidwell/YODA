@@ -8,8 +8,7 @@ class LandingPage extends BindingClass {
         super();
         this.bindClassMethods(['clientLoaded', 'mount', 'login'], this);
         this.dataStore = new DataStore();
-        this.header = new Header(this.dataStore);
-        // console.log("viewprofile constructor");
+        this.header = new Header(this.dataStore);;
         this.client = new yodaClient();
         this.clientLoaded();
     }

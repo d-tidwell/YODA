@@ -23,7 +23,7 @@ const EMPTY_DATASTORE_STATE = {
 
 
 /**
- * Logic needed for the view playlist page of the website.
+ * Logic needed for the view pages of the website.
  */
 class TestString extends BindingClass {
     constructor() {
