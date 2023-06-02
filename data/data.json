@@ -1,5 +1,5 @@
 {
-  "patientsZ": [
+  "patients_": [
     {
       "PutRequest": {
         "Item": {
@@ -28,7 +28,7 @@
       }
     }
   ],
-  "providersZ": [
+  "providers_": [
     {
       "PutRequest": {
         "Item": {
@@ -60,7 +60,7 @@
       }
     }
   ],
-  "dictationsZ": [
+  "dictations_": [
     {
       "PutRequest": {
         "Item": {
@@ -110,7 +110,7 @@
       }
     }
   ],
-  "phrsZ": [
+  "phrs_": [
     {
       "PutRequest": {
         "Item": {
