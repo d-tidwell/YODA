@@ -10,6 +10,10 @@ public class GetPHRRangeResult {
     public GetPHRRangeResult(List<PHRModel> phrId) {
         this.phrId = phrId;
     }
+    
+    public List<PHRModel> getPhrId(){
+        return phrId;
+    }
 
     @Override
     public String toString() {
