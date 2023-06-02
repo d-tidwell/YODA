@@ -76,7 +76,7 @@ class Visit extends BindingClass {
       navigator.mediaDevices.getUserMedia({ video: false, audio: true })
         .then((stream) => {
           this.audioElement.srcObject = stream;
-          if (MediaRecorder.isTypeSupported('audio/mpeg')) {
+          if (MediaRecorder.isTypeSupported('audio/ogg')) {
             this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/ogg; codecs=opus' });
           } else {
             // Fall back to default format if MPEG is not supported
@@ -102,7 +102,7 @@ class Visit extends BindingClass {
         this.playButton.disabled = false;
     
         setTimeout(() => {
-        const audioBlob = new Blob(this.chunks, { type: "audio/mpeg" });
+        const audioBlob = new Blob(this.chunks, { type: "audio/ogg" });
         const audioURL = window.URL.createObjectURL(audioBlob);
         this.recordedAudio = new Audio(audioURL);
         this.chunks = [];

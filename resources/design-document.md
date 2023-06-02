@@ -195,7 +195,7 @@ _DictionModel_
 
     cUrl:
     curl -X GET \
-    https://api-endpoint/patient/byDateRange/{patientId}?from=YYYY-MM-DD&to=YYYY-MM-DD
+    http://127.0.0.1:3000/patient/byDateRange/{patientId}?from=YYYY-MM-DD&to=YYYY-MM-DD
 
     
     endpoint: /provider/${providerName}
@@ -207,7 +207,7 @@ _DictionModel_
     returns all provider details
 
     cUrl:
-    curl -X GET https://api-endpoint/provider/{providerName}
+    curl -X GET http://127.0.0.1:3000/provider/{providerName}
 
     
     endpoint /patient/{patientId}
@@ -219,7 +219,7 @@ _DictionModel_
     returns all patient details
 
     cUrl:
-    curl -X GET https://api-endpoint/patient/{phrId}
+    curl -X GET http://127.0.0.1:3000/patient/{phrId}
 
 
     endppoint: /patient/phr/single/${phrId}
@@ -231,7 +231,7 @@ _DictionModel_
     returns: PHR detail level
 
     cUrl:
-    curl -X GET https://api-endpoint/patient/phr/single/{phrId}
+    curl -X GET http://127.0.0.1:3000/patient/phr/single/{phrId}
 
 ## 6.4 _Put Endpoint_
 
@@ -249,7 +249,7 @@ _DictionModel_
         -d '{
         "status": "your_status_value"
         }' \
-        https://api-endpoint/patient/PHR/update/{phrId}
+        http://127.0.0.1:3000/patient/PHR/update/{phrId}
 
 
     endpoint: /dictate/${phrId}/{phrIdDate}
@@ -264,7 +264,7 @@ _DictionModel_
     curl -X PUT \
     -H "Content-Type: application/json" \
     }' \
-    https://api-endpoint/dictate/{PhrId}/{PhrDate}/{fileName}/{type}
+    http://127.0.0.1:3000/dictate/{PhrId}/{PhrDate}/{fileName}/{type}
 
 
 
@@ -277,7 +277,7 @@ _DictionModel_
     cUrl:
     curl -X PUT \
     -H "Content-Type: application/json" \
-    https://api-endpoint/provider/remove/{patientId}/{providerName}
+    http://127.0.0.1:3000/provider/remove/{patientId}/{providerName}
 
 
 # 7. Tables

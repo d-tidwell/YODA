@@ -1,14 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  YODA MD Service
+  YODA MD Service 2
 
 Parameters:
 
   CognitoDomain:
     Type: String
     Description: A name for the cognito Domain
-    Default: "yoda-service-login-domain"
+    Default: "yoda-service-login-domain-do-not-delete"
 
   S3Bucket:
     Type: String
@@ -206,7 +206,7 @@ Resources:
               Statement:
                 - Effect: Allow
                   Action: dynamodb:*
-                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/patients"
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/patients_"
 
           - PolicyName: 'AccessProviderTable'
             PolicyDocument:
@@ -214,7 +214,7 @@ Resources:
               Statement:
                 - Effect: Allow
                   Action: dynamodb:*
-                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/providers"
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/providers_"
 
           - PolicyName: 'AccessphrsTable'
             PolicyDocument:
@@ -222,7 +222,7 @@ Resources:
               Statement:
                 - Effect: Allow
                   Action: dynamodb:*
-                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs"
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs_"
 
           - PolicyName: 'AccessDictationTable'
             PolicyDocument:
@@ -230,7 +230,7 @@ Resources:
               Statement:
                 - Effect: Allow
                   Action: dynamodb:*
-                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations"
+                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations_"
 
     #-----------------------------------------------------
     # Lambda Functions Configuration
@@ -490,7 +490,7 @@ Resources:
           - AttributeName: "patientId"
             KeyType: "HASH"
         BillingMode: "PAY_PER_REQUEST"
-        TableName: "patients"
+        TableName: "patients_"
 
     ProvidersTable:
       Type: AWS::DynamoDB::Table
@@ -502,7 +502,7 @@ Resources:
           - AttributeName: "name"
             KeyType: "HASH"
         BillingMode: "PAY_PER_REQUEST"
-        TableName: "providers"
+        TableName: "providers_"
 
     PhrsTable:
       Type: AWS::DynamoDB::Table
@@ -541,7 +541,7 @@ Resources:
             Projection:
               ProjectionType: "ALL"
         BillingMode: "PAY_PER_REQUEST"
-        TableName: "phrs"
+        TableName: "phrs_"
 
     DictationsTable:
       Type: AWS::DynamoDB::Table
@@ -568,7 +568,7 @@ Resources:
             Projection:
               ProjectionType: "ALL"
         BillingMode: "PAY_PER_REQUEST"
-        TableName: "dictations"
+        TableName: "dictations_"
 
 #-----------------------------------------------------
 # The outputs defined below will be printed

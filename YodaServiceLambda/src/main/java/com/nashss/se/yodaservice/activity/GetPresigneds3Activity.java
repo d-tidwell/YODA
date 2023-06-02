@@ -20,7 +20,7 @@ import java.net.URL;
 import javax.inject.Inject;
 
 public class GetPresigneds3Activity {
-    private final String bucketName = "nss-s3-c02-capstone-darek";
+    private final String bucketName = "nss-s3-c02-capstone-darek.tidwell-nodelete";
     private final Logger log = LogManager.getLogger();
     private final PHRDAO phrdao;
     private final DictationDAO dicDao;
@@ -51,7 +51,7 @@ public class GetPresigneds3Activity {
                 new GeneratePresignedUrlRequest(bucketName, objectKey)
                         .withMethod(HttpMethod.PUT)
                         .withExpiration(expiration);
-        generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/mpg");
+        generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/ogg");
 
 
         URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);

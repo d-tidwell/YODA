@@ -39,7 +39,7 @@ public class PHRDAO {
     }
     public PHR getPHRsByPHRId(String phrId) {
         DynamoDBQueryExpression<PHR> queryExpression = new DynamoDBQueryExpression<PHR>()
-                .withKeyConditionExpression("PHRId = :phrId")
+                .withKeyConditionExpression("phrId = :phrId")
                 .withExpressionAttributeValues(Collections.singletonMap(":phrId", new AttributeValue().withS(phrId)));
 
         PaginatedQueryList<PHR> result = this.dynamoDbMapper.query(PHR.class, queryExpression);
