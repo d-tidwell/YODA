@@ -12,7 +12,7 @@ public class PHR {
     private String phrId;
     private String patientId;
     private String providerName;
-    private String date;
+    private String recordDate;
     private String status;
     @DynamoDBHashKey(attributeName = "phrId")
     public String getPhrId() {
@@ -40,14 +40,14 @@ public class PHR {
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
-    @DynamoDBRangeKey(attributeName = "date")
-    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "PatientDateIndex", attributeName = "date")
+    @DynamoDBRangeKey(attributeName = "recordDate")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "PatientDateIndex", attributeName = "recordDate")
     public String getDate() {
-        return date;
+        return recordDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDate(String recordDate) {
+        this.recordDate = recordDate;
     }
     @DynamoDBAttribute(attributeName = "status")
     @DynamoDBIndexRangeKey(globalSecondaryIndexName = "ProviderStatusIndex", attributeName = "status")

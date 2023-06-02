@@ -195,7 +195,7 @@ _DictionModel_
 
     cUrl:
     curl -X GET \
-    http://127.0.0.1:3000/patient/byDateRange/{patientId}?from=YYYY-MM-DD&to=YYYY-MM-DD
+    "http://127.0.0.1:3000/patient/byDateRange/{patientId}?from=YYYY-MM-DD&to=YYYY-MM-DD"
 
     
     endpoint: /provider/${providerName}

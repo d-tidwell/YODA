@@ -84,7 +84,7 @@ public class PHRDAO {
         DynamoDBQueryExpression<PHR> queryExpression = new DynamoDBQueryExpression<PHR>()
                 .withIndexName("PatientDateIndex")
                 .withConsistentRead(false)
-                .withKeyConditionExpression("patientId = :patientIdVal and date between :dateVal1 and :dateVal2")
+                .withKeyConditionExpression("patientId = :patientIdVal and recordDate between :dateVal1 and :dateVal2")
                 .withExpressionAttributeValues(eav);
 
         PaginatedQueryList<PHR> result = this.dynamoDbMapper.query(PHR.class, queryExpression);

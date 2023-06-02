@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 public class Dictation {
     private String dictationId;
     private String phrId;
-    private String date;
+    private String recordDate;
     private String type;
     private String dictationText;
     private String dictationAudio;
@@ -31,14 +31,14 @@ public class Dictation {
     public void setDictationId(String dictationId) {
         this.dictationId = dictationId;
     }
-    @DynamoDBRangeKey(attributeName = "date")
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "DateTypeIndex", attributeName = "date")
+    @DynamoDBRangeKey(attributeName = "recordDate")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "DateTypeIndex", attributeName = "recordDate")
     public String getDate() {
-        return date;
+        return recordDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDate(String recordDate) {
+        this.recordDate = recordDate;
     }
     @DynamoDBAttribute(attributeName = "type")
     @DynamoDBIndexRangeKey(globalSecondaryIndexName = "DateTypeIndex", attributeName = "type")

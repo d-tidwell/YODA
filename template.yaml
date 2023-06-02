@@ -510,7 +510,7 @@ Resources:
         AttributeDefinitions:
           - AttributeName: "phrId"
             AttributeType: "S"
-          - AttributeName: "date"
+          - AttributeName: "recordDate"
             AttributeType: "S"
           - AttributeName: "providerName"
             AttributeType: "S"
@@ -521,7 +521,7 @@ Resources:
         KeySchema:
           - AttributeName: "phrId"
             KeyType: "HASH"
-          - AttributeName: "date"
+          - AttributeName: "recordDate"
             KeyType: "RANGE"
         GlobalSecondaryIndexes:
           - IndexName: "ProviderStatusIndex"
@@ -536,7 +536,7 @@ Resources:
             KeySchema:
               - AttributeName: "patientId"
                 KeyType: "HASH"
-              - AttributeName: "date"
+              - AttributeName: "recordDate"
                 KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"
@@ -549,19 +549,19 @@ Resources:
         AttributeDefinitions:
           - AttributeName: "dictationId"
             AttributeType: "S"
-          - AttributeName: "date"
+          - AttributeName: "recordDate"
             AttributeType: "S"
           - AttributeName: "type"
             AttributeType: "S"
         KeySchema:
           - AttributeName: "dictationId"
             KeyType: "HASH"
-          - AttributeName: "date"
+          - AttributeName: "recordDate"
             KeyType: "RANGE"
         GlobalSecondaryIndexes:
           - IndexName: "DateTypeIndex"
             KeySchema:
-              - AttributeName: "date"
+              - AttributeName: "recordDate"
                 KeyType: "HASH"
               - AttributeName: "type"
                 KeyType: "RANGE"
