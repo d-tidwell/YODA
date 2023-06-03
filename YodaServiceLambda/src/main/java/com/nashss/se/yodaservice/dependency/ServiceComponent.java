@@ -41,4 +41,6 @@ public interface ServiceComponent {
     RemovePatientFromProviderActivity provideRemovePatientFromProviderActivity();
 
     GetOpenPHRByProviderActivity provideGetOpenPHRByProviderActivity();
+
+    GetAllPatientActivity provideGetAllPatientActivity();
 }

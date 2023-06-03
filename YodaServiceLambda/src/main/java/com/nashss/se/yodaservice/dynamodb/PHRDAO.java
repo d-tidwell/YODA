@@ -101,9 +101,8 @@ public class PHRDAO {
     }
 
     public List<PHR> getUncompletedPHRsByProvider(String providerName) {
-        List<String> allStatuses = Arrays.asList(PHRStatus.CREATED.toString(), PHRStatus.PENDING_SIGNATURE.toString(), PHRStatus.TRANSCRIBING.toString());
+        List<String> allStatuses = Arrays.asList(PHRStatus.CREATED.toString(), PHRStatus.PENDING.toString(), PHRStatus.PENDING_SIGNATURE.toString(), PHRStatus.TRANSCRIBING.toString());
         List<String> statusesToQuery = new ArrayList<>(allStatuses);
-        statusesToQuery.remove("completed");  // remove the 'completed' status, we don't want these
     
         List<PHR> results = new ArrayList<>();
     
@@ -112,11 +111,15 @@ public class PHRDAO {
             eav.put(":v1", new AttributeValue().withS(providerName));
             eav.put(":v2", new AttributeValue().withS(status));
     
+            Map<String, String> ean = new HashMap<>();
+            ean.put("#s", "status");
+    
             DynamoDBQueryExpression<PHR> queryExpression = new DynamoDBQueryExpression<PHR>()
                     .withIndexName("ProviderStatusIndex")
                     .withConsistentRead(false)
-                    .withKeyConditionExpression("providerName = :v1 and status = :v2")
-                    .withExpressionAttributeValues(eav);
+                    .withKeyConditionExpression("providerName = :v1 and #s = :v2")
+                    .withExpressionAttributeValues(eav)
+                    .withExpressionAttributeNames(ean);
     
             List<PHR> queryResults = this.dynamoDbMapper.query(PHR.class, queryExpression);
             results.addAll(queryResults);
@@ -129,5 +132,6 @@ public class PHRDAO {
     
         return results;
     }
+    
     
 }

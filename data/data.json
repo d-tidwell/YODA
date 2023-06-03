@@ -118,7 +118,7 @@
           "patientId": { "S": "TEST_PATIENT1" },
           "providerName": { "S": "Dr.Darek" },
           "recordDate": { "S": "2023-05-23" },
-          "status": { "S": "pending" }
+          "status": { "S": "PENDING" }
         }
       }
     },
@@ -129,7 +129,7 @@
           "patientId": { "S": "TEST_PATIENT2" },
           "providerName": { "S": "Dr.Yelyzaveta" },
           "recordDate": { "S": "2023-05-23" },
-          "status": { "S": "created" }
+          "status": { "S": "CREATED" }
         }
       }
     },
@@ -140,7 +140,7 @@
           "patientId": { "S": "TEST_PATIENT2" },
           "providerName": { "S": "Dr.Yelyzaveta" },
           "recordDate": { "S": "2023-05-23" },
-          "status": { "S": "completed" }
+          "status": { "S": "COMPLETED" }
         }
       }
     }

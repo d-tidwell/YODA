@@ -15,7 +15,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient','removePatient','getAllPHRByProvider','getAllPatients'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -113,6 +113,21 @@ export default class YodaClient extends BindingClass {
         }
     }
 
+    async getAllPatients(errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/patient/all/anyone`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
     async removePatient(patientId, providerName, errorCallback){
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
@@ -127,7 +142,20 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
-
+    async getAllPHRByProvider(providerName, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/phr/byProviderId/${providerName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 //    /**
 //     * Gets the playlist for the given ID.
 //     * @param id Unique identifier for a playlist

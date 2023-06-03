@@ -4,6 +4,7 @@ public enum PHRStatus {
     CREATED,
     PRESIGNED,
     TRANSCRIBING,
+    PENDING,
     PENDING_SIGNATURE,
     COMPLETED
 }

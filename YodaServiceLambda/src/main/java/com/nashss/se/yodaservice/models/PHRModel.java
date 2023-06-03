@@ -108,6 +108,7 @@ public class PHRModel {
         public PHRModel build() {
             return new PHRModel(phrId, patientId, providerName, date, status);
         }
+
     }
 
 }
