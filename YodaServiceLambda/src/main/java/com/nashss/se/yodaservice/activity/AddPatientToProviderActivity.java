@@ -35,7 +35,7 @@ public class AddPatientToProviderActivity {
         List<String> q = provider.getPendingPatients();
         q.add(request.getPatientId());
         provider.setPendingPatients(q);
-        boolean success = providerDAO.updatePending(provider);
+        boolean success = providerDAO.updateProvider(provider);
         return AddPatientToProviderResult.builder()
                 .withSuccess(success)
                 .build();

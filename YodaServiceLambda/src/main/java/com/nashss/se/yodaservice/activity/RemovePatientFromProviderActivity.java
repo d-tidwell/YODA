@@ -29,12 +29,17 @@ public class RemovePatientFromProviderActivity {
     public RemovePatientFromProviderResult handleRequest(final RemovePatientFromProviderRequest request) {
         patientDAO.getPatient(request.getPatientId());
         Provider provider = providerDAO.getProvider(request.getProviderName());
-        List<String> q = provider.getPendingPatients();
-        q.remove(request.getPatientId());
-        provider.setPendingPatients(q);
-        boolean success = providerDAO.updatePending(provider);
+        List<String> pendingPatients = provider.getPendingPatients();
+        boolean success = pendingPatients.remove(request.getPatientId()); 
+        provider.setPendingPatients(pendingPatients);
+    
+        if (success) {
+            success = providerDAO.updateProvider(provider);  
+        }
+    
         return RemovePatientFromProviderResult.builder()
                 .withSuccess(success)
                 .build();
     }
+    
 }

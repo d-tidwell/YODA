@@ -15,7 +15,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient','removePatient','getAllPHRByProvider','getAllPatients'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient', 'createPatient','removePatient','getAllPHRByProvider','getAllPatients'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -128,6 +128,39 @@ export default class YodaClient extends BindingClass {
         }
     }
 
+    async createPatient(name, age, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can create patients.");
+            const response = await this.axiosClient.post(`/patient/new`, {
+                patientName: name,
+                patientAge: age
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+    
+    async addPatientToProvider(patientId, providerName, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.post(`/provider/${providerName}/${patientId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
     async removePatient(patientId, providerName, errorCallback){
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
@@ -137,6 +170,7 @@ export default class YodaClient extends BindingClass {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log(response.data, "remove");
             return response.data;
         } catch (error) {
             this.handleError(error, errorCallback)

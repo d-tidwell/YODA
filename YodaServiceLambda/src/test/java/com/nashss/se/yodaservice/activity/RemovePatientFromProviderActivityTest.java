@@ -49,7 +49,7 @@ public class RemovePatientFromProviderActivityTest {
         List<String> q = new ArrayList<>(Arrays.asList("TEST1", patientId, "TEST2"));
         provider.setPendingPatients(q);
         when(providerDAO.getProvider(providerName)).thenReturn(provider);
-        when(providerDAO.updatePending(provider)).thenReturn(true);
+        when(providerDAO.updateProvider(provider)).thenReturn(true);
 
         // execute
         RemovePatientFromProviderResult result = handler.handleRequest(request);
@@ -57,7 +57,7 @@ public class RemovePatientFromProviderActivityTest {
         // verify
         verify(patientDAO, times(1)).getPatient(patientId);
         verify(providerDAO, times(1)).getProvider(providerName);
-        verify(providerDAO, times(1)).updatePending(provider);
+        verify(providerDAO, times(1)).updateProvider(provider);
         assertTrue(result.getSuccess());
         assertFalse(provider.getPendingPatients().contains(patientId));
     }

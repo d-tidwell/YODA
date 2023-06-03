@@ -59,7 +59,7 @@ public class ProviderDAOTest {
     @Test
     public void testUpdatePending() {
         Provider testProvider = new Provider();
-        boolean isUpdated = providerDAO.updatePending(testProvider);
+        boolean isUpdated = providerDAO.updateProvider(testProvider);
         assertTrue(isUpdated, "Expected the update to succeed");
 
         verify(dynamoDbMapper, times(1)).save(testProvider);
@@ -71,7 +71,7 @@ public class ProviderDAOTest {
 
         doThrow(new AmazonDynamoDBException("DynamoDB error")).when(dynamoDbMapper).save(testProvider);
 
-        boolean isUpdated = providerDAO.updatePending(testProvider);
+        boolean isUpdated = providerDAO.updateProvider(testProvider);
         assertFalse(isUpdated, "Expected the update to fail when an exception occurs");
 
         verify(dynamoDbMapper, times(1)).save(testProvider);

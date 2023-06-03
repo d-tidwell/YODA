@@ -43,15 +43,6 @@ class TestString extends BindingClass {
         this.populatePatientsPending(provider);
         this.populatePhrPending(provider);
         
-        // Get the Patients tab button
-        let patientTab = document.getElementById('nav-profile-tab-button');
-
-        // Add event listener for 'click' event
-        patientTab.addEventListener('click', () => {
-            // Call your function here
-            console.log("Patients tab clicked!");
-            this.getAllPatientsAndDisplay();
-        });
     }
     /**
      * Add the header to the page and load the Client.
@@ -63,6 +54,19 @@ class TestString extends BindingClass {
         this.client = new yodaClient();
        
         this.clientLoaded();
+
+         // Get the Patients tab button
+         let patientTab = document.getElementById('nav-profile-tab-button');
+
+         // Add event listener for 'click' event
+         patientTab.addEventListener('click', () => {
+             // Call your function here
+             console.log("Patients tab clicked!");
+             this.getAllPatientsAndDisplay();
+         });
+
+        const createPatientSubmitButton = document.getElementById('createPatientSubmit');
+        createPatientSubmitButton.addEventListener('click', (event) => this.createPatient(event));
 
     }
 
@@ -129,14 +133,16 @@ class TestString extends BindingClass {
     
     
     async populatePatientsPending(provider){
-
+        console.log(provider)
         var listGroup = document.getElementById('desktopListGroupPatients');
-    
+        const identity = await this.client.getIdentity();
+        const self = this; // add this line
         for (const patient of provider.pendingPatients) {
             try {
                 var listItem = document.createElement('li');
                 listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
                 listItem.innerHTML = `<h4>Loading ...<h4>`
+    
                 const patientName = await this.client.getPatient(patient);
     
                 listItem.innerHTML = `
@@ -149,70 +155,127 @@ class TestString extends BindingClass {
     
                 listGroup.appendChild(listItem);
     
-                listItem.querySelector('.visit-btn').addEventListener('click', function() {
-                    window.open('/visit.html?id=' + patient, '_blank');
-                });
+                (function(self, listItem, patient) { // modify this line
+                    listItem.querySelector('.visit-btn').addEventListener('click', function() {
+                        window.open('/visit.html?id=' + patient, '_blank');
+                    });
     
-                listItem.querySelector('.seen-btn').addEventListener('click', () => {
-                    this.client.removePatient(patient, identity.name);
-                    if (result === true) {
-                        listItem.remove();  
-                    }
-                });
+                    listItem.querySelector('.seen-btn').addEventListener('click', async () => {
+                        const result = await self.client.removePatient(patient, identity.name); // modify this line
+                        console.log(result.success, "test");
+                        if (result.success === true) {
+                            listItem.remove();  
+                        }
+                    });
+                })(self, listItem, patient); // modify this line
             } catch (err) {
                 console.log(err);  // handle errors here
             }
         }
     }
     
+    
+    
     async getAllPatientsAndDisplay() {
-        // make the API call
-        this.client.getAllPatients()
-          .then(patients => {
-            // make sure the patients data is an array
-            console.log(patients, "here")
-              // get a reference to the list element
-              const list = document.getElementById('allPatientsList');
+        try {
+            // Make the API call
+            const patients = await this.client.getAllPatients();
+            // Make sure the patients data is an array
+            console.log(patients, "here");
+    
+            // Get the identity
+            const identity = await this.client.getIdentity();
+    
+            // Get a reference to the list element
+            const list = document.getElementById('allPatientsList');
       
-              // iterate over the array of patients
-              for (let patient of patients.patients) {
-                console.log(patient,"loop")
-                // create a new list item for each patient
+            // Iterate over the array of patients
+            for (let patient of patients.patients) {
+                console.log(patient,"loop");
+    
+                // Create a new list item for each patient
                 let li = document.createElement('li');
                 li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
                 
-                // create text node for patient name and age
+                // Create text node for patient name and age
                 let textNode = document.createTextNode(`Name: ${patient.name}, Age: ${patient.age}`);
                 li.appendChild(textNode);
                 
-                // create the button container
+                // Create the button container
                 let buttonContainer = document.createElement('div');
       
-                // create the Add button
+                // Create the Add button
                 let addButton = document.createElement('button');
                 addButton.classList.add('btn', 'btn-primary');
                 addButton.textContent = 'Add';
                 addButton.style.marginRight = '4px';
+    
+                // Add event listener to Add button
+                addButton.addEventListener('click', async () => {
+                    console.log("clicked")
+                    const confirm = await this.client.addPatientToProvider(patient.id, identity.name);
+                    if(confirm.success == true){
+                        location.reload();
+                    }
+                });
                 buttonContainer.appendChild(addButton);
       
-                // create the Edit button
+                // Create the Edit button
                 let editButton = document.createElement('button');
                 editButton.classList.add('btn', 'btn-primary');
                 editButton.textContent = 'Edit';
+                editButton.id = 'allPatientsEdit'; // Change id of the Edit button
+                
+                // Add event listener to Edit button
+                editButton.addEventListener('click', () => {
+                    window.open("/editPatient.html?id=" + patient.id, "_blank");
+                });
                 buttonContainer.appendChild(editButton);
                 
-                // append the button container to the list item
+                // Append the button container to the list item
                 li.appendChild(buttonContainer);
                 
-                // append the new list item to the list
+                // Append the new list item to the list
                 list.appendChild(li);
-              }
-          })
-          .catch(err => {
-            // handle any errors
+            }
+        } catch(err) {
+            // Handle any errors
             console.error('An error occurred:', err);
-          });
-      }
+        }
+    }
+    
+    
+
+    createPatient(event) {
+        // Prevent the form from being submitted normally
+        event.preventDefault();
+    
+        // Get the form values
+        const name = document.getElementById('patientName').value;
+        const age = document.getElementById('patientAge').value;
+    
+        // Call createPatient() method
+        this.client.createPatient(name, age)
+            .then(() => {
+                // The patient was created successfully
+                console.log('Patient created successfully');
+                
+                // Clear the form fields
+                document.getElementById('patientName').value = '';
+                document.getElementById('patientAge').value = '';
+                document.getElementById('patientAddress').value = '';
+                document.getElementById('patientPhoneNumber').value = '';
+                document.getElementById('patientImage').value = '';
+    
+                // Refresh the list of patients
+                this.getAllPatientsAndDisplay();
+            })
+            .catch((err) => {
+                // An error occurred
+                console.error('An error occurred:', err);
+            });
+        }
+    
       
       
 

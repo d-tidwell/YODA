@@ -29,13 +29,14 @@ public class ProviderDAO {
         return provider;
     }
 
-    public boolean updatePending(Provider provider) {
+    public boolean updateProvider(Provider provider) {
         try {
             this.dynamoDbMapper.save(provider);
+            return true; 
         } catch (AmazonDynamoDBException e) {
             log.error("Save Provider Error", e);
             return false;
         }
-        return true;
     }
+    
 }

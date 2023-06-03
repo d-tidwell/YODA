@@ -52,7 +52,7 @@ public class AddPatientToProviderTest {
         q.add(testPatient);
         provider.setPendingPatients(q);
         when(providerDAO.getProvider(providerName)).thenReturn(provider);
-        when(providerDAO.updatePending(provider)).thenReturn(true);
+        when(providerDAO.updateProvider(provider)).thenReturn(true);
 
         // execute
         AddPatientToProviderResult result = handler.handleRequest(request);
@@ -60,7 +60,7 @@ public class AddPatientToProviderTest {
         // verify
         verify(patientDAO, times(1)).getPatient(patientId);
         verify(providerDAO, times(1)).getProvider(providerName);
-        verify(providerDAO, times(1)).updatePending(provider);
+        verify(providerDAO, times(1)).updateProvider(provider);
         assertTrue(result.getSuccess());
         assertEquals(testPatient, provider.getPendingPatients().get(2));
     }

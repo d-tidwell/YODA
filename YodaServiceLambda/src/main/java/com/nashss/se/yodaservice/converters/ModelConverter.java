@@ -34,6 +34,7 @@ public class ModelConverter {
     public static List<PatientModel> convertListPatientoModels(List<Patient> dynamoObj) {
         return dynamoObj.stream()
                 .map(patient -> PatientModel.builder()
+                        .withId(patient.getPatientId())
                         .withName(patient.getName())
                         .withAge(patient.getAge())
                         .build())

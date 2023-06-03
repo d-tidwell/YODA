@@ -126,7 +126,7 @@ _DictionModel_
     http://127.0.0.1:3000/patient/new
 
 
-    endpoint: provider/addPatientToProvider/${patientId}
+    endpoint: /provider/{providerName}/{patientId}
 
     Adds a patient to a providers docket
 
