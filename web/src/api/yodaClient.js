@@ -15,7 +15,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -75,7 +75,59 @@ export default class YodaClient extends BindingClass {
     async isLoggedIn(){
         return this.authenticator.isUserLoggedIn();
     }
-    
+
+     /**
+     * Gets the profile for the given ID.
+     * @param id Unique identifier for a profile
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The profile's metadata.
+     */
+
+    async getProvider(providerName, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
+            const response = await this.axiosClient.get(`/provider/${providerName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+    async getPatient(patientId, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/patient/${patientId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+    async removePatient(patientId, providerName, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.put(`/provider/remove/${patientId}/${providerName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
 //    /**
 //     * Gets the playlist for the given ID.
 //     * @param id Unique identifier for a playlist

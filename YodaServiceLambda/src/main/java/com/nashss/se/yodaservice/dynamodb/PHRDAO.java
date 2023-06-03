@@ -1,6 +1,7 @@
 package com.nashss.se.yodaservice.dynamodb;
 
 import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.enums.PHRStatus;
 import com.nashss.se.yodaservice.exceptions.PHRNotFoundException;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -12,6 +13,8 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -96,4 +99,35 @@ public class PHRDAO {
 
         return result;
     }
+
+    public List<PHR> getUncompletedPHRsByProvider(String providerName) {
+        List<String> allStatuses = Arrays.asList(PHRStatus.CREATED.toString(), PHRStatus.PENDING_SIGNATURE.toString(), PHRStatus.TRANSCRIBING.toString());
+        List<String> statusesToQuery = new ArrayList<>(allStatuses);
+        statusesToQuery.remove("completed");  // remove the 'completed' status, we don't want these
+    
+        List<PHR> results = new ArrayList<>();
+    
+        for (String status : statusesToQuery) {
+            Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+            eav.put(":v1", new AttributeValue().withS(providerName));
+            eav.put(":v2", new AttributeValue().withS(status));
+    
+            DynamoDBQueryExpression<PHR> queryExpression = new DynamoDBQueryExpression<PHR>()
+                    .withIndexName("ProviderStatusIndex")
+                    .withConsistentRead(false)
+                    .withKeyConditionExpression("providerName = :v1 and status = :v2")
+                    .withExpressionAttributeValues(eav);
+    
+            List<PHR> queryResults = this.dynamoDbMapper.query(PHR.class, queryExpression);
+            results.addAll(queryResults);
+        }
+    
+        if (results.isEmpty()) {
+            log.info(String.format("PHRNotFoundException, %s", providerName));
+            throw new PHRNotFoundException("Could not find PHR");
+        }
+    
+        return results;
+    }
+    
 }

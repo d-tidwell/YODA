@@ -6,7 +6,7 @@ import DataStore from "../util/DataStore";
 class Visit extends BindingClass {
     constructor() {
       super();
-      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3'], this);
+      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes'], this);
       this.dataStore = new DataStore();
       this.header = new Header(this.dataStore);
       this.client = new yodaClient();
@@ -14,6 +14,10 @@ class Visit extends BindingClass {
     }
   
     async clientLoaded() {
+      //get the URL param for identity of patient
+      const urlParams = new URLSearchParams(window.location.search);
+      const patient = await this.client.getPatient(urlParams.get("id"));
+      this.setPatientAttributes(patient);
       // Initialize audio recording variables
       this.mediaRecorder = null;
       this.chunks = [];
@@ -39,6 +43,11 @@ class Visit extends BindingClass {
       const loggedIn = await this.client.isLoggedIn();
     }
     
+   async setPatientAttributes(patient){
+      document.getElementById("visitName").innerText = patient.name
+      document.getElementById("visitAge").innerText = "Age: " + patient.age
+   }
+
     async submitForm(){
         //const s3string = this.client.getS3Presigned
         this.uploadAudioToS3(s3string);

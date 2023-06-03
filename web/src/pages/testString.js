@@ -29,16 +29,20 @@ class TestString extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'search', 'displaySearchResults'], this);
+        this.bindClassMethods(['mount', 'search', 'displaySearchResults','populatePatientsPending','clientLoaded'], this);
 
         // Create a enw datastore with an initial "empty" state.
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
         this.header = new Header(this.dataStore);
         this.dataStore.addChangeListener(this.displaySearchResults);
     }
-
+    async clientLoaded(){
+        const identity =  await this.client.getIdentity();
+        const provider =  await this.client.getProvider(identity.name);
+        this.populatePatientsPending(provider);
+    }
     /**
-     * Add the header to the page and load the MusicPlaylistClient.
+     * Add the header to the page and load the Client.
      */
     mount() {
 
@@ -47,6 +51,8 @@ class TestString extends BindingClass {
         this.client = new yodaClient();
 
         this.displaySearchResults();
+       
+        this.clientLoaded();
     }
 
     /**
@@ -84,8 +90,47 @@ class TestString extends BindingClass {
     displaySearchResults() {
 
     }
+    async populatePhrPending(){
+        
+    }
+    async populatePatientsPending(provider){
 
-
+        var listGroup = document.getElementById('desktopListGroupPatients');
+    
+        for (const patient of provider.pendingPatients) {
+            try {
+                var listItem = document.createElement('li');
+                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                listItem.innerHTML = `<h4>Loading ...<h4>`
+                const patientName = await this.client.getPatient(patient);
+    
+                listItem.innerHTML = `
+                    ${patientName.name}
+                    <div>
+                    <button class="btn btn-primary visit-btn">Visit</button>
+                    <button class="btn btn-primary seen-btn">Seen</button>
+                    </div>
+                `;
+    
+                listGroup.appendChild(listItem);
+    
+                listItem.querySelector('.visit-btn').addEventListener('click', function() {
+                    window.open('/visit.html?id=' + patient, '_blank');
+                });
+    
+                listItem.querySelector('.seen-btn').addEventListener('click', () => {
+                    this.client.removePatient(patient, identity.name);
+                    if (result === true) {
+                        listItem.remove();  
+                    }
+                });
+            } catch (err) {
+                console.log(err);  // handle errors here
+            }
+        }
+    }
+    
+    
 
 }
 

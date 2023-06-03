@@ -140,7 +140,7 @@ _DictionModel_
 
     endpoint: /patient/phr/${patientId}/
 
-    Creates a new PHR for patient by provider and adds to providers pending
+    Creates a new PHR for patient by provider
 
     data: patientId, providerName, date
 
@@ -268,7 +268,7 @@ _DictionModel_
 
 
 
-    endpoint: provider/remove/{patientId}
+    endpoint: /provider/remove/{patientId}/{providerName}
 
     Removes patient from provider stack
 

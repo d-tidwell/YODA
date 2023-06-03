@@ -1,7 +1,9 @@
 package com.nashss.se.yodaservice.dependency;
 
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.yodaservice.activity.*;
 
+import com.nashss.se.yodaservice.activity.requests.GetOpenPHRByProviderRequest;
 import com.nashss.se.yodaservice.dynamodb.AmazonS3AndTranscribeProviders;
 import dagger.Component;
 
@@ -38,4 +40,5 @@ public interface ServiceComponent {
 
     RemovePatientFromProviderActivity provideRemovePatientFromProviderActivity();
 
+    GetOpenPHRByProviderActivity provideGetOpenPHRByProviderActivity();
 }

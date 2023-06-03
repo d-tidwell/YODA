@@ -7,7 +7,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 
-
 public class RemovePatientFromProviderLambda
         extends LambdaActivityRunner<RemovePatientFromProviderRequest, RemovePatientFromProviderResult>
         implements RequestHandler<AuthenticatedLambdaRequest<RemovePatientFromProviderRequest>, LambdaResponse> {
@@ -17,11 +16,15 @@ public class RemovePatientFromProviderLambda
         return super.runActivity(
                 () -> input.fromPath(path -> RemovePatientFromProviderRequest.builder()
                         .withPatientId(path.get("patientId"))
-                        .withProviderName(path.get("providerId"))
+                        .withProviderName(path.get("providerName"))
                         .build()),
                 (request, serviceComponent) ->
                         serviceComponent.provideRemovePatientFromProviderActivity().handleRequest(request)
         );
     }
 }
+
+
+
+
 
