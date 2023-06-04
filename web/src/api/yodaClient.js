@@ -176,10 +176,81 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+    async getPHR(phrId, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/patient/phr/single/${phrId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+    async getPHRDate(patientId, date, errorCallback){
+        console.log("hit date");
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/patient/byDateRange/${patientId}`, {
+                params: {
+                    from: date,
+                    to: date
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+    async getPHRDateRange(patientId, to, from, errorCallback){
+        console.log("hit range");
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/patient/byDateRange/${patientId}`, {
+                params: {
+                    from: from,
+                    to: to
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+    
     async getAllPHRByProvider(providerName, errorCallback){
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.get(`/phr/byProviderId/${providerName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+    async getAllPHR(patientId, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/patient/byId/${patientId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
