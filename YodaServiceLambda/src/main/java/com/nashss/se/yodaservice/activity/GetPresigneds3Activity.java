@@ -53,7 +53,7 @@ public class GetPresigneds3Activity {
                 new GeneratePresignedUrlRequest(bucketName, objectKey)
                         .withMethod(HttpMethod.PUT)
                         .withExpiration(expiration);
-        generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/ogg");
+        generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/webm");
 
         log.error("HITS THE request generator");
         System.out.println("Hits generator");

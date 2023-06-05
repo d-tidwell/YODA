@@ -281,6 +281,21 @@ export default class YodaClient extends BindingClass {
         }
       }
     
+    async dropInTheBucket(presignedS3Url, audioBlob, errorCallback) {
+        try {
+            const response = await this.axiosClient.put(presignedS3Url, audioBlob, {
+                headers: {
+                    'Content-Type': 'audio/webm',
+                }
+            });
+            console.log("Drop in the bucket successful")
+            return response;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+        }
+    }
+    
+
       
 //    /**
 //     * Gets the playlist for the given ID.

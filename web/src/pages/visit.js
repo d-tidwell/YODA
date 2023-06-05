@@ -67,7 +67,8 @@ class Visit extends BindingClass {
         const patientName = this.dataStore.get("patientId");
         const providerName = this.dataStore.get("provider");
         const type = document.getElementById("dictationType").value;
-        //create the phr to get the Id
+        //!!!!create the phr to get the Id
+
         //create the filename
         const filename = dateString +"-"+patientName+"-"+providerName+"-"+type;
 
@@ -75,7 +76,7 @@ class Visit extends BindingClass {
         const s3string = await this.client.getPresignedS3(filename, "IDNONEXISTENT",dateString);
         console.log(s3string.url);
         this.uploadAudioToS3(s3string.url);
-        //make a call to create the dictation object & populate the data passing the phrid
+        //!!!!make a call to create the dictation object & populate the data passing the phrid
 
     }
 
@@ -84,26 +85,18 @@ class Visit extends BindingClass {
           console.warn("No recorded audio available.");
           return;
         }
-        
+  
         // Convert recorded audio to blob
         const response = await fetch(this.recordedAudio.src);
         const audioBlob = await response.blob();
-      
-        // Upload blob to S3
-        const uploadResponse = await fetch(presignedS3Url, {
-          method: 'PUT',
-          body: audioBlob,
-          headers: {
-            'Content-Type': 'audio/webm',
-          }
-        });
-      
-        if (!uploadResponse.ok) {
-          throw new Error(`Failed to upload audio to S3: ${uploadResponse.statusText}`);
-        }
-        
-        console.log('Audio successfully uploaded to S3.');
+
+      try {
+          const uploadResponse = await this.client.dropInTheBucket(presignedS3Url, audioBlob);
+          console.log(uploadResponse);
+      } catch (error) {
+          console.error('Error uploading audio to S3: ', error);
       }
+    }
       
     startRecording = () => {
       const supportedAudioFormats = [
