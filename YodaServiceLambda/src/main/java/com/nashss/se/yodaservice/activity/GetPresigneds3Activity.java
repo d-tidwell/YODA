@@ -28,23 +28,25 @@ public class GetPresigneds3Activity {
 
 
     @Inject
-    public GetPresigneds3Activity(PHRDAO phrdao, DictationDAO dicDao) {
+    public GetPresigneds3Activity(PHRDAO phrdao, DictationDAO dicDao, AmazonS3 s3client) {
         this.dicDao = dicDao;
         this.phrdao = phrdao;
-        this.s3client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+        this.s3client = s3client;
     }
 
     public GetPresigneds3Result handleRequest(final GetPresigneds3Request request) {
         //Get the PHR we are talking about
-        PHR updatePHR = phrdao.getPHR(request.getPhrId(), request.getDate());
+        //PHR updatePHR = phrdao.getPHR(request.getPhrId(), request.getDate());
         //create the dictation record
+        log.error("HITS THE HANDLE REQUEST");
+        System.out.println("HandleRequest");
         dicDao.createDictation(request.getFileName(), request.getPhrId(), request.getDate());
 
         String objectKey = "audio/" + request.getFileName();
         java.util.Date expiration = new java.util.Date();
         long expTimeMillis = expiration.getTime();
         // Add 1 hour.
-        expTimeMillis += 1000 * 60 * 60;
+        expTimeMillis += 1000 * 60;
         expiration.setTime(expTimeMillis);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
@@ -53,12 +55,15 @@ public class GetPresigneds3Activity {
                         .withExpiration(expiration);
         generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/ogg");
 
-
+        log.error("HITS THE request generator");
+        System.out.println("Hits generator");
         URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
-        log.info("Pre-Signed URL: " + url.toString() + " : " + request.getPhrId());
+        log.error("Pre-Signed URL: " + url.toString() + " : " + request.getPhrId());
+        System.out.println("Pre-Signed URL: " + url.toString() + " : " + request.getPhrId());
+
         //set the status of the PHR
-        updatePHR.setStatus(PHRStatus.PRESIGNED.toString());
-        phrdao.savePHR(updatePHR);
+        //updatePHR.setStatus(PHRStatus.PRESIGNED.toString());
+        //phrdao.savePHR(updatePHR);
         //return the URL
         return GetPresigneds3Result.builder()
                 .withUrl(url.toString())

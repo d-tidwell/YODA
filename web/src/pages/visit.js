@@ -6,7 +6,7 @@ import DataStore from "../util/DataStore";
 class Visit extends BindingClass {
     constructor() {
       super();
-      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes'], this);
+      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate'], this);
       this.dataStore = new DataStore();
       this.header = new Header(this.dataStore);
       this.client = new yodaClient();
@@ -16,6 +16,9 @@ class Visit extends BindingClass {
     async clientLoaded() {
       //get the URL param for identity of patient
       const urlParams = new URLSearchParams(window.location.search);
+      this.dataStore.set("patientId", urlParams.get("id"));
+      const providerObj = await this.client.getIdentity();
+      this.dataStore.set("provider", providerObj.name);
       const patient = await this.client.getPatient(urlParams.get("id"));
       this.setPatientAttributes(patient);
       // Initialize audio recording variables
@@ -42,16 +45,37 @@ class Visit extends BindingClass {
       this.header.addHeaderToPage();
       const loggedIn = await this.client.isLoggedIn();
     }
-    
+
+    getFormattedDate() {
+      const currentDate = new Date();
+      const year = String(currentDate.getFullYear());
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const day = String(currentDate.getDate()).padStart(2, '0');
+      
+      return `${year}-${month}-${day}`;
+    }
+
    async setPatientAttributes(patient){
       document.getElementById("visitName").innerText = patient.name
       document.getElementById("visitAge").innerText = "Age: " + patient.age
    }
 
-    async submitForm(){
-        //const s3string = this.client.getS3Presigned
-        this.uploadAudioToS3(s3string);
-        //make a call to create the dictation object & populate the data
+    async submitForm(event){
+        event.preventDefault();
+
+        const dateString = this.getFormattedDate();
+        const patientName = this.dataStore.get("patientId");
+        const providerName = this.dataStore.get("provider");
+        const type = document.getElementById("dictationType").value;
+        //create the phr to get the Id
+        //create the filename
+        const filename = dateString +"-"+patientName+"-"+providerName+"-"+type;
+
+        console.log(filename,"filename");
+        const s3string = await this.client.getPresignedS3(filename, "IDNONEXISTENT",dateString);
+        console.log(s3string.url);
+        this.uploadAudioToS3(s3string.url);
+        //make a call to create the dictation object & populate the data passing the phrid
 
     }
 
@@ -70,7 +94,7 @@ class Visit extends BindingClass {
           method: 'PUT',
           body: audioBlob,
           headers: {
-            'Content-Type': 'audio/ogg',
+            'Content-Type': 'audio/webm',
           }
         });
       
@@ -82,16 +106,27 @@ class Visit extends BindingClass {
       }
       
     startRecording = () => {
+      const supportedAudioFormats = [
+        'audio/wav',
+        'audio/webm',
+        'audio/ogg',
+        'audio/mpeg',
+        // Add more supported MIME types as needed
+      ];
+      
+      const supportedFormats = supportedAudioFormats.filter((format) => MediaRecorder.isTypeSupported(format));
+      
+      console.log('Supported Audio Formats:', supportedFormats);
       navigator.mediaDevices.getUserMedia({ video: false, audio: true })
         .then((stream) => {
           this.audioElement.srcObject = stream;
-          if (MediaRecorder.isTypeSupported('audio/ogg')) {
-            this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/ogg; codecs=opus' });
+          if (MediaRecorder.isTypeSupported('audio/webm')) {
+            this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
           } else {
-            // Fall back to default format if MPEG is not supported
-            this.mediaRecorder = new MediaRecorder(stream);
-            console.log('audio/ogg; codecs=opus not supported');
-          }
+            // Handle fallback if WAV format is not supported
+            console.log('audio/wav not supported');
+            return;
+          }          
           this.mediaRecorder.start();
           this.mediaRecorder.ondataavailable = this.onDataAvailable;
           this.recordButton.disabled = true;

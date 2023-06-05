@@ -23,7 +23,7 @@ public class GetPresigneds3Result {
     public static class Builder {
         private String url;
 
-        public Builder withUrl(String fileName) {
+        public Builder withUrl(String url) {
             this.url = url;
             return this;
         }

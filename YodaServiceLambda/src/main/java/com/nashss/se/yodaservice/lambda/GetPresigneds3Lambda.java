@@ -12,13 +12,14 @@ public class GetPresigneds3Lambda
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetPresigneds3Request> input, Context context) {
         return super.runActivity(
-            () -> input.fromPath(path -> GetPresigneds3Request.builder()
-                                .withFileName(path.get("filename"))
-                                .withPhrId(path.get("PhrId"))
-                                .withDate(path.get("date"))
-                                .build()),
-            (request, serviceComponent) ->
-                    serviceComponent.provideGetPresigneds3Activity().handleRequest(request)
+                () ->
+                    input.fromPathAndQuery((path, query) -> GetPresigneds3Request.builder()
+                                    .withFileName(path.get("filename"))
+                                    .withPhrId(query.get("phrId"))
+                                    .withDate(query.get("date"))
+                                    .build()),
+                (request, serviceComponent) ->
+                        serviceComponent.provideGetPresigneds3Activity().handleRequest(request)
         );
     }
 }

@@ -144,9 +144,10 @@ class TestString extends BindingClass {
                 var listItem = document.createElement('li');
                 listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
                 listItem.innerHTML = `<h4>Loading ...<h4>`
-    
+        
+                // add await before this.client.getPatient(patient)
                 const patientName = await this.client.getPatient(patient);
-    
+        
                 listItem.innerHTML = `
                     ${patientName.name}
                     <div>
@@ -154,14 +155,14 @@ class TestString extends BindingClass {
                     <button class="btn btn-primary seen-btn">Seen</button>
                     </div>
                 `;
-    
+        
                 listGroup.appendChild(listItem);
-    
+        
                 (function(self, listItem, patient) { // modify this line
                     listItem.querySelector('.visit-btn').addEventListener('click', function() {
                         window.open('/visit.html?id=' + patient, '_blank');
                     });
-    
+        
                     listItem.querySelector('.seen-btn').addEventListener('click', async () => {
                         const result = await self.client.removePatient(patient, identity.name); // modify this line
                         console.log(result.success, "test");
@@ -175,6 +176,7 @@ class TestString extends BindingClass {
             }
         }
     }
+    
     
     
     
