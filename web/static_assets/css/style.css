@@ -41,6 +41,25 @@
     justify-content: space-between;
 }
 
+.accordion-button-phr {
+    display: flex;
+    justify-content: space-between;
+}
+
+.attr {
+    width: 30%;  /* Or whatever width you find appropriate */
+}
+
+button.visit-btn {
+    background-color: var(--primary-color);
+    color: white !important;
+}
+
+button.seen-btn {
+    background-color: var(--primary-color);
+    color: white !important;
+}
+
 .header_home {
     font-size: 36px;
     line-height: 40px;
@@ -104,6 +123,12 @@
 .tabs-color {
     background-color: rgb(234, 235, 236);
 
+}
+.nav-link.tabs-color {
+    color: var(--tabs-color) !important;
+}
+.nav-link.active.tabs-color {
+    color: var(--tabs-color) !important;
 }
 
 #nav-home-tab {

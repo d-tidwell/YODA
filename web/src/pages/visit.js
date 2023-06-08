@@ -188,8 +188,21 @@ class Visit extends BindingClass {
             accordionButton.dataset.bsTarget = `#collapse${index+1}`;
             accordionButton.setAttribute('aria-expanded', 'false');
             accordionButton.setAttribute('aria-controls', `collapse${index+1}`);
-            accordionButton.innerText = `DATE: ${phr.date}\t\t\tSTATUS: ${phr.status}\t\t\tID: ${phr.phrId}`;
-
+    
+            const dateDiv = document.createElement('div');
+            dateDiv.classList.add('attr', 'date');
+            dateDiv.innerText = `DATE: ${phr.date}`;
+            accordionButton.appendChild(dateDiv);
+    
+            const statusDiv = document.createElement('div');
+            statusDiv.classList.add('attr', 'status');
+            statusDiv.innerText = `STATUS: ${phr.status}`;
+            accordionButton.appendChild(statusDiv);
+    
+            const idDiv = document.createElement('div');
+            idDiv.classList.add('attr', 'id');
+            idDiv.innerText = `ID: ${phr.phrId}`;
+            accordionButton.appendChild(idDiv);
     
             const accordionCollapse = document.createElement('div');
             accordionCollapse.id = `collapse${index+1}`;
@@ -219,6 +232,7 @@ class Visit extends BindingClass {
         accordion.appendChild(noResultsMessage);
       }
     }
+    
     
   }
 

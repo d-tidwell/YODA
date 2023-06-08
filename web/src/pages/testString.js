@@ -108,13 +108,13 @@ class TestString extends BindingClass {
 
             let buttonsDiv = document.createElement('div');
             let signButton = document.createElement('button');
-            signButton.className = 'btn btn-primary';  
+            signButton.className = 'btn seen-btn';  
             signButton.innerText = 'Sign';
             signButton.style.marginRight = '4px';
             buttonsDiv.appendChild(signButton);
         
             let editButton = document.createElement('button');
-            editButton.className = 'btn btn-secondary';
+            editButton.className = 'btn seen-btn';
             editButton.innerText = 'Edit';
             
             // Add an event listener to the Edit button
@@ -151,8 +151,8 @@ class TestString extends BindingClass {
                 listItem.innerHTML = `
                     ${patientName.name}
                     <div>
-                    <button class="btn btn-primary visit-btn">Visit</button>
-                    <button class="btn btn-primary seen-btn">Seen</button>
+                    <button class="btn  visit-btn">Visit</button>
+                    <button class="btn seen-btn">Seen</button>
                     </div>
                 `;
         
@@ -214,7 +214,7 @@ class TestString extends BindingClass {
         
                     // Create the Add button
                     let addButton = document.createElement('button');
-                    addButton.classList.add('btn', 'btn-primary');
+                    addButton.classList.add('btn', 'seen-btn');
                     addButton.textContent = 'Add';
                     addButton.style.marginRight = '4px';
         
@@ -230,7 +230,7 @@ class TestString extends BindingClass {
         
                     // Create the Edit button
                     let editButton = document.createElement('button');
-                    editButton.classList.add('btn', 'btn-primary');
+                    editButton.classList.add('btn', 'seen-btn');
                     editButton.textContent = 'Edit';
                     editButton.id = 'allPatientsEdit'; // Change id of the Edit button
                     

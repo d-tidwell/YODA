@@ -13,7 +13,7 @@
   <script type="text/javascript" src="assets/visit.js"></script>
 </head>
 <header class="header" id="header"></header>
-<body>
+<body class="tabs-color">
   <div class="container mt-4">
     <!-- Patient Details Section -->
     <div class="card mb-4">
@@ -49,9 +49,10 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingCreate">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCreate" aria-expanded="false" aria-controls="collapseCreate">
-             Create / Record PHR
-            </button>
-          </h2>
+                NEW PHR / CREATE
+            </button>          
+        </h2>
+        
           <div id="collapseCreate" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#createAccordion">
             <div class="accordion-body">
             <form>
@@ -86,8 +87,8 @@
               </div>
               <button type="button" class="btn btn-success" id="recordVisit">Record</button>
               <button type="button" class="btn btn-danger" id="stopVisit">Stop</button>
-              <button type="button" class="btn btn-primary" id="playAudio">Play</button>
-              <button type="button" class="btn btn-primary" id="submitVisit">Submit</button>
+              <button type="button" class="btn seen-btn" id="playAudio">Play</button>
+              <button type="button" class="btn seen-btn" id="submitVisit">Submit</button>
             </form>
               </div>
             </div>
