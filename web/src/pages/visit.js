@@ -6,7 +6,7 @@ import DataStore from "../util/DataStore";
 class Visit extends BindingClass {
     constructor() {
       super();
-      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate'], this);
+      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate', 'getAllPHR'], this);
       this.dataStore = new DataStore();
       this.header = new Header(this.dataStore);
       this.client = new yodaClient();
@@ -21,6 +21,7 @@ class Visit extends BindingClass {
       this.dataStore.set("provider", providerObj.name);
       const patient = await this.client.getPatient(urlParams.get("id"));
       this.setPatientAttributes(patient);
+  
       // Initialize audio recording variables
       this.mediaRecorder = null;
       this.chunks = [];
@@ -32,6 +33,7 @@ class Visit extends BindingClass {
       this.playButton = document.getElementById("playAudio");
       this.audioElement = document.getElementById("audio_preview");
       this.submitButton = document.getElementById("submitVisit");
+
   
       // Attach event listeners
       this.recordButton.addEventListener("click", this.startRecording);
@@ -44,6 +46,7 @@ class Visit extends BindingClass {
     async mount() {
       this.header.addHeaderToPage();
       const loggedIn = await this.client.isLoggedIn();
+      await this.getAllPHR(this.dataStore.get("patientId"));
     }
 
     getFormattedDate() {
@@ -164,8 +167,62 @@ class Visit extends BindingClass {
     onRecordFail(e) {
       console.log(e);
     }
+
+    //Add all PHR's in Dynamo  for review
+    async getAllPHR(patientName) {
+      const accordion = document.getElementById('phrAccordion');
+      const result = await this.client.getAllPHR(patientName);
+      if (result.phrId.length > 0) {
+        result.phrId.forEach((phr, index) => {
+            const accordionItem = document.createElement('div');
+            accordionItem.classList.add('accordion-item');
+    
+            const accordionHeader = document.createElement('h2');
+            accordionHeader.classList.add('accordion-header');
+            accordionHeader.id = `heading${index+1}`;
+    
+            const accordionButton = document.createElement('button');
+            accordionButton.classList.add('accordion-button', 'collapsed');
+            accordionButton.type = 'button';
+            accordionButton.dataset.bsToggle = 'collapse';
+            accordionButton.dataset.bsTarget = `#collapse${index+1}`;
+            accordionButton.setAttribute('aria-expanded', 'false');
+            accordionButton.setAttribute('aria-controls', `collapse${index+1}`);
+            accordionButton.innerText = `DATE: ${phr.date}\t\t\tSTATUS: ${phr.status}\t\t\tID: ${phr.phrId}`;
+
+    
+            const accordionCollapse = document.createElement('div');
+            accordionCollapse.id = `collapse${index+1}`;
+            accordionCollapse.classList.add('accordion-collapse', 'collapse');
+            accordionCollapse.setAttribute('aria-labelledby', `heading${index+1}`);
+            accordionCollapse.dataset.bsParent = '#phrAccordion';
+    
+            const accordionBody = document.createElement('div');
+            accordionBody.classList.add('accordion-body');
+            accordionBody.innerHTML = `
+            <p>Patient ID: ${phr.patientId}</p>
+            <p>Provider Name: ${phr.providerName}</p>
+            <p>Date: ${phr.date}</p>
+            <p>Status: ${phr.status}</p>
+            <p>Dictation ID: ${phr.dictationId}</p>
+            `; 
+    
+            accordionHeader.appendChild(accordionButton);
+            accordionCollapse.appendChild(accordionBody);
+            accordionItem.appendChild(accordionHeader);
+            accordionItem.appendChild(accordionCollapse);
+            accordion.appendChild(accordionItem);
+        });
+      }else {
+        const noResultsMessage = document.createElement('p');
+        noResultsMessage.innerText = 'No PHR\'s Found for the search criteria';
+        accordion.appendChild(noResultsMessage);
+      }
+    }
+    
   }
-  
+
+
   /**
    * Main method to run when the page contents have loaded.
    */

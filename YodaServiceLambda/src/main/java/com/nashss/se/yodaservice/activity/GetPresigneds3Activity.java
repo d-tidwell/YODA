@@ -20,7 +20,7 @@ import java.net.URL;
 import javax.inject.Inject;
 
 public class GetPresigneds3Activity {
-    private final String bucketName = "nss-s3-c02-capstone-darek.tidwell-nodelete";
+    private final String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
     private final Logger log = LogManager.getLogger();
     private final PHRDAO phrdao;
     private final DictationDAO dicDao;
@@ -42,7 +42,7 @@ public class GetPresigneds3Activity {
         System.out.println("HandleRequest");
         dicDao.createDictation(request.getFileName(), request.getPhrId(), request.getDate());
 
-        String objectKey = "audio/" + request.getFileName();
+        String objectKey = request.getFileName();
         java.util.Date expiration = new java.util.Date();
         long expTimeMillis = expiration.getTime();
         // Add 1 hour.

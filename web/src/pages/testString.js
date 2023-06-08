@@ -339,7 +339,7 @@ class TestString extends BindingClass {
                 accordionButton.setAttribute('aria-expanded', 'false');
                 accordionButton.setAttribute('aria-controls', `collapse${index+1}`);
                 // !Change This
-                accordionButton.innerText = `PHR ${phr.patientId}`;
+                accordionButton.innerText = `PHR ${phr.date}`;
     
                 const accordionCollapse = document.createElement('div');
                 accordionCollapse.id = `collapse${index+1}`;

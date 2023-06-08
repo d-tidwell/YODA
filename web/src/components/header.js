@@ -32,14 +32,16 @@ export default class Header extends BindingClass {
     }
 
     createSiteTitle() {
-        const homeButton = document.createElement('a');
-        homeButton.classList.add('header_home');
-        homeButton.href = 'desktop.html';
-        homeButton.innerText = 'Y.O.D.A. MD';
-
+        // const imageHeader = document.createElement('img');
+        // imageHeader.src = "images/logo-no-background.svg";
+        // imageHeader.classList.add("header-image-quarter");
+        const imageHeader2 = document.createElement('img');
+        imageHeader2.src = "images/yoda.png";
+        imageHeader2.classList.add("header-image-quarter");
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');
-        siteTitle.appendChild(homeButton);
+        // siteTitle.appendChild(imageHeader);
+        siteTitle.appendChild(imageHeader2);
 
         return siteTitle;
     }
@@ -66,8 +68,8 @@ export default class Header extends BindingClass {
     }
 
     createButton(text, clickHandler) {
-        const button = document.createElement('a');
-        button.classList.add('button');
+        const button = document.createElement('button');
+        button.classList.add('header-button');
         button.href = '#';
         button.innerText = text;
 

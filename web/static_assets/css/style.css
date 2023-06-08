@@ -1,13 +1,13 @@
 :root {
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
-    --primary-color: #a0f7f79f;
-    --secondary-color: #ffffff;
-    --tertiary-color: #2404da;
+    --primary-color: #4390bc;
+    --secondary-color: #68a7ca;
+    --tertiary-color: #8dbdd8;
     --error-color: #EE3A23;
 }
 
 .background {
-    background-color: #8A8C8F;
+    background-color:  var(--tertiary-color);
     margin: 0;
     counter-reset: section;
     font-family: "Helvetica Neue",Helvetica,sans-serif;
@@ -18,16 +18,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
     padding: 4px 20px;
 }
 
 .button {
-  background-color: var(--tertiary-color);
+  background-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
   border: none;
   border-radius: 8px;
-  color: var(--secondary-color);
+  color: var(--primary-color);
   padding: 6px 6px 10px 6px;
   text-align: center;
   font-weight: bold;
@@ -77,3 +78,40 @@
     flex-direction: column;
 }
 
+.half-scaled-image {
+    width: 50%; /* Reduce the width by 50% */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+.header-image-quarter {
+    width: 10%; /* Reduce the width by 50% */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+.header-button {
+  background-color: var(--tertiary-color);
+  outline: 2px solid var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  color: var(--primary-color);
+  padding: 6px 6px 10px 6px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tabs-color {
+    background-color: rgb(234, 235, 236);
+
+}
+
+#nav-home-tab {
+    background-color: rgb(234, 235, 236);
+}
+#nav-profile-tab-button {
+    background-color: rgb(234, 235, 236);
+}
+#nav-contact-tab{
+    background-color: rgb(234, 235, 236);
+}
