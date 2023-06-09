@@ -14,6 +14,7 @@ public class PHR {
     private String providerName;
     private String recordDate;
     private String status;
+    
     @DynamoDBHashKey(attributeName = "phrId")
     public String getPhrId() {
         return phrId;

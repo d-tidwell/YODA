@@ -60,6 +60,7 @@ public class DictationDAO {
                 .media(Media.builder().mediaFileUri(audioFileUrl).build())
                 .languageCode(languageCode)
                 .outputBucketName(bucketName)
+                .type("DICTATION")
                 .build();
         StartMedicalTranscriptionJobResponse response = transcribeClient.startMedicalTranscriptionJob(jobRequest);
         return response;

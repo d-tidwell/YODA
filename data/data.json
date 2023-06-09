@@ -78,7 +78,7 @@
         "Item": {
           "dictationId": { "S": "TEST_DICTATION_ID2" },
           "phrId": { "S": "TEST_PHR_ID2" },
-          "recordDate": { "S": "2023-05-23" },
+          "recordDate": { "S": "2022-05-23" },
           "type": { "S": "post" },
           "dictationText": { "S": "TEST_DICTATION_TEXTLINK2" },
           "dictationAudio": { "S": "TEST_DICTATION_AUDIOLINK2" }
@@ -90,7 +90,7 @@
         "Item": {
           "dictationId": { "S": "TEST_DICTATION_ID3" },
           "phrId": { "S": "TEST_PHR_ID2" },
-          "recordDate": { "S": "2023-05-23" },
+          "recordDate": { "S": "2022-05-23" },
           "type": { "S": "inVisit" },
           "dictationText": { "S": "TEST_DICTATION_TEXTLINK3" },
           "dictationAudio": { "S": "TEST_DICTATION_AUDIOLINK3" }
@@ -102,7 +102,7 @@
         "Item": {
           "dictationId": { "S": "TEST_DICTATION_ID4" },
           "phrId": { "S": "TEST_PHR_ID3" },
-          "recordDate": { "S": "2023-05-23" },
+          "recordDate": { "S": "2023-01-23" },
           "type": { "S": "inVisit" },
           "dictationText": { "S": "TEST_DICTATION_TEXTLINK4" },
           "dictationAudio": { "S": "TEST_DICTATION_AUDIOLINK4" }
@@ -117,7 +117,7 @@
           "phrId": { "S": "TEST_PHRID1" },
           "patientId": { "S": "TEST_PATIENT1" },
           "providerName": { "S": "Dr.Darek" },
-          "recordDate": { "S": "2023-05-23" },
+          "recordDate": { "S": "2023-04-23" },
           "status": { "S": "PENDING" }
         }
       }
@@ -128,7 +128,7 @@
           "phrId": { "S": "TEST_PHRID2" },
           "patientId": { "S": "TEST_PATIENT2" },
           "providerName": { "S": "Dr.Yelyzaveta" },
-          "recordDate": { "S": "2023-05-23" },
+          "recordDate": { "S": "2023-03-23" },
           "status": { "S": "CREATED" }
         }
       }
@@ -139,7 +139,7 @@
           "phrId": { "S": "TEST_PHRID3" },
           "patientId": { "S": "TEST_PATIENT2" },
           "providerName": { "S": "Dr.Yelyzaveta" },
-          "recordDate": { "S": "2023-05-23" },
+          "recordDate": { "S": "2023-02-23" },
           "status": { "S": "COMPLETED" }
         }
       }

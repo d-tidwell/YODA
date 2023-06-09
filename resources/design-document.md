@@ -266,6 +266,9 @@ _DictionModel_
     }' \
     http://127.0.0.1:3000/dictate/{PhrId}/{PhrDate}/{fileName}/{type}
 
+    curl -X PUT http://127.0.0.1:3000/dicatate/TEST_PHRID2/2023-03-23/2023-06-05-TEST_PATIENT3-Dr.Darek-preVisit/preVisit
+
+
 
 
     endpoint: /provider/remove/{patientId}/{providerName}

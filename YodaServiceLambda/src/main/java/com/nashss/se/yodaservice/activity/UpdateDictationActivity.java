@@ -36,12 +36,12 @@ public class UpdateDictationActivity {
         //which record test validity
         PHR existingRecord = phrdao.getPHR(request.getPhrId(), request.getPhrDate());
         //which dictation test it is there
-        Dictation dictation = dicDao.getDictation(request.getFileName(), existingRecord.getDate());
+        //Dictation dictation = dicDao.getDictation(request.getFileName(), existingRecord.getDate());
         //create a job name
-        String transcribeJobName = "text/" + existingRecord.getProviderName() + request.getPhrId() +
+        String transcribeJobName = existingRecord.getProviderName() + request.getPhrId() +
                 request.getPhrDate();
         //get a URL
-        String bucketName = "nss-s3-c02-capstone-darek";
+        String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
         String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
         //build a job
         String languageCode = "en-US";
@@ -50,14 +50,14 @@ public class UpdateDictationActivity {
                 bucketName, languageCode,
                 providerDAO.getProvider(existingRecord.getProviderName()).getMedicalSpecialty());
         //indicate it is transcribing
-        existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
+        //existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
         //save the phr change
-        phrdao.savePHR(existingRecord);
+        //phrdao.savePHR(existingRecord);
         //set the url for the text file & type
-        dictation.setDictationText(transcribeJobName);
-        dictation.setType(request.getType());
+        //dictation.setDictationText(transcribeJobName);
+        //dictation.setType(request.getType());
         //save the dictation changes
-        dicDao.afterTranscriptionUpdate(dictation);
+        //dicDao.afterTranscriptionUpdate(dictation);
         return UpdateDictationResult.builder()
                 .withStatus(response.medicalTranscriptionJob() +
                         response.medicalTranscriptionJob().medicalTranscriptionJobName() +

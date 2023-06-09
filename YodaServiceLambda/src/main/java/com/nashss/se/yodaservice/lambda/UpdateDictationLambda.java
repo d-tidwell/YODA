@@ -13,8 +13,8 @@ public class UpdateDictationLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdateDictationRequest> input, Context context) {
         return super.runActivity(
             () -> input.fromPath(path -> UpdateDictationRequest.builder()
-                    .withPhrId(path.get("phrId"))
-                    .withPhrDate(path.get("phrDate"))
+                    .withPhrId(path.get("PhrId"))
+                    .withPhrDate(path.get("PhrDate"))
                     .withFileName(path.get("fileName"))
                     .withType(path.get("type"))
                     .build()),

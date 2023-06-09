@@ -6,7 +6,7 @@ import DataStore from "../util/DataStore";
 class Visit extends BindingClass {
     constructor() {
       super();
-      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate', 'getAllPHR'], this);
+      this.bindClassMethods(['testFunk','clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate', 'getAllPHR'], this);
       this.dataStore = new DataStore();
       this.header = new Header(this.dataStore);
       this.client = new yodaClient();
@@ -34,6 +34,10 @@ class Visit extends BindingClass {
       this.audioElement = document.getElementById("audio_preview");
       this.submitButton = document.getElementById("submitVisit");
 
+      //!tester remove
+      this.testerButton = document.getElementById("testerOne");
+      this.testerButton.addEventListener("click", this.testFunk);
+
   
       // Attach event listeners
       this.recordButton.addEventListener("click", this.startRecording);
@@ -47,6 +51,13 @@ class Visit extends BindingClass {
       this.header.addHeaderToPage();
       const loggedIn = await this.client.isLoggedIn();
       await this.getAllPHR(this.dataStore.get("patientId"));
+    }
+
+    testFunk(event) {
+      event.preventDefault();
+      console.log("pressed");
+      this.client.updateDictation("TEST_PHRID2", "2023-03-23","2023-06-05-TEST_PATIENT3-Dr.Darek-preVisit","preVisit");
+      console.log("pressed");
     }
 
     getFormattedDate() {
@@ -102,25 +113,15 @@ class Visit extends BindingClass {
     }
       
     startRecording = () => {
-      const supportedAudioFormats = [
-        'audio/wav',
-        'audio/webm',
-        'audio/ogg',
-        'audio/mpeg',
-        // Add more supported MIME types as needed
-      ];
-      
-      const supportedFormats = supportedAudioFormats.filter((format) => MediaRecorder.isTypeSupported(format));
-      
-      console.log('Supported Audio Formats:', supportedFormats);
+
       navigator.mediaDevices.getUserMedia({ video: false, audio: true })
         .then((stream) => {
           this.audioElement.srcObject = stream;
           if (MediaRecorder.isTypeSupported('audio/webm')) {
             this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
           } else {
-            // Handle fallback if WAV format is not supported
-            console.log('audio/wav not supported');
+            // Handle fallback if webm format is not supported
+            console.log('audio/webm not supported');
             return;
           }          
           this.mediaRecorder.start();

@@ -60,7 +60,8 @@ export default class YodaClient extends BindingClass {
     }
 
     async logout() {
-        this.authenticator.logout();
+        await this.authenticator.logout();
+        window.location = 'index.html';
     }
 
     async getTokenOrThrow(unauthenticatedErrorMessage) {
@@ -212,7 +213,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async getPHRDateRange(patientId, to, from, errorCallback){
+    async getPHRDateRange(patientId, from, to, errorCallback){
         console.log("hit range");
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
@@ -288,7 +289,22 @@ export default class YodaClient extends BindingClass {
                     'Content-Type': 'audio/webm',
                 }
             });
-            console.log("Drop in the bucket successful")
+            return response;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+        }
+    }
+
+    async updateDictation(PhrId, PhrDate, fileName, type, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.put(`/dictate/${PhrId}/${PhrDate}/${fileName}/${type}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                  }
+            });
+            console.log(response);
             return response;
         } catch (error) {
             this.handleError(error, errorCallback);
