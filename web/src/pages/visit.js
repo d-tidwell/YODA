@@ -6,7 +6,7 @@ import DataStore from "../util/DataStore";
 class Visit extends BindingClass {
     constructor() {
       super();
-      this.bindClassMethods(['testFunk','clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate', 'getAllPHR'], this);
+      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate', 'getAllPHR'], this);
       this.dataStore = new DataStore();
       this.header = new Header(this.dataStore);
       this.client = new yodaClient();
@@ -34,10 +34,6 @@ class Visit extends BindingClass {
       this.audioElement = document.getElementById("audio_preview");
       this.submitButton = document.getElementById("submitVisit");
 
-      //!tester remove
-      this.testerButton = document.getElementById("testerOne");
-      this.testerButton.addEventListener("click", this.testFunk);
-
   
       // Attach event listeners
       this.recordButton.addEventListener("click", this.startRecording);
@@ -53,12 +49,6 @@ class Visit extends BindingClass {
       await this.getAllPHR(this.dataStore.get("patientId"));
     }
 
-    testFunk(event) {
-      event.preventDefault();
-      console.log("pressed");
-      this.client.updateDictation("TEST_PHRID2", "2023-03-23","2023-06-05-TEST_PATIENT3-Dr.Darek-preVisit","preVisit");
-      console.log("pressed");
-    }
 
     getFormattedDate() {
       const currentDate = new Date();
@@ -81,16 +71,23 @@ class Visit extends BindingClass {
         const patientName = this.dataStore.get("patientId");
         const providerName = this.dataStore.get("provider");
         const type = document.getElementById("dictationType").value;
-        //!!!!create the phr to get the Id
-
+        //create the phr to get the Id - this also creates dict object with the correct name to match s3 bucket filename
+        const newPHR = await this.client.createPHR(this.dataStore.get("patientId"), this.dataStore.get("provider"), dateString, type)
+        const idForPhr = newPHR.phr.phrId;
         //create the filename
         const filename = dateString +"-"+patientName+"-"+providerName+"-"+type;
-
         console.log(filename,"filename");
-        const s3string = await this.client.getPresignedS3(filename, "IDNONEXISTENT",dateString);
+        const s3string = await this.client.getPresignedS3(filename, idForPhr,dateString);
         console.log(s3string.url);
-        this.uploadAudioToS3(s3string.url);
-        //!!!!make a call to create the dictation object & populate the data passing the phrid
+        const s3response = await this.uploadAudioToS3(s3string.url);
+        //make a call to updateDict object and trigger transcription
+        if (s3response.status === 200) {
+          const resultUpdateDictation = await this.client.updateDictation( idForPhr, dateString,filename,type);
+          //do something for feedback to the user and redirect to desktop
+          console.log(resultUpdateDictation, "--dictations has completed-line97 visit.js")
+        } else {
+          console.log("terrible the update dictation failed biotch");
+        }
 
     }
 
@@ -100,13 +97,13 @@ class Visit extends BindingClass {
           return;
         }
   
-        // Convert recorded audio to blob
+        // Convert recorded audio to blob 
         const response = await fetch(this.recordedAudio.src);
         const audioBlob = await response.blob();
 
       try {
           const uploadResponse = await this.client.dropInTheBucket(presignedS3Url, audioBlob);
-          console.log(uploadResponse);
+          return uploadResponse;
       } catch (error) {
           console.error('Error uploading audio to S3: ', error);
       }
@@ -199,6 +196,13 @@ class Visit extends BindingClass {
             statusDiv.classList.add('attr', 'status');
             statusDiv.innerText = `STATUS: ${phr.status}`;
             accordionButton.appendChild(statusDiv);
+
+            //! dictVal needs to be introduced to get the type
+
+            // const typeDiv = document.createElement('div');
+            // typeDiv.classList.add('attr', 'type');
+            // typeDiv.innerText = `TYPE: ${dictVal.type}`;
+            // accordionButton.appendChild(typeDiv);
     
             const idDiv = document.createElement('div');
             idDiv.classList.add('attr', 'id');

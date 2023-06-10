@@ -146,6 +146,25 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+    async createPHR(patientId, providerName, date, type, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can create patients.");
+            const response = await this.axiosClient.post(`/patient/phr/${patientId}`, {
+                providerName: providerName,
+                date: date,
+                type: type
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
     
     async addPatientToProvider(patientId, providerName, errorCallback){
         try {

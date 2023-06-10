@@ -3,6 +3,8 @@ package com.nashss.se.yodaservice.activity;
 import com.amazonaws.services.s3.AmazonS3;
 import com.nashss.se.yodaservice.enums.PHRStatus;
 import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobResponse;
+import software.amazon.awssdk.services.transcribe.model.TranscriptionJobStatus;
+
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.activity.requests.UpdateDictationRequest;
 import com.nashss.se.yodaservice.activity.results.UpdateDictationResult;
@@ -13,6 +15,8 @@ import com.nashss.se.yodaservice.dynamodb.models.PHR;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -33,10 +37,13 @@ public class UpdateDictationActivity {
     }
 
     public UpdateDictationResult handleRequest(final UpdateDictationRequest request) {
+     
         //which record test validity
         PHR existingRecord = phrdao.getPHR(request.getPhrId(), request.getPhrDate());
+    
         //which dictation test it is there
-        //Dictation dictation = dicDao.getDictation(request.getFileName(), existingRecord.getDate());
+        Dictation dictation = dicDao.getDictation(existingRecord.getPhrId(), existingRecord.getDate());
+        
         //create a job name
         String transcribeJobName = existingRecord.getProviderName() + request.getPhrId() +
                 request.getPhrDate();
@@ -50,18 +57,41 @@ public class UpdateDictationActivity {
                 bucketName, languageCode,
                 providerDAO.getProvider(existingRecord.getProviderName()).getMedicalSpecialty());
         //indicate it is transcribing
-        //existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
+        existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
+        //retries in while loop to confirm completion or fail
+        int maxTries = 60;
+        while(maxTries > 0) {
+                maxTries--;
+                try {
+                        TimeUnit.SECONDS.sleep(10);
+                        TranscriptionJobStatus jobStatus = response.medicalTranscriptionJob().transcriptionJobStatus();
+                        if (jobStatus == TranscriptionJobStatus.COMPLETED || jobStatus == TranscriptionJobStatus.FAILED) {
+                                System.out.println("Job " + transcribeJobName + " is " + jobStatus.toString() + ".");
+                                if(jobStatus == TranscriptionJobStatus.COMPLETED) {
+                                        System.out.println("Download the transcript from\n\t" + response.medicalTranscriptionJob().transcript().transcriptFileUri());
+                                    }
+                                    break;
+                                } else {
+                                    System.out.println("Waiting for " + transcribeJobName + ". Current status is " + jobStatus.toString() + ".");
+                                }
+                            } catch(InterruptedException e) {
+                                log.error("Error transcribe line 73 UpdateDictation",e);
+                                e.printStackTrace();
+                        }
+                }
+       
+        //indicate it is transcribing
+        existingRecord.setStatus(PHRStatus.COMPLETED.toString());
         //save the phr change
-        //phrdao.savePHR(existingRecord);
+        phrdao.savePHR(existingRecord);
         //set the url for the text file & type
-        //dictation.setDictationText(transcribeJobName);
-        //dictation.setType(request.getType());
+        dictation.setDictationText(transcribeJobName);
         //save the dictation changes
-        //dicDao.afterTranscriptionUpdate(dictation);
+        dicDao.afterTranscriptionUpdate(dictation);
         return UpdateDictationResult.builder()
                 .withStatus(response.medicalTranscriptionJob() +
                         response.medicalTranscriptionJob().medicalTranscriptionJobName() +
                         response.medicalTranscriptionJob().completionTime())
                 .build();
-    }
+        }
 }

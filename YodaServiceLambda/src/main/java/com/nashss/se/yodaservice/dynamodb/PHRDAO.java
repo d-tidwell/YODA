@@ -35,8 +35,8 @@ public class PHRDAO {
         PHR phr = this.dynamoDbMapper.load(PHR.class, phrId, date);
 
         if (Objects.isNull(phr)) {
-            log.info(String.format("PHRNotFoundException, %s", phrId));
-            throw new PHRNotFoundException("Could not find PHR");
+            log.error(String.format("PHRNotFoundException-getPHR, %s", phrId));
+            throw new PHRNotFoundException("Could not find PHR-getPHR request");
         }
         return phr;
     }
@@ -48,8 +48,8 @@ public class PHRDAO {
         PaginatedQueryList<PHR> result = this.dynamoDbMapper.query(PHR.class, queryExpression);
 
         if (result.isEmpty()) {
-            log.info(String.format("PHRNotFoundException, %s", phrId));
-            throw new PHRNotFoundException("Could not find PHR");
+            log.error(String.format("PHRNotFoundException-getPHRByPHRID, %s", phrId));
+            throw new PHRNotFoundException("Could not find PHR-getPHRByPHRID");
         }
 
         return result.get(0);

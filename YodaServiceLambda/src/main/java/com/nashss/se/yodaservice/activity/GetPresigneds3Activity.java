@@ -35,12 +35,6 @@ public class GetPresigneds3Activity {
     }
 
     public GetPresigneds3Result handleRequest(final GetPresigneds3Request request) {
-        //Get the PHR we are talking about
-        //PHR updatePHR = phrdao.getPHR(request.getPhrId(), request.getDate());
-        //create the dictation record
-        log.error("HITS THE HANDLE REQUEST");
-        System.out.println("HandleRequest");
-        dicDao.createDictation(request.getFileName(), request.getPhrId(), request.getDate());
 
         String objectKey = request.getFileName();
         java.util.Date expiration = new java.util.Date();
@@ -55,16 +49,12 @@ public class GetPresigneds3Activity {
                         .withExpiration(expiration);
         generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/webm");
 
-        log.error("HITS THE request generator");
+        log.error("HITS THE request generator presign");
         System.out.println("Hits generator");
         URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
         log.error("Pre-Signed URL: " + url.toString() + " : " + request.getPhrId());
         System.out.println("Pre-Signed URL: " + url.toString() + " : " + request.getPhrId());
 
-        //set the status of the PHR
-        //updatePHR.setStatus(PHRStatus.PRESIGNED.toString());
-        //phrdao.savePHR(updatePHR);
-        //return the URL
         return GetPresigneds3Result.builder()
                 .withUrl(url.toString())
                 .build();

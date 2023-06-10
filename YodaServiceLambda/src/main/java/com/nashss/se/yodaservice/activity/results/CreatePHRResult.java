@@ -1,20 +1,22 @@
 package com.nashss.se.yodaservice.activity.results;
 
-public class CreatePHRResult {
-    private final String status;
+import com.nashss.se.yodaservice.models.PHRModel;
 
-    public CreatePHRResult(String status) {
-        this.status = status;
+public class CreatePHRResult {
+    private final PHRModel newPHR;
+
+    public CreatePHRResult(PHRModel newPHR) {
+        this.newPHR = newPHR;
     }
 
-    public String getStatus() {
-        return status;
+    public PHRModel getPHR() {
+        return newPHR;
     }
 
     @Override
     public String toString() {
         return "CreatePHRResult{" +
-                "status=" + status +
+                "PHR=" + newPHR +
                 "}";
     }
 
@@ -24,15 +26,15 @@ public class CreatePHRResult {
     }
 
     public static class Builder {
-        private String status;
+        private PHRModel newPHR;
 
-        public Builder withstatus(String status){
-            this.status = status;
+        public Builder withPHR(PHRModel newPHR){
+            this.newPHR = newPHR;
             return this;
         }
 
         public CreatePHRResult build() {
-            return new CreatePHRResult(status);
+            return new CreatePHRResult(newPHR);
         }
     }
 

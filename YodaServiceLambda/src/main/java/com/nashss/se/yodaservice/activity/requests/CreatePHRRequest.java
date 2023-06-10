@@ -10,13 +10,16 @@ public class CreatePHRRequest {
     private final String date;
     private final String status;
     private final String age;
+    private final String type;
     
-    public CreatePHRRequest(String patientId, String providerName, String date, String status, String age) {
+    public CreatePHRRequest(String patientId, String providerName, String date, String status, String age, String type) {
         this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
         this.age = age;
+        this.type = type;
+
     }
 
     public String getProviderName() {
@@ -39,6 +42,10 @@ public class CreatePHRRequest {
         return patientId;
     }
 
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         return "CreatePHRRequest{" +
@@ -47,6 +54,7 @@ public class CreatePHRRequest {
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
                 ", age='" + age + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 
@@ -61,6 +69,8 @@ public class CreatePHRRequest {
         private String date;
         private String status;
         private String age;
+        private String type;
+
         //CHECKSTYLE:OFF:Builder
         public Builder withPatientId(String patientId) {
             this.patientId = patientId;
@@ -86,8 +96,13 @@ public class CreatePHRRequest {
             return this;
         }
 
+        public Builder withType(String type) {
+            this.type = type;
+            return this;
+        }
+
         public CreatePHRRequest build() {
-            return new CreatePHRRequest(patientId, providerName, date, status, age);
+            return new CreatePHRRequest(patientId, providerName, date, status, age, type);
         }
     }
 }

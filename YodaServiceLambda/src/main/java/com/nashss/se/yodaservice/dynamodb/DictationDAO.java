@@ -30,18 +30,20 @@ public class DictationDAO {
         Dictation dic = this.dynamoDbMapper.load(Dictation.class, dictationId, date);
 
         if (Objects.isNull(dic)) {
-            log.info(String.format("DictationNotFoundException, %s", dic));
-            throw new DictationNotFoundException("Could not find PHR");
+            log.error(String.format("DictationNotFoundException-getDictation, %s", dic));
+            throw new DictationNotFoundException("Could not find Dic dictation DAO");
         }
         return dic;
     }
 
-    public boolean createDictation(String dictationId, String phRid, String date) {
+    public boolean createDictation(String dictationId, String phRid, String date, String type) {
         Dictation newDic = new Dictation();
         newDic.setDictationId(dictationId);
         newDic.setPhrId(phRid);
         newDic.setDate(date);
-        newDic.setDictationText("audio/" + dictationId);
+        newDic.setDictationAudio(dictationId);
+        newDic.setType(type);
+      
         try {
             this.dynamoDbMapper.save(newDic);
             return true;
