@@ -75,7 +75,7 @@ class TestString extends BindingClass {
 
     async populatePhrPending(provider) {
         const response = await this.client.getAllPHRByProvider(provider.name);
-
+        const responseId = response.phrId;
         const phrList = document.getElementById('phrPendingList');
     
         phrList.innerHTML = '';
@@ -84,7 +84,7 @@ class TestString extends BindingClass {
         const labelStyle = 'width: 80px; font-weight: bold;';
         const valueStyle = 'margin-left: 5px; margin-right:20px'; 
 
-        for (const phrId of response.phrId) {
+        for (const phrId of responseId) {
             // Use getPatient() method to fetch patient details
             const patient = await this.client.getPatient(phrId.patientId);
 
@@ -171,7 +171,7 @@ class TestString extends BindingClass {
     
     
     async populatePatientsPending(provider){
-        console.log(provider)
+        console.log(provider.name,"patients provider")
         var listGroup = document.getElementById('desktopListGroupPatients');
         const identity = await this.client.getIdentity();
         const self = this; // add this line
@@ -185,6 +185,7 @@ class TestString extends BindingClass {
                 const patientName = await this.client.getPatient(patient);
         
                 listItem.innerHTML = `
+                    <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
                     ${patientName.name}
                     <div>
                     <button class="btn  visit-btn">Visit</button>
@@ -194,21 +195,21 @@ class TestString extends BindingClass {
         
                 listGroup.appendChild(listItem);
         
-                (function(self, listItem, patient) { // modify this line
+                (function(self, listItem, patient) { 
                     listItem.querySelector('.visit-btn').addEventListener('click', function() {
                         window.open('/visit.html?id=' + patient, '_blank');
                     });
         
                     listItem.querySelector('.seen-btn').addEventListener('click', async () => {
-                        const result = await self.client.removePatient(patient, identity.name); // modify this line
+                        const result = await self.client.removePatient(patient, identity.name); 
                         console.log(result.success, "test");
                         if (result.success === true) {
                             listItem.remove();  
                         }
                     });
-                })(self, listItem, patient); // modify this line
+                })(self, listItem, patient); 
             } catch (err) {
-                console.log(err);  // handle errors here
+                console.log(err);  
             }
         }
     }

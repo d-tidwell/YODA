@@ -10,12 +10,13 @@ export default class Header extends BindingClass {
 
         const methodsToBind = [
             'addHeaderToPage', 'createSiteTitle', 'createUserInfoForHeader',
-            'createLoginButton', 'createLoginButton', 'createLogoutButton'
+            'createLoginButton', 'createLogoutButton', 'createDigitalClock', 'getCurrentTime'
         ];
         this.bindClassMethods(methodsToBind, this);
 
         this.client = new yodaClient();
     }
+
 
     /**
      * Add the header to the page.
@@ -25,22 +26,27 @@ export default class Header extends BindingClass {
 
         const siteTitle = this.createSiteTitle();
         const userInfo = this.createUserInfoForHeader(currentUser);
+  
 
         const header = document.getElementById('header');
+
         header.appendChild(siteTitle);
         header.appendChild(userInfo);
+        
     }
 
     createSiteTitle() {
-        // const imageHeader = document.createElement('img');
-        // imageHeader.src = "images/logo-no-background.svg";
-        // imageHeader.classList.add("header-image-quarter");
+        const imageHeader = document.createElement('img');
+        imageHeader.src = "images/logo-no-background.png";
+        imageHeader.classList.add("header-image-quarter");
         const imageHeader2 = document.createElement('img');
         imageHeader2.src = "images/yoda.png";
         imageHeader2.classList.add("header-image-quarter");
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');
-        // siteTitle.appendChild(imageHeader);
+        const clock = this.createDigitalClock();
+        siteTitle.appendChild(imageHeader);
+        siteTitle.appendChild(clock);
         siteTitle.appendChild(imageHeader2);
 
         return siteTitle;
@@ -60,11 +66,15 @@ export default class Header extends BindingClass {
     }
 
     createLoginButton() {
-        return this.createButton('Login', this.client.login);
+        const loginBtn = this.createButton('Login', this.client.login);
+        loginBtn.classList.add('btn');
+        return loginBtn;
     }
 
     createLogoutButton(currentUser) {
-        return this.createButton(`Logout: ${currentUser.name}`, this.client.logout);
+        const logoutBtn =  this.createButton(`Logout: ${currentUser.name}`, this.client.logout);
+        logoutBtn.classList.add('btn')
+        return logoutBtn
     }
 
     createButton(text, clickHandler) {
@@ -79,4 +89,41 @@ export default class Header extends BindingClass {
 
         return button;
     }
+
+    getCurrentTime() {
+        const date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth();
+        let day = date.getDate();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+
+        month = month < 10 ? '0' + month : month;
+        day = day < 10 ? '0' + day : day;
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        return `${year}-${month}-${day}:${hours}:${minutes}:${seconds}`;
+    }
+
+        /**
+     * Create a digital military time clock.
+     */
+    createDigitalClock() {
+        const clockDiv = document.createElement('div');
+        clockDiv.id = 'digital-clock';
+        clockDiv.classList.add('clock');
+        clockDiv.classList.add('digital-clock');  // new class for styling
+        clockDiv.innerText = this.getCurrentTime();
+
+        setInterval(() => {
+            clockDiv.innerText = this.getCurrentTime();
+        }, 1000);  // update every second
+
+        return clockDiv;
+    }
+
+
 }

@@ -22,7 +22,12 @@
     color: var(--primary-color);
     padding: 4px 20px;
 }
-
+.site-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
 .button {
   background-color: var(--primary-color);
   outline: 2px solid var(--primary-color);
@@ -35,7 +40,11 @@
   text-decoration: none;
   cursor: pointer;
 }
-
+.img-fit {
+  width: 10%;
+  height: auto;
+  object-fit: cover; /* Ensures the image covers the whole container */
+}
 .buttons-container {
     display: flex;
     flex-wrap: nowrap;
@@ -125,6 +134,16 @@ button.seen-btn {
   text-decoration: none;
   cursor: pointer;
 }
+
+.digital-clock {
+    font-family: 'Courier New', Courier, monospace;  /* choose a digital-style font */
+    font-size: 3em;  /* adjust size as needed */
+    color: rgb(125, 227, 115);  /* green, like a classic digital clock */
+    background-color: var(--teritiary-color);  /* black background */
+    text-align: center;  /* center the text horizontally */
+    line-height: 100px;  /* center the text vertically, adjust as needed */
+    font-family: 'LED Digital 7', sans-serif;}
+
 
 .tabs-color {
     background-color: rgb(234, 235, 236);

@@ -101,7 +101,7 @@ public class PHRDAO {
     }
 
     public List<PHR> getUncompletedPHRsByProvider(String providerName) {
-        List<String> allStatuses = Arrays.asList(PHRStatus.CREATED.toString(), PHRStatus.PENDING.toString(), PHRStatus.PENDING_SIGNATURE.toString(), PHRStatus.TRANSCRIBING.toString());
+        List<String> allStatuses = Arrays.asList(PHRStatus.COMPLETED.toString(), PHRStatus.CREATED.toString(), PHRStatus.PENDING.toString(), PHRStatus.PENDING_SIGNATURE.toString(), PHRStatus.TRANSCRIBING.toString());
         List<String> statusesToQuery = new ArrayList<>(allStatuses);
     
         List<PHR> results = new ArrayList<>();

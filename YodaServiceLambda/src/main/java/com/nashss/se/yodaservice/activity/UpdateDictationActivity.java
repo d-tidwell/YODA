@@ -69,10 +69,15 @@ public class UpdateDictationActivity {
                                 System.out.println("Job " + transcribeJobName + " is " + jobStatus.toString() + ".");
                                 if(jobStatus == TranscriptionJobStatus.COMPLETED) {
                                         System.out.println("Download the transcript from\n\t" + response.medicalTranscriptionJob().transcript().transcriptFileUri());
-                                    }
-                                    break;
+                                          //indicate it is transcribing
+                                        existingRecord.setStatus(PHRStatus.COMPLETED.toString());
+                                        break;
+                                } else if (jobStatus == TranscriptionJobStatus.FAILED) {
+                                        existingRecord.setStatus(jobStatus.toString());
+                                }
                                 } else {
                                     System.out.println("Waiting for " + transcribeJobName + ". Current status is " + jobStatus.toString() + ".");
+                                    existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
                                 }
                             } catch(InterruptedException e) {
                                 log.error("Error transcribe line 73 UpdateDictation",e);
@@ -80,8 +85,7 @@ public class UpdateDictationActivity {
                         }
                 }
        
-        //indicate it is transcribing
-        existingRecord.setStatus(PHRStatus.COMPLETED.toString());
+      
         //save the phr change
         phrdao.savePHR(existingRecord);
         //set the url for the text file & type
