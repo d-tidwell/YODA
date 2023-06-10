@@ -79,58 +79,94 @@ class TestString extends BindingClass {
         const phrList = document.getElementById('phrPendingList');
     
         phrList.innerHTML = '';
-    
-        // For each PHR, generate HTML and append to the list
+        
+        // CSS styles for the labels
+        const labelStyle = 'width: 80px; font-weight: bold;';
+        const valueStyle = 'margin-left: 5px; margin-right:20px'; 
+
         for (const phrId of response.phrId) {
             // Use getPatient() method to fetch patient details
             const patient = await this.client.getPatient(phrId.patientId);
-            
+
             // Create a list item for each PHR
             let li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.className = 'list-group-item d-flex flex-wrap'; // Add flex-wrap to allow wrapping of content
 
-            let idDiv = document.createElement('div');
-            idDiv.style.marginRight = '10px'; // adjust as needed
-            let textNode = document.createTextNode(`id: ${phrId.phrId}`);
-            idDiv.appendChild(textNode);
-            li.appendChild(idDiv);
+            // Create container for phrID and buttons
+            let phrContainer = document.createElement('div');
+            phrContainer.className = 'phr-container d-flex justify-content-between align-items-center flex-grow-1';
 
-            let nameDiv = document.createElement('div');
-            nameDiv.style.marginRight = '10px'; // adjust as needed
-            let textNode2 = document.createTextNode(`Name: ${patient.name}`);
-            nameDiv.appendChild(textNode2);
-            li.appendChild(nameDiv);
+            let idContainer = document.createElement('div');
+            idContainer.className = 'label-value-container';
+            let idLabel = document.createElement('span');
+            idLabel.style.cssText = labelStyle;
+            idLabel.innerText = 'Id:';
+            let idValue = document.createElement('span');
+            idValue.style.cssText = valueStyle; // Apply the value style
+            idValue.innerText = phrId.phrId;
+            idContainer.appendChild(idLabel);
+            idContainer.appendChild(idValue);
 
-            let statusDiv = document.createElement('div');
-            let statusTextNode = document.createTextNode(`Status: ${phrId.status}`);
-            statusDiv.appendChild(statusTextNode);
-            li.appendChild(statusDiv);
-
+            // Create buttons container and append buttons
             let buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'buttons-container';
+
             let signButton = document.createElement('button');
-            signButton.className = 'btn seen-btn';  
+            signButton.className = 'btn seen-btn';
             signButton.innerText = 'Sign';
             signButton.style.marginRight = '4px';
             buttonsDiv.appendChild(signButton);
-        
+
             let editButton = document.createElement('button');
             editButton.className = 'btn seen-btn';
             editButton.innerText = 'Edit';
-            
+
             // Add an event listener to the Edit button
-            editButton.addEventListener('click', function() {
+            editButton.addEventListener('click', function () {
                 // Open a new tab and pass phrId as a URL parameter
                 window.open(`editPHR.html?phrId=${phrId.phrId}`, '_blank');
             });
-    
+
             buttonsDiv.appendChild(editButton);
-    
-            li.appendChild(buttonsDiv);
-    
+
+            // Append phrID, buttons, and buttons container to the phrContainer
+            phrContainer.appendChild(idContainer);
+            phrContainer.appendChild(buttonsDiv);
+
+            // Create container for Name and Status
+            let infoContainer = document.createElement('div');
+            infoContainer.className = 'info-container';
+
+            let nameLabel = document.createElement('span');
+            nameLabel.style.cssText = labelStyle;
+            nameLabel.innerText = 'Name:';
+            let nameValue = document.createElement('span');
+            nameValue.style.cssText = valueStyle; // Apply the value style
+            nameValue.innerText = patient.name;
+
+            let statusLabel = document.createElement('span');
+            statusLabel.style.cssText = labelStyle;
+            statusLabel.innerText = 'Status:';
+            let statusValue = document.createElement('span');
+            statusValue.style.cssText = valueStyle; // Apply the value style
+            statusValue.innerText = phrId.status;
+
+            // Append Name and Status to the infoContainer
+            infoContainer.appendChild(nameLabel);
+            infoContainer.appendChild(nameValue);
+            infoContainer.appendChild(statusLabel);
+            infoContainer.appendChild(statusValue);
+
+            // Append phrContainer and infoContainer to the list item
+            li.appendChild(phrContainer);
+            li.appendChild(infoContainer);
+
+            // Append the list item to the container element (phrList in this case)
             phrList.appendChild(li);
         }
-    
-        console.log(response,"patient pendings");
+
+        console.log(response, "patient pendings");
+
     }
     
     

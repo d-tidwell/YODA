@@ -84,7 +84,11 @@ class Visit extends BindingClass {
         if (s3response.status === 200) {
           const resultUpdateDictation = await this.client.updateDictation( idForPhr, dateString,filename,type);
           //do something for feedback to the user and redirect to desktop
-          console.log(resultUpdateDictation, "--dictations has completed-line97 visit.js")
+          console.log(resultUpdateDictation, "--dictations has completed-line97 visit.js");
+          this.recordButton.disabled = false;
+          this.stopButton.disabled = false;
+          this.playButton.disabled = true;
+          this.recordedAudio = null;
         } else {
           console.log("terrible the update dictation failed biotch");
         }
