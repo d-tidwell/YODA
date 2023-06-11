@@ -509,6 +509,7 @@ Resources:
         CodeUri: YodaServiceLambda
         Handler: com.nashss.se.yodaservice.lambda.UpdateDictationLambda::handleRequest
         Runtime: java11
+        Timeout: 600
         Architectures:
           - x86_64
         MemorySize: 512

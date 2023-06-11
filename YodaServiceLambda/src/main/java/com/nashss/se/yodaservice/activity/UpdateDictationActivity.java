@@ -1,9 +1,15 @@
 package com.nashss.se.yodaservice.activity;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nashss.se.yodaservice.enums.PHRStatus;
+import com.nashss.se.yodaservice.models.ApiResponse;
+import com.nashss.se.yodaservice.models.TranscriptJSON;
+import software.amazon.awssdk.services.transcribe.model.GetMedicalTranscriptionJobResponse;
 import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobResponse;
-import software.amazon.awssdk.services.transcribe.model.TranscriptionJobStatus;
 
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.activity.requests.UpdateDictationRequest;
@@ -16,7 +22,12 @@ import com.nashss.se.yodaservice.dynamodb.models.PHR;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.net.URL;
 
 import javax.inject.Inject;
 
@@ -44,58 +55,114 @@ public class UpdateDictationActivity {
         //which dictation test it is there
         Dictation dictation = dicDao.getDictation(existingRecord.getPhrId(), existingRecord.getDate());
         
-        //create a job name
-        String transcribeJobName = existingRecord.getProviderName() + request.getPhrId() +
-                request.getPhrDate();
+        //create a job name which ends up the filename in s3
+        String transcribeJobName =  request.getPhrId() + "_" + existingRecord.getProviderName();
         //get a URL
         String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
         String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
         //build a job
         String languageCode = "en-US";
-
-        StartMedicalTranscriptionJobResponse response = dicDao.startTranscribe(transcribeJobName, audioFileUrl,
+        StartMedicalTranscriptionJobResponse startResponse = dicDao.startTranscribe(transcribeJobName, audioFileUrl,
                 bucketName, languageCode,
                 providerDAO.getProvider(existingRecord.getProviderName()).getMedicalSpecialty());
+        String jobStatus = startResponse.medicalTranscriptionJob().transcriptionJobStatus().toString();
+
+        try {
+            if (jobStatus == null || jobStatus.isEmpty()) {
+                throw new TranscribeActionException("There was an error starting the requested Job");
+            }
+        } catch (TranscribeActionException e){
+            log.error("Transcribe Job Initialization returned empty or null job");
+        }
+
         //indicate it is transcribing
         existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
+        //save  phr here as state
+        phrdao.savePHR(existingRecord);
         //retries in while loop to confirm completion or fail
-        int maxTries = 60;
+        int maxTries = 30;
         while(maxTries > 0) {
                 maxTries--;
                 try {
                         TimeUnit.SECONDS.sleep(10);
-                        TranscriptionJobStatus jobStatus = response.medicalTranscriptionJob().transcriptionJobStatus();
-                        if (jobStatus == TranscriptionJobStatus.COMPLETED || jobStatus == TranscriptionJobStatus.FAILED) {
-                                System.out.println("Job " + transcribeJobName + " is " + jobStatus.toString() + ".");
-                                if(jobStatus == TranscriptionJobStatus.COMPLETED) {
-                                        System.out.println("Download the transcript from\n\t" + response.medicalTranscriptionJob().transcript().transcriptFileUri());
-                                          //indicate it is transcribing
-                                        existingRecord.setStatus(PHRStatus.COMPLETED.toString());
-                                        break;
-                                } else if (jobStatus == TranscriptionJobStatus.FAILED) {
-                                        existingRecord.setStatus(jobStatus.toString());
-                                }
-                                } else {
-                                    System.out.println("Waiting for " + transcribeJobName + ". Current status is " + jobStatus.toString() + ".");
+                        jobStatus = dicDao.getTranscribeJobStatus(transcribeJobName);
+                        if(jobStatus.equals("COMPLETED")) {
+                                      //indicate it is transcribing
+                                    System.out.println("SUCCESS " + transcribeJobName + ". Current status is " + jobStatus + ".");
+                                    existingRecord.setStatus(PHRStatus.AWAITING_ANALYSIS.toString());
+                                    break;
+                        } else if (jobStatus.equals("FAILED"))  {
+                                    System.out.println("FAILED " + transcribeJobName + ". Current status is " + jobStatus + ".");
+                                    existingRecord.setStatus("FAILED");
+                                    break;
+                        } else {
+                                System.out.println("Waiting for " + transcribeJobName + ". Current status is " + jobStatus + ".");
                                     existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
-                                }
-                            } catch(InterruptedException e) {
-                                log.error("Error transcribe line 73 UpdateDictation",e);
-                                e.printStackTrace();
                         }
+                    } catch(InterruptedException e) {
+                        existingRecord.setStatus(PHRStatus.FAILED.toString());
+                        log.error("Error transcribe line 73 UpdateDictation",e);
+                        e.printStackTrace();
+                    }
                 }
-       
-      
-        //save the phr change
         phrdao.savePHR(existingRecord);
+        // if the jobStatus in Completed make presignedURL and return the .json object from the /medical bucket
+        if (existingRecord.getStatus().equals(PHRStatus.AWAITING_ANALYSIS.toString())) {
+                System.out.println("Entering Text Retrieval for " + transcribeJobName);
+                Date expiration = new java.util.Date();
+                long expTimeMillis = expiration.getTime();
+                // Add 10 mins.
+                expTimeMillis += 1000 * 10;
+                expiration.setTime(expTimeMillis);
+                // Get the presigned URL
+                String objectKey = "medical/" + transcribeJobName + ".json";
+                GeneratePresignedUrlRequest generatePresignedUrlRequest = 
+                    new GeneratePresignedUrlRequest(bucketName, objectKey)
+                        .withMethod(HttpMethod.GET)
+                        .withExpiration(expiration);
+
+                URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
+                System.out.println("Generating S3 Get URL for " + transcribeJobName);
+                HttpURLConnection connection;
+                try {
+                    //make the connection
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    System.out.println("Connection Response Code " + connection.getResponseCode());
+                    if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        // process the response
+
+                        // Parse the inputStream using Jackson directly
+                        ObjectMapper mapper = new ObjectMapper();
+                        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                        ApiResponse apiResponse = mapper.readValue(connection.getInputStream(), ApiResponse.class);
+
+                        // Retrieve the transcripts
+                        List<TranscriptJSON> transcripts = apiResponse.getTextTranscribedResults().getTranscripts();
+
+                        // Print out each transcript
+                        for (TranscriptJSON transcript : transcripts) {
+                            System.out.println(transcript.getTranscript());
+                        }
+                    }
+                    else {
+                        // If the object wasn't downloaded successfully, print an error message
+                        log.error("HTTP GET failed with error code " + connection.getResponseCode());
+                    }
+                } catch (IOException e) {
+                    log.error("Error occurred", e);
+                }
+            }
+    
+
         //set the url for the text file & type
         dictation.setDictationText(transcribeJobName);
         //save the dictation changes
         dicDao.afterTranscriptionUpdate(dictation);
         return UpdateDictationResult.builder()
-                .withStatus(response.medicalTranscriptionJob() +
-                        response.medicalTranscriptionJob().medicalTranscriptionJobName() +
-                        response.medicalTranscriptionJob().completionTime())
+                .withStatus(startResponse.medicalTranscriptionJob() +
+                        startResponse.medicalTranscriptionJob().medicalTranscriptionJobName() +
+                        startResponse.medicalTranscriptionJob().completionTime())
                 .build();
         }
 }

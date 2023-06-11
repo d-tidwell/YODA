@@ -2,9 +2,9 @@ package com.nashss.se.yodaservice.enums;
 
 public enum PHRStatus {
     CREATED,
-    PRESIGNED,
     TRANSCRIBING,
-    PENDING,
+    FAILED,
     PENDING_SIGNATURE,
+    AWAITING_ANALYSIS,
     COMPLETED
 }
