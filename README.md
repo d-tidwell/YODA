@@ -3,4 +3,7 @@
 
 _Hear you I did. Miss nothing I will._
 
+### RealTime in Visit Patient and Provider Audio to Text to Comprehension Machine Learning Model Made to Automate the Patient Health Records More Accurately and with Ease 
+### _Work in Progress. Capstone Project Presentation June 23 2023 at Nashville Software School_
+
 ![artist:Gwenn Seeemel](https://gwennseemel.com/images/2020/2020MaskYoda.jpg)
