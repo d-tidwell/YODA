@@ -352,28 +352,50 @@ export default class YodaClient extends BindingClass {
                 parentHeading.innerHTML = parentKey;
                 containerKeys.appendChild(parentHeading);
         
-                const children = jsonObject[parentKey];
+                const rents = jsonObject[parentKey];
                 
-                for(const children in jsonObject[parentKey]) {
-                    //console.log(JSON.stringify(children));
+                for(const children in rents) {
+                    console.log(children)
                     const childHeading = document.createElement("h6");
                     childHeading.innerHTML = children;
                     const seperator = document.createElement("div");
                     seperator.appendChild(childHeading);
                     containerKeys.appendChild(seperator);
 
-                    for(const sibling in jsonObject[parentKey][children]) {
-                        const siblingText = document.createElement("text");
+                    for (const sibling in jsonObject[parentKey][children]) {
+                        const siblingText = document.createElement("p");
+                        seperator.appendChild(siblingText);
+                        console.log(siblingText)
                         siblingText.innerHTML = sibling;
                         const cuz = jsonObject[parentKey][children][sibling];
                         const sepSibs = document.createElement("div");
-                        Object.entries(cuz).map(([key, value]) => {
-                            siblingText.innerHTML += `${JSON.stringify(value)}`;
-                          });
-                        sepSibs.appendChild(siblingText);
-                        containerKeys.appendChild(sepSibs);
-                        
-                    }
+                        const sepSibsTakes = document.createElement("div");
+                      
+                        for (const key in cuz) {
+                          if (cuz.hasOwnProperty(key) && Object.keys(cuz[key]).length !== 0) {
+                            const subObject = cuz[key];
+                            const subObjectElement = document.createElement("p");
+                            let subObjectContent = '';
+                      
+                            for (const subKey in subObject) {
+                              if (subObject.hasOwnProperty(subKey)) {
+                                const subValue = subObject[subKey];
+                                subObjectContent += `${subKey}: ${JSON.stringify(subValue)}, `;
+                              }
+                            }
+                      
+                            subObjectElement.textContent = `${subObjectContent.slice(0, -2)}`;
+                            sepSibsTakes.appendChild(subObjectElement);
+                          }
+                        }
+                      
+                        if (sepSibsTakes.childElementCount > 0) {
+                          sepSibs.appendChild(siblingText);
+                          sepSibs.appendChild(sepSibsTakes);
+                          containerKeys.appendChild(sepSibs);
+                        }
+                      }                      
+                      
                 };
             }
           }
