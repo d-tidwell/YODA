@@ -1,10 +1,16 @@
 package com.nashss.se.yodaservice.activity;
 
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.s3.AmazonS3;
 
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.util.json.Jackson;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nashss.se.yodaservice.enums.PHRStatus;
+import com.nashss.se.yodaservice.models.ApiResponse;
 import com.nashss.se.yodaservice.models.TranscriptJSON;
 import software.amazon.awssdk.services.comprehendmedical.ComprehendMedicalClient;
 import software.amazon.awssdk.services.comprehendmedical.model.Attribute;
@@ -116,10 +122,10 @@ public class UpdateDictationActivity {
 //                }
 //        phrdao.savePHR(existingRecord);
         //testing!!!!!!!!!!!!!!!!!!
-//      !!!!  existingRecord.setStatus(PHRStatus.AWAITING_ANALYSIS.toString());
-        // if the jobStatus in Completed make presignedURL and return the .json object from the /medical bucket
-// !!!        if (existingRecord.getStatus().equals(PHRStatus.AWAITING_ANALYSIS.toString())) {
-            //System.out.println("Entering Text Retrieval for " + transcribeJobName);
+           existingRecord.setStatus(PHRStatus.AWAITING_ANALYSIS.toString());
+//         if the jobStatus in Completed make presignedURL and return the .json object from the /medical bucket
+            if (existingRecord.getStatus().equals(PHRStatus.AWAITING_ANALYSIS.toString())) {
+//            System.out.println("Entering Text Retrieval for " + transcribeJobName);
 //                Date expiration = new java.util.Date();
 //                long expTimeMillis = expiration.getTime();
 //                // Add 10 mins.
@@ -135,72 +141,72 @@ public class UpdateDictationActivity {
 //                URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
 //                System.out.println("Generating S3 Get URL for " + transcribeJobName);
 //                HttpURLConnection connection;
-//            try {
-                //make the connection
+            try {
+//                make the connection
 //                    connection = (HttpURLConnection) url.openConnection();
 //                    connection.setRequestMethod("GET");
-                //System.out.println("S3 Read Text Connection Response Code " + connection.getResponseCode());
-//                !!!!!!boolean testing = true;
+//                System.out.println("S3 Read Text Connection Response Code " + connection.getResponseCode());
+                boolean testing = true;
 //                    if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                // process the response
-//                !!!!if (testing == true) {
-                    // Parse the inputStream using Jackson directly
+//                 process the response
+                if (testing == true) {
+//                     Parse the inputStream using Jackson directly
 //                        ObjectMapper mapper = new ObjectMapper();
 //                        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 //                        ApiResponse apiResponse = mapper.readValue(connection.getInputStream(), ApiResponse.class);
 //
 //                        // Retrieve the transcripts
 //                        List<TranscriptJSON> transcripts = apiResponse.getTextTranscribedResults().getTranscripts();
-//                    !!!TranscriptJSON transcriptsRaw = new TranscriptJSON();
-//                    transcriptsRaw.setTranscript("A 23-year-old white female presents with complaint of allergies., Allergy / Immunology, Allergic Rhinitis ,\"SUBJECTIVE:,  This 23-year-old white female presents with complaint of allergies.  She used to have allergies when she lived in Seattle but she thinks they are worse here.  In the past, she has tried Claritin, and Zyrtec.  Both worked for short time but then seemed to lose effectiveness.  She has used Allegra also.  She used that last summer and she began using it again two weeks ago.  It does not appear to be working very well.  She has used over-the-counter sprays but no prescription nasal sprays.  She does have asthma but doest not require daily medication for this and does not think it is flaring up.,MEDICATIONS: , Her only medication currently is Ortho Tri-Cyclen and the Allegra.,ALLERGIES: , She has no known medicine allergies.,OBJECTIVE:,Vitals:  Weight was 130 pounds and blood pressure 124/78.,HEENT:  Her throat was mildly erythematous without exudate.  Nasal mucosa was erythematous and swollen.  Only clear drainage was seen.  TMs were clear.,Neck:  Supple without adenopathy.,Lungs:  Clear.,ASSESSMENT:,  Allergic rhinitis.,PLAN:,1.  She will try Zyrtec instead of Allegra again.  Another option will be to use loratadine.  She does not think she has prescription coverage so that might be cheaper.,2.  Samples of Nasonex two sprays in each nostril given for three weeks.  A prescription was written as well.");
-//                    List<TranscriptJSON> transcripts = new ArrayList<>(Arrays.asList(transcriptsRaw));
-//                    // Print out each transcript
-//                    for (TranscriptJSON transcript : transcripts) {
-//                        System.out.println(transcript.getTranscript());
-//                        //make the comprehend logic stream here
-//                        DetectEntitiesV2Request requestDetect = DetectEntitiesV2Request.builder()
-//                                .text(transcript.getTranscript())
-//                                .build();
-//
-//                        DetectEntitiesV2Response  responseDetect = comprehendClient.detectEntitiesV2(requestDetect);
-//
-//                        System.out.println("Entities found:" + responseDetect.toString());
-//                        for (Entity e : responseDetect.entities()) {
-//                            System.out.println(" - Category: " + e.category());
-//                            System.out.println(" - Type: " + e.type());
-//                       !!!     System.out.println(" - Text: " + e.text());
+                    TranscriptJSON transcriptsRaw = new TranscriptJSON();
+                    transcriptsRaw.setTranscript("A 23-year-old white female presents with complaint of allergies., Allergy / Immunology, Allergic Rhinitis ,\"SUBJECTIVE:,  This 23-year-old white female presents with complaint of allergies.  She used to have allergies when she lived in Seattle but she thinks they are worse here.  In the past, she has tried Claritin, and Zyrtec.  Both worked for short time but then seemed to lose effectiveness.  She has used Allegra also.  She used that last summer and she began using it again two weeks ago.  It does not appear to be working very well.  She has used over-the-counter sprays but no prescription nasal sprays.  She does have asthma but doest not require daily medication for this and does not think it is flaring up.,MEDICATIONS: , Her only medication currently is Ortho Tri-Cyclen and the Allegra.,ALLERGIES: , She has no known medicine allergies.,OBJECTIVE:,Vitals:  Weight was 130 pounds and blood pressure 124/78.,HEENT:  Her throat was mildly erythematous without exudate.  Nasal mucosa was erythematous and swollen.  Only clear drainage was seen.  TMs were clear.,Neck:  Supple without adenopathy.,Lungs:  Clear.,ASSESSMENT:,  Allergic rhinitis.,PLAN:,1.  She will try Zyrtec instead of Allegra again.  Another option will be to use loratadine.  She does not think she has prescription coverage so that might be cheaper.,2.  Samples of Nasonex two sprays in each nostril given for three weeks.  A prescription was written as well.");
+                    List<TranscriptJSON> transcripts = new ArrayList<>(Arrays.asList(transcriptsRaw));
+                    // Print out each transcript
+                    for (TranscriptJSON transcript : transcripts) {
+                        System.out.println(transcript.getTranscript());
+                        //make the comprehend logic stream here
+                        DetectEntitiesV2Request requestDetect = DetectEntitiesV2Request.builder()
+                                .text(transcript.getTranscript())
+                                .build();
+
+                        DetectEntitiesV2Response  responseDetect = comprehendClient.detectEntitiesV2(requestDetect);
+
+                        System.out.println("Entities found:" + responseDetect.toString());
+                        for (Entity e : responseDetect.entities()) {
+                            System.out.println(" - Category: " + e.category());
+                            System.out.println(" - Type: " + e.type());
+                            System.out.println(" - Text: " + e.text());
 
 
-//                            !!for (Trait t : e.traits()) {
-//                                System.out.println("   - Trait Name: " + t.name());
+                            for (Trait t : e.traits()) {
+                                System.out.println("   - Trait Name: " + t.name());
 
-//                            }
-//
-//                            for (Attribute a : e.attributes()) {
-//                                System.out.println("   - Attribute Type: " + a.type());
-//                                System.out.println("   - Attribute Text: " + a.text());
-//                            }
-//                        }
-//                         System.out.println("PUT OPERATION STARTED");
-//                         dicDao.putComprehendToTable(responseDetect, existingRecord);
-//                         PHR returnsGood = phrdao.getPHR(existingRecord.getPhrId(), existingRecord.getDate());
-//                         System.out.println(returnsGood.toString());
-//                    }
-//                } else {
-//                    // If the object wasn't downloaded successfully, print an error message
-//                    //log.error("HTTP GET failed with error code " + connection.getResponseCode());
-//                    log.error("try block");
+                            }
+
+                            for (Attribute a : e.attributes()) {
+                                System.out.println("   - Attribute Type: " + a.type());
+                                System.out.println("   - Attribute Text: " + a.text());
+                            }
+                        }
+                         System.out.println("PUT OPERATION STARTED");
+                         dicDao.putComprehendToTable(responseDetect, existingRecord);
+                         PHR returnsGood = phrdao.getPHR(existingRecord.getPhrId(), existingRecord.getDate());
+                         System.out.println(returnsGood.toString());
+                    }
+                } else {
+                    // If the object wasn't downloaded successfully, print an error message
+                    //log.error("HTTP GET failed with error code " + connection.getResponseCode());
+                    log.error("try block");
+                }
+//                } catch (IOException e) {
+//                    log.error("Error occurred", e);
 //                }
-////                } catch (IOException e) {
-////                    log.error("Error occurred", e);
-////                }
-//            } catch (RuntimeException e) {
-//                log.error("delete me");
-//            }
-//        }
+            } catch (RuntimeException e) {
+                log.error("delete me");
+            }
+        }
 
 
-//        //set the url for the text file & type
+        //set the url for the text file & type
 //        dictation.setDictationText(transcribeJobName);
 //        //save the dictation changes
 //        dicDao.afterTranscriptionUpdate(dictation);
@@ -211,9 +217,9 @@ public class UpdateDictationActivity {
 //                .build();
 //        }
 
-//        return UpdateDictationResult.builder()
-//                .withStatus("all good in the hoood")
-//                .build();
-                return null;
+        return UpdateDictationResult.builder()
+                .withStatus("all good in the hoood")
+                .build();
+//                return null;
     }
 }

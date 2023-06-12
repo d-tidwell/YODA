@@ -8,4 +8,4 @@ _Hear you I did. Miss nothing I will._
 
 #### To participate in presentations or see other graduates demonstrations contact myself at conversations.and.L@gmail.com or kate.rogers@nashvillesoftwareschool.com 
 
-![artist:Gwenn Seeemel](https://gwennseemel.com/images/2020/2020MaskYoda.jpg)
+![artist:Mid+Dalle+Journey](resources/splash.png)

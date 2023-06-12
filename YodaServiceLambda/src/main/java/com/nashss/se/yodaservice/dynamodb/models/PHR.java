@@ -6,9 +6,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
-import com.nashss.se.yodaservice.converters.DetectEntitiesV2ResponseConverter;
-import software.amazon.awssdk.services.comprehendmedical.model.DetectEntitiesV2Response;
+//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+//import com.nashss.se.yodaservice.converters.DetectEntitiesV2ResponseConverter;
+//import software.amazon.awssdk.services.comprehendmedical.model.DetectEntitiesV2Response;
 
 @DynamoDBTable(tableName = "phrs_")
 public class PHR {
@@ -18,7 +18,7 @@ public class PHR {
     private String recordDate;
     private String status;
 
-//    private DetectEntitiesV2Response comprehendData;
+    private String comprehendData;
 
     
     @DynamoDBHashKey(attributeName = "phrId")
@@ -66,13 +66,13 @@ public class PHR {
         this.status = status;
     }
 
-//    @DynamoDBAttribute(attributeName = "comprehendData")
+    @DynamoDBAttribute(attributeName = "comprehendData")
 //    @DynamoDBTypeConverted(converter = DetectEntitiesV2ResponseConverter.class)
-//    public DetectEntitiesV2Response getComprehendData() {
-//        return comprehendData;
-//    }
-//    public void setComprehendData(DetectEntitiesV2Response comprehendData) {
-//        this.comprehendData = comprehendData;
-//    }
+    public String getComprehendData() {
+        return comprehendData;
+    }
+    public void setComprehendData(String comprehendData) {
+        this.comprehendData = comprehendData;
+    }
 
 }

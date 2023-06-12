@@ -84,21 +84,21 @@ public class DictationDAO {
         return response;
     }
 
-//    public boolean putComprehendToTable(DetectEntitiesV2Response response, PHR phr) {
-//        try {
-//            phr.setStatus(PHRStatus.PENDING_SIGNATURE.toString());
-//            phr.setComprehendData(response);
-//
-//            // Use the DynamoDBMapper to save the item
-//            dynamoDbMapper.save(phr);
-//
-//            System.out.println("PutItem succeeded: " );
-//            return true;
-//        } catch (Exception e) {
-//            System.err.println(e.getMessage());
-//            return false;
-//        }
-//    }
+    public boolean putComprehendToTable(DetectEntitiesV2Response response, PHR phr) {
+        try {
+            phr.setStatus(PHRStatus.PENDING_SIGNATURE.toString());
+            phr.setComprehendData(response.toString());
+
+            // Use the DynamoDBMapper to save the item
+            dynamoDbMapper.save(phr);
+
+            System.out.println("PutItem succeeded: " );
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
 
 
     public boolean afterTranscriptionUpdate(Dictation dic){

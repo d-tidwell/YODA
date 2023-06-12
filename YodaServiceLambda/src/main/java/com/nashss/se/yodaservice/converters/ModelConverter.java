@@ -6,29 +6,31 @@ import com.nashss.se.yodaservice.models.PHRModel;
 import com.nashss.se.yodaservice.models.PatientModel;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ModelConverter {
 
     public static PHRModel phrConvertSingle(PHR phr) {
         return PHRModel.builder()
-                .phrId(phr.getPhrId())
-                .patientId(phr.getPatientId())
-                .providerName(phr.getProviderName())
-                .date(phr.getDate())
-                .status(phr.getStatus())
-//                .comprehendData(phr.getComprehendData().toString())
+                .phrId(Optional.ofNullable(phr.getPhrId()).orElse(null))
+                .patientId(Optional.ofNullable(phr.getPatientId()).orElse(null))
+                .providerName(Optional.ofNullable(phr.getProviderName()).orElse(null))
+                .date(Optional.ofNullable(phr.getDate()).orElse(null))
+                .status(Optional.ofNullable(phr.getStatus()).orElse(null))
+                .comprehendData(Optional.ofNullable(phr.getComprehendData()).map(Object::toString).orElse(null))
                 .build();
     }
+
     public static List<PHRModel> convertListPHRtoModels(List<PHR> dynamoObj) {
         return dynamoObj.stream()
                 .map(phr -> PHRModel.builder()
-                        .phrId(phr.getPhrId())
-                        .patientId(phr.getPatientId())
-                        .providerName(phr.getProviderName())
-                        .date(phr.getDate())
-                        .status(phr.getStatus())
-//                        .comprehendData(phr.getComprehendData().toString())
+                        .phrId(Optional.ofNullable(phr.getPhrId()).orElse(null))
+                        .patientId(Optional.ofNullable(phr.getPatientId()).orElse(null))
+                        .providerName(Optional.ofNullable(phr.getProviderName()).orElse(null))
+                        .date(Optional.ofNullable(phr.getDate()).orElse(null))
+                        .status(Optional.ofNullable(phr.getStatus()).orElse(null))
+                        .comprehendData(Optional.ofNullable(phr.getComprehendData()).map(Object::toString).orElse(null))
                         .build())
                 .collect(Collectors.toList());
     }
