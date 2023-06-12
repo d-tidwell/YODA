@@ -21,6 +21,8 @@ import software.amazon.awssdk.services.transcribe.model.Media;
 import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobRequest;
 import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptionJobResponse;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -84,10 +86,10 @@ public class DictationDAO {
         return response;
     }
 
-    public boolean putComprehendToTable(DetectEntitiesV2Response response, PHR phr) {
+    public boolean putComprehendToTable(String response, PHR phr) {
         try {
             phr.setStatus(PHRStatus.PENDING_SIGNATURE.toString());
-            phr.setComprehendData(response.toString());
+            phr.setComprehendData(response);
 
             // Use the DynamoDBMapper to save the item
             dynamoDbMapper.save(phr);

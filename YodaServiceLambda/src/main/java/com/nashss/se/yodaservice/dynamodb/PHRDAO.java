@@ -33,7 +33,6 @@ public class PHRDAO {
 
     public PHR getPHR(String phrId, String date) {
         PHR phr = this.dynamoDbMapper.load(PHR.class, phrId, date);
-
         if (Objects.isNull(phr)) {
             log.error(String.format("PHRNotFoundException-getPHR, %s", phrId));
             throw new PHRNotFoundException("Could not find PHR-getPHR request");

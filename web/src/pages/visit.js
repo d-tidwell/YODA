@@ -200,13 +200,6 @@ class Visit extends BindingClass {
             statusDiv.classList.add('attr', 'status');
             statusDiv.innerText = `STATUS: ${phr.status}`;
             accordionButton.appendChild(statusDiv);
-
-            //! dictVal needs to be introduced to get the type
-
-            // const typeDiv = document.createElement('div');
-            // typeDiv.classList.add('attr', 'type');
-            // typeDiv.innerText = `TYPE: ${dictVal.type}`;
-            // accordionButton.appendChild(typeDiv);
     
             const idDiv = document.createElement('div');
             idDiv.classList.add('attr', 'id');
@@ -218,7 +211,22 @@ class Visit extends BindingClass {
             accordionCollapse.classList.add('accordion-collapse', 'collapse');
             accordionCollapse.setAttribute('aria-labelledby', `heading${index+1}`);
             accordionCollapse.dataset.bsParent = '#phrAccordion';
-    
+            if (phr.comprehendData != null) {
+                 const hashMap = {
+                      key: phr.comprehendData
+                    };
+
+                const jsonString = hashMap.key; // Get the string value from the hash map
+
+                try {
+                  const jsonObject = JSON.parse(jsonString);
+                  console.log(jsonObject.MEDICATION); // John
+                  console.log(jsonObject.ANATOMY); // New York
+                } catch (error) {
+                  console.error('Invalid JSON string:', error);
+                }
+            }
+
             const accordionBody = document.createElement('div');
             accordionBody.classList.add('accordion-body');
             accordionBody.innerHTML = `
@@ -226,7 +234,7 @@ class Visit extends BindingClass {
             <p>Provider Name: ${phr.providerName}</p>
             <p>Date: ${phr.date}</p>
             <p>Status: ${phr.status}</p>
-            <p>Dictation ID: ${phr.dictationId}</p>
+            <p>Comprehend: ${phr.comprehendData}</p>
             `; 
     
             accordionHeader.appendChild(accordionButton);

@@ -1,5 +1,7 @@
 package com.nashss.se.yodaservice.models;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class PHRModel {
@@ -10,7 +12,8 @@ public class PHRModel {
     private String status;
     private String comprehendData;
 
-    public PHRModel(String phrId, String patientId, String providerName, String date, String status, String comprehendData) {
+    public PHRModel(String phrId, String patientId, String providerName, String date, String status,
+                    String comprehendData) {
         this.phrId = phrId;
         this.patientId = patientId;
         this.providerName = providerName;

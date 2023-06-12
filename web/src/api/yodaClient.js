@@ -206,6 +206,7 @@ export default class YodaClient extends BindingClass {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("phrID search", response)
             return response.data;
         } catch (error) {
             this.handleError(error, errorCallback)

@@ -18,7 +18,7 @@ public class ModelConverter {
                 .providerName(Optional.ofNullable(phr.getProviderName()).orElse(null))
                 .date(Optional.ofNullable(phr.getDate()).orElse(null))
                 .status(Optional.ofNullable(phr.getStatus()).orElse(null))
-                .comprehendData(Optional.ofNullable(phr.getComprehendData()).map(Object::toString).orElse(null))
+                .comprehendData(Optional.ofNullable(phr.getComprehendData()).orElse(null))
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class ModelConverter {
                         .providerName(Optional.ofNullable(phr.getProviderName()).orElse(null))
                         .date(Optional.ofNullable(phr.getDate()).orElse(null))
                         .status(Optional.ofNullable(phr.getStatus()).orElse(null))
-                        .comprehendData(Optional.ofNullable(phr.getComprehendData()).map(Object::toString).orElse(null))
+                        .comprehendData(Optional.ofNullable(phr.getComprehendData()).orElse(null))
                         .build())
                 .collect(Collectors.toList());
     }

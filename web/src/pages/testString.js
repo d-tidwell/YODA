@@ -353,7 +353,6 @@ class TestString extends BindingClass {
             // For date or date range search, patientIdInput must be provided
             result = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
         }
-        console.log(result,"results")
         // Check if the result is an array. If so, assign it directly to phrResultsArray. If not, wrap it in an array.
         phrResultsArray = result && Array.isArray(result.phrId) ? result.phrId : [];
 
@@ -361,6 +360,7 @@ class TestString extends BindingClass {
         // Now the results are in phrResultsArray, which can be iterated over to populate the accordion
         if (phrResultsArray.length > 0) {
             phrResultsArray.forEach((phr, index) => {
+
                 const accordionItem = document.createElement('div');
                 accordionItem.classList.add('accordion-item');
     
@@ -391,7 +391,7 @@ class TestString extends BindingClass {
                 <p>Provider Name: ${phr.providerName}</p>
                 <p>Date: ${phr.date}</p>
                 <p>Status: ${phr.status}</p>
-                <p>Dictation ID: ${phr.dictationId}</p>
+                <p>Comprehension: ${phr.comprehendData}</p>
                 `; 
     
                 accordionHeader.appendChild(accordionButton);

@@ -7,9 +7,14 @@ import com.amazonaws.services.s3.AmazonS3;
 
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.util.json.Jackson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nashss.se.yodaservice.converters.HealthDataConverter;
+import com.nashss.se.yodaservice.converters.ModelConverter;
 import com.nashss.se.yodaservice.enums.PHRStatus;
+import com.nashss.se.yodaservice.exceptions.DictationNotFoundException;
 import com.nashss.se.yodaservice.models.ApiResponse;
 import com.nashss.se.yodaservice.models.TranscriptJSON;
 import software.amazon.awssdk.services.comprehendmedical.ComprehendMedicalClient;
@@ -39,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.net.URL;
 
@@ -158,7 +164,7 @@ public class UpdateDictationActivity {
 //                        // Retrieve the transcripts
 //                        List<TranscriptJSON> transcripts = apiResponse.getTextTranscribedResults().getTranscripts();
                     TranscriptJSON transcriptsRaw = new TranscriptJSON();
-                    transcriptsRaw.setTranscript("A 23-year-old white female presents with complaint of allergies., Allergy / Immunology, Allergic Rhinitis ,\"SUBJECTIVE:,  This 23-year-old white female presents with complaint of allergies.  She used to have allergies when she lived in Seattle but she thinks they are worse here.  In the past, she has tried Claritin, and Zyrtec.  Both worked for short time but then seemed to lose effectiveness.  She has used Allegra also.  She used that last summer and she began using it again two weeks ago.  It does not appear to be working very well.  She has used over-the-counter sprays but no prescription nasal sprays.  She does have asthma but doest not require daily medication for this and does not think it is flaring up.,MEDICATIONS: , Her only medication currently is Ortho Tri-Cyclen and the Allegra.,ALLERGIES: , She has no known medicine allergies.,OBJECTIVE:,Vitals:  Weight was 130 pounds and blood pressure 124/78.,HEENT:  Her throat was mildly erythematous without exudate.  Nasal mucosa was erythematous and swollen.  Only clear drainage was seen.  TMs were clear.,Neck:  Supple without adenopathy.,Lungs:  Clear.,ASSESSMENT:,  Allergic rhinitis.,PLAN:,1.  She will try Zyrtec instead of Allegra again.  Another option will be to use loratadine.  She does not think she has prescription coverage so that might be cheaper.,2.  Samples of Nasonex two sprays in each nostril given for three weeks.  A prescription was written as well.");
+                    transcriptsRaw.setTranscript("SUBJECTIVE:,  This 23-year-old white female presents with complaint of allergies.  She used to have allergies when she lived in Seattle but she thinks they are worse here.  In the past, she has tried Claritin, and Zyrtec.  Both worked for short time but then seemed to lose effectiveness.  She has used Allegra also.  She used that last summer and she began using it again two weeks ago.  It does not appear to be working very well.  She has used over-the-counter sprays but no prescription nasal sprays.  She does have asthma but doest not require daily medication for this and does not think it is flaring up.,MEDICATIONS: , Her only medication currently is Ortho Tri-Cyclen and the Allegra.,ALLERGIES: , She has no known medicine allergies.,OBJECTIVE:,Vitals:  Weight was 130 pounds and blood pressure 124/78.,HEENT:  Her throat was mildly erythematous without exudate.  Nasal mucosa was erythematous and swollen.  Only clear drainage was seen.  TMs were clear.,Neck:  Supple without adenopathy.,Lungs:  Clear.,ASSESSMENT:,  Allergic rhinitis.,PLAN:,1.  She will try Zyrtec instead of Allegra again.  Another option will be to use loratadine.  She does not think she has prescription coverage so that might be cheaper.,2.  Samples of Nasonex two sprays in each nostril given for three weeks.  A prescription was written as well.");
                     List<TranscriptJSON> transcripts = new ArrayList<>(Arrays.asList(transcriptsRaw));
                     // Print out each transcript
                     for (TranscriptJSON transcript : transcripts) {
@@ -170,27 +176,39 @@ public class UpdateDictationActivity {
 
                         DetectEntitiesV2Response  responseDetect = comprehendClient.detectEntitiesV2(requestDetect);
 
-                        System.out.println("Entities found:" + responseDetect.toString());
-                        for (Entity e : responseDetect.entities()) {
-                            System.out.println(" - Category: " + e.category());
-                            System.out.println(" - Type: " + e.type());
-                            System.out.println(" - Text: " + e.text());
-
-
-                            for (Trait t : e.traits()) {
-                                System.out.println("   - Trait Name: " + t.name());
-
-                            }
-
-                            for (Attribute a : e.attributes()) {
-                                System.out.println("   - Attribute Type: " + a.type());
-                                System.out.println("   - Attribute Text: " + a.text());
-                            }
+                        System.out.println("Entities found:");
+                        List<String> entitiesString = new ArrayList<>();
+//                        for (Entity e : responseDetect.entities()) {
+//                            entitiesString.add(e.toString());
+//                            System.out.println(" - Category: " + e.category());
+//                            System.out.println(" - Type: " + e.type());
+//                            System.out.println(" - Text: " + e.text());
+//
+//
+//                            for (Trait t : e.traits()) {
+//                                System.out.println("   - Trait Name: " + t.name());
+//
+//                            }
+//
+//                            for (Attribute a : e.attributes()) {
+//                                System.out.println("   - Attribute Type: " + a.type());
+//                                System.out.println("   - Attribute Text: " + a.text());
+//                            }
+//                        }
+                        System.out.println("PUT OPERATION STARTED");
+                        HealthDataConverter tableMap = new HealthDataConverter();
+                        Map<String, Map<String, Map<String, List<Map<String, Object>>>>> mappedItems = tableMap.parse(responseDetect.entities());
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        try {
+                            String jsonMap = objectMapper.writeValueAsString(mappedItems);
+                            System.out.println("jsonMap== " + jsonMap);  // prints: {"key":"value"}
+                            dicDao.putComprehendToTable(jsonMap, existingRecord);
+                            PHR returnsGood = phrdao.getPHR(existingRecord.getPhrId(), existingRecord.getDate());
+                            System.out.println("RETURNED OBJ:= " + returnsGood.toString());
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
                         }
-                         System.out.println("PUT OPERATION STARTED");
-                         dicDao.putComprehendToTable(responseDetect, existingRecord);
-                         PHR returnsGood = phrdao.getPHR(existingRecord.getPhrId(), existingRecord.getDate());
-                         System.out.println(returnsGood.toString());
+
                     }
                 } else {
                     // If the object wasn't downloaded successfully, print an error message
@@ -201,6 +219,7 @@ public class UpdateDictationActivity {
 //                    log.error("Error occurred", e);
 //                }
             } catch (RuntimeException e) {
+                System.out.println(e);
                 log.error("delete me");
             }
         }
@@ -218,7 +237,8 @@ public class UpdateDictationActivity {
 //        }
 
         return UpdateDictationResult.builder()
-                .withStatus("all good in the hoood")
+//                .withStatus("all good in the hoood")
+                .withModel(ModelConverter.phrConvertSingle(existingRecord))
                 .build();
 //                return null;
     }
