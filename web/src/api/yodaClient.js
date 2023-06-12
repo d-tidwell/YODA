@@ -15,7 +15,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient', 'createPatient','removePatient','getAllPHRByProvider','getAllPatients'];
+        const methodsToBind = ['parseComp','clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient', 'createPatient','removePatient','getAllPHRByProvider','getAllPatients'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -331,7 +331,51 @@ export default class YodaClient extends BindingClass {
         }
     }
     
+    async parseComp(compData) {
+        let containerKeys = document.createElement("div");
+      
+        if (compData != null) {
+          const hashMap = { key: compData };
+          const jsonString = hashMap.key;
+          let jsonObject;
+      
+          try {
+            jsonObject = JSON.parse(jsonString);
+          } catch (error) {
+            console.error('Invalid JSON string:', error);
+            return containerKeys;
+          }
+      
+          for (const parentKey in jsonObject) {
+            if (jsonObject.hasOwnProperty(parentKey)) {
+                const parentHeading = document.createElement("h5");
+                parentHeading.innerHTML = parentKey;
+                containerKeys.appendChild(parentHeading);
+        
+                const children = jsonObject[parentKey];
+                
+                for(const children in jsonObject[parentKey]) {
+                    //console.log(JSON.stringify(children));
+                    const childHeading = document.createElement("h7");
+                    childHeading.innerHTML = children;
+                    const seperator = document.createElement("div");
+                    seperator.appendChild(childHeading);
+                    containerKeys.appendChild(seperator);
 
+                    for(const sibling in jsonObject[parentKey][children]) {
+                        const siblingText = document.createElement("text");
+                        siblingText.innerHTML = sibling;
+                        const sepSibs = document.createElement("div");
+                        sepSibs.appendChild(siblingText);
+                        containerKeys.appendChild(sepSibs);
+                        
+                    }
+                };
+            }
+          }
+        }
+        return containerKeys;
+      }
       
 //    /**
 //     * Gets the playlist for the given ID.

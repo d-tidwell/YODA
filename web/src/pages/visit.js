@@ -211,21 +211,7 @@ class Visit extends BindingClass {
             accordionCollapse.classList.add('accordion-collapse', 'collapse');
             accordionCollapse.setAttribute('aria-labelledby', `heading${index+1}`);
             accordionCollapse.dataset.bsParent = '#phrAccordion';
-            if (phr.comprehendData != null) {
-                 const hashMap = {
-                      key: phr.comprehendData
-                    };
-
-                const jsonString = hashMap.key; // Get the string value from the hash map
-
-                try {
-                  const jsonObject = JSON.parse(jsonString);
-                  console.log(jsonObject.MEDICATION); // John
-                  console.log(jsonObject.ANATOMY); // New York
-                } catch (error) {
-                  console.error('Invalid JSON string:', error);
-                }
-            }
+            
 
             const accordionBody = document.createElement('div');
             accordionBody.classList.add('accordion-body');
@@ -234,8 +220,17 @@ class Visit extends BindingClass {
             <p>Provider Name: ${phr.providerName}</p>
             <p>Date: ${phr.date}</p>
             <p>Status: ${phr.status}</p>
-            <p>Comprehend: ${phr.comprehendData}</p>
-            `; 
+            `;
+            if (phr.comprehendData != null) {
+              this.client.parseComp(phr.comprehendData)
+                .then(additionToAccordion => {
+                  accordionBody.appendChild(additionToAccordion);
+                })
+                .catch(error => {
+                  console.error('Error parsing compData:', error);
+                });
+            }
+            
     
             accordionHeader.appendChild(accordionButton);
             accordionCollapse.appendChild(accordionBody);
