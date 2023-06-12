@@ -1,7 +1,9 @@
 package com.nashss.se.yodaservice.models;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.List;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TextTranscribedResults {
     private List<TranscriptJSON> transcripts;
     // getters and setters

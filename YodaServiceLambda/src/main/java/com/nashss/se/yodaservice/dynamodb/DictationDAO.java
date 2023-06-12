@@ -1,6 +1,11 @@
 package com.nashss.se.yodaservice.dynamodb;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
 import com.nashss.se.yodaservice.dynamodb.models.Dictation;
+import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.enums.PHRStatus;
 import com.nashss.se.yodaservice.exceptions.DictationNotFoundException;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -8,6 +13,7 @@ import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.amazon.awssdk.services.comprehendmedical.model.DetectEntitiesV2Response;
 import software.amazon.awssdk.services.transcribe.TranscribeClient;
 import software.amazon.awssdk.services.transcribe.model.GetMedicalTranscriptionJobRequest;
 import software.amazon.awssdk.services.transcribe.model.GetMedicalTranscriptionJobResponse;
@@ -78,6 +84,21 @@ public class DictationDAO {
         return response;
     }
 
+//    public boolean putComprehendToTable(DetectEntitiesV2Response response, PHR phr) {
+//        try {
+//            phr.setStatus(PHRStatus.PENDING_SIGNATURE.toString());
+//            phr.setComprehendData(response);
+//
+//            // Use the DynamoDBMapper to save the item
+//            dynamoDbMapper.save(phr);
+//
+//            System.out.println("PutItem succeeded: " );
+//            return true;
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//            return false;
+//        }
+//    }
 
 
     public boolean afterTranscriptionUpdate(Dictation dic){

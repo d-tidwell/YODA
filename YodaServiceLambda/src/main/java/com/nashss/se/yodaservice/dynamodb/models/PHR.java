@@ -6,6 +6,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.nashss.se.yodaservice.converters.DetectEntitiesV2ResponseConverter;
+import software.amazon.awssdk.services.comprehendmedical.model.DetectEntitiesV2Response;
 
 @DynamoDBTable(tableName = "phrs_")
 public class PHR {
@@ -14,6 +17,9 @@ public class PHR {
     private String providerName;
     private String recordDate;
     private String status;
+
+//    private DetectEntitiesV2Response comprehendData;
+
     
     @DynamoDBHashKey(attributeName = "phrId")
     public String getPhrId() {
@@ -59,5 +65,14 @@ public class PHR {
     public void setStatus(String status) {
         this.status = status;
     }
+
+//    @DynamoDBAttribute(attributeName = "comprehendData")
+//    @DynamoDBTypeConverted(converter = DetectEntitiesV2ResponseConverter.class)
+//    public DetectEntitiesV2Response getComprehendData() {
+//        return comprehendData;
+//    }
+//    public void setComprehendData(DetectEntitiesV2Response comprehendData) {
+//        this.comprehendData = comprehendData;
+//    }
 
 }

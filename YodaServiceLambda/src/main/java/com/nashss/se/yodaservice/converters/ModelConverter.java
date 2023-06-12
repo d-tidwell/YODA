@@ -17,6 +17,7 @@ public class ModelConverter {
                 .providerName(phr.getProviderName())
                 .date(phr.getDate())
                 .status(phr.getStatus())
+//                .comprehendData(phr.getComprehendData().toString())
                 .build();
     }
     public static List<PHRModel> convertListPHRtoModels(List<PHR> dynamoObj) {
@@ -27,6 +28,7 @@ public class ModelConverter {
                         .providerName(phr.getProviderName())
                         .date(phr.getDate())
                         .status(phr.getStatus())
+//                        .comprehendData(phr.getComprehendData().toString())
                         .build())
                 .collect(Collectors.toList());
     }

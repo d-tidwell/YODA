@@ -1,9 +1,6 @@
 package com.nashss.se.yodaservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nashss.se.yodaservice.models.Entity;
-
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ApiResponse {

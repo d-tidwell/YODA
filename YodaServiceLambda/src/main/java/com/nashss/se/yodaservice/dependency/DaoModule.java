@@ -9,7 +9,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import dagger.Module;
 import dagger.Provides;
+import software.amazon.awssdk.services.comprehendmedical.ComprehendMedicalClient;
 import software.amazon.awssdk.services.transcribe.TranscribeClient;
+import software.amazon.awssdk.services.comprehendmedical.ComprehendMedicalClient;
+
 
 import javax.inject.Singleton;
 
@@ -39,6 +42,12 @@ public class DaoModule {
     @Singleton
     public TranscribeClient provideTranscribeClient() {
         return AmazonS3AndTranscribeProviders.getTranscribeClient();
+    }
+
+    @Provides
+    @Singleton
+    public ComprehendMedicalClient provideComprehendClient() {
+        return AmazonS3AndTranscribeProviders.getComprehendClient();
     }
 }
 

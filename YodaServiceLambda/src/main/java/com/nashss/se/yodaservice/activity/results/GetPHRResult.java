@@ -7,6 +7,8 @@ public class GetPHRResult {
     private final String status;
     private final String dictationId;
 
+    private final String comprehendData;
+
     public String getPatientId() {
         return patientId;
     }
@@ -27,12 +29,17 @@ public class GetPHRResult {
         return dictationId;
     }
 
-    public GetPHRResult(String patientId, String providerName, String date, String status, String dictationId) {
+    public String getComprehendData() {
+        return comprehendData;
+    }
+
+    public GetPHRResult(String patientId, String providerName, String date, String status, String dictationId, String comprehendData) {
         this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
         this.dictationId = dictationId;
+        this.comprehendData = comprehendData;
     }
 
     @Override
@@ -43,6 +50,7 @@ public class GetPHRResult {
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
                 ", dictationId='" + dictationId + '\'' +
+                ", comprehendData='" + comprehendData + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder
@@ -54,6 +62,7 @@ public class GetPHRResult {
         private  String date;
         private  String status;
         private  String dictationId;
+        private  String comprehendData;
 
         public Builder withPatientId(String patientId){
             this.patientId = patientId;
@@ -66,6 +75,7 @@ public class GetPHRResult {
         public Builder withDate(String date){this.date = date; return this;}
         public Builder withStatus(String status){this.status = status; return this;}
         public Builder withDictationId(String dictationId){this.dictationId = dictationId; return this;}
-        public GetPHRResult build() {return new GetPHRResult(patientId, providerName, date, status, dictationId);}
+        public Builder withComprehendData(String comp){this.comprehendData = comp; return this;}
+        public GetPHRResult build() {return new GetPHRResult(patientId, providerName, date, status, dictationId, comprehendData);}
     }
 }

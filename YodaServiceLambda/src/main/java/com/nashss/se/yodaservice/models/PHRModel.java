@@ -8,13 +8,15 @@ public class PHRModel {
     private String providerName;
     private String date;
     private String status;
+    private String comprehendData;
 
-    public PHRModel(String phrId, String patientId, String providerName, String date, String status) {
+    public PHRModel(String phrId, String patientId, String providerName, String date, String status, String comprehendData) {
         this.phrId = phrId;
         this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
+        this.comprehendData = comprehendData;
     }
     public PHRModel(){}
 
@@ -38,24 +40,19 @@ public class PHRModel {
         return status;
     }
 
+    public String getComprehendData() { return comprehendData; }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PHRModel)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof PHRModel)) return false;
         PHRModel phrModel = (PHRModel) o;
-        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) &&
-                getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) &&
-                getStatus().equals(phrModel.getStatus());
+        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) && getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) && getStatus().equals(phrModel.getStatus()) && Objects.equals(getComprehendData(), phrModel.getComprehendData());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPhrId(), getPatientId(), getProviderName(), getDate(), getStatus());
+        return Objects.hash(getPhrId(), getPatientId(), getProviderName(), getDate(), getStatus(), getComprehendData());
     }
 
     @Override
@@ -66,6 +63,7 @@ public class PHRModel {
                 ", providerName='" + providerName + '\'' +
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
+                ", comprehendData='" + comprehendData + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder
@@ -79,6 +77,7 @@ public class PHRModel {
         private String providerName;
         private String date;
         private String status;
+        private String comprehendData;
 
         public Builder phrId(String phrId) {
             this.phrId = phrId;
@@ -105,8 +104,13 @@ public class PHRModel {
             return this;
         }
 
+        public Builder comprehendData(String comprehendData) {
+            this.comprehendData = comprehendData;
+            return this;
+        }
+
         public PHRModel build() {
-            return new PHRModel(phrId, patientId, providerName, date, status);
+            return new PHRModel(phrId, patientId, providerName, date, status, comprehendData);
         }
 
     }
