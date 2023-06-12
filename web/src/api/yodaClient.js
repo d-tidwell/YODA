@@ -356,7 +356,7 @@ export default class YodaClient extends BindingClass {
                 
                 for(const children in jsonObject[parentKey]) {
                     //console.log(JSON.stringify(children));
-                    const childHeading = document.createElement("h7");
+                    const childHeading = document.createElement("h6");
                     childHeading.innerHTML = children;
                     const seperator = document.createElement("div");
                     seperator.appendChild(childHeading);
@@ -365,7 +365,11 @@ export default class YodaClient extends BindingClass {
                     for(const sibling in jsonObject[parentKey][children]) {
                         const siblingText = document.createElement("text");
                         siblingText.innerHTML = sibling;
+                        const cuz = jsonObject[parentKey][children][sibling];
                         const sepSibs = document.createElement("div");
+                        Object.entries(cuz).map(([key, value]) => {
+                            siblingText.innerHTML += `${JSON.stringify(value)}`;
+                          });
                         sepSibs.appendChild(siblingText);
                         containerKeys.appendChild(sepSibs);
                         
