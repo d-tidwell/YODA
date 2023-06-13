@@ -115,7 +115,7 @@ export default class Header extends BindingClass {
         const clockDiv = document.createElement('div');
         clockDiv.id = 'digital-clock';
         clockDiv.classList.add('clock');
-        clockDiv.classList.add('digital-clock');  // new class for styling
+        clockDiv.classList.add('digital-clock');  
         clockDiv.innerText = this.getCurrentTime();
 
         setInterval(() => {

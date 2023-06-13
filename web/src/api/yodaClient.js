@@ -333,6 +333,8 @@ export default class YodaClient extends BindingClass {
     
     async parseComp(compData) {
         let containerKeys = document.createElement("div");
+        containerKeys.className="containerKeys"
+        
       
         if (compData != null) {
           const hashMap = { key: compData };
@@ -348,9 +350,13 @@ export default class YodaClient extends BindingClass {
       
           for (const parentKey in jsonObject) {
             if (jsonObject.hasOwnProperty(parentKey)) {
+                const boxLabels = document.createElement("div");
+                boxLabels.className = "headingBoxPHR"
                 const parentHeading = document.createElement("h5");
                 parentHeading.innerHTML = parentKey;
-                containerKeys.appendChild(parentHeading);
+                parentHeading.style ="color: white;"
+                boxLabels.appendChild(parentHeading);
+                containerKeys.appendChild(boxLabels);
         
                 const rents = jsonObject[parentKey];
                 
@@ -359,6 +365,7 @@ export default class YodaClient extends BindingClass {
                     const childHeading = document.createElement("h6");
                     childHeading.innerHTML = children;
                     const seperator = document.createElement("div");
+                    childHeading.className ="subHeadingBox"
                     seperator.appendChild(childHeading);
                     containerKeys.appendChild(seperator);
 
@@ -374,6 +381,7 @@ export default class YodaClient extends BindingClass {
                         for (const key in cuz) {
                           if (cuz.hasOwnProperty(key) && Object.keys(cuz[key]).length !== 0) {
                             const subObject = cuz[key];
+                
                             const subObjectElement = document.createElement("p");
                             let subObjectContent = '';
                       
@@ -385,7 +393,9 @@ export default class YodaClient extends BindingClass {
                             }
                       
                             subObjectElement.textContent = `${subObjectContent.slice(0, -2)}`;
+                            
                             sepSibsTakes.appendChild(subObjectElement);
+                            
                           }
                         }
                       
@@ -403,103 +413,6 @@ export default class YodaClient extends BindingClass {
         return containerKeys;
       }
       
-//    /**
-//     * Gets the playlist for the given ID.
-//     * @param id Unique identifier for a playlist
-//     * @param errorCallback (Optional) A function to execute if the call fails.
-//     * @returns The playlist's metadata.
-//     */
-//    async getPlaylist(id, errorCallback) {
-//        try {
-//            const response = await this.axiosClient.get(`playlists/${id}`);
-//            return response.data.playlist;
-//        } catch (error) {
-//            this.handleError(error, errorCallback)
-//        }
-//    }
-//
-//    /**
-//     * Get the songs on a given playlist by the playlist's identifier.
-//     * @param id Unique identifier for a playlist
-//     * @param errorCallback (Optional) A function to execute if the call fails.
-//     * @returns The list of songs on a playlist.
-//     */
-//    async getPlaylistSongs(id, errorCallback) {
-//        try {
-//            const response = await this.axiosClient.get(`playlists/${id}/songs`);
-//            return response.data.songList;
-//        } catch (error) {
-//            this.handleError(error, errorCallback)
-//        }
-//    }
-//
-//    /**
-//     * Create a new playlist owned by the current user.
-//     * @param name The name of the playlist to create.
-//     * @param tags Metadata tags to associate with a playlist.
-//     * @param errorCallback (Optional) A function to execute if the call fails.
-//     * @returns The playlist that has been created.
-//     */
-//    async createPlaylist(name, tags, errorCallback) {
-//        try {
-//            const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
-//            const response = await this.axiosClient.post(`playlists`, {
-//                name: name,
-//                tags: tags
-//            }, {
-//                headers: {
-//                    Authorization: `Bearer ${token}`
-//                }
-//            });
-//            return response.data.playlist;
-//        } catch (error) {
-//            this.handleError(error, errorCallback)
-//        }
-//    }
-//
-//    /**
-//     * Add a song to a playlist.
-//     * @param id The id of the playlist to add a song to.
-//     * @param asin The asin that uniquely identifies the album.
-//     * @param trackNumber The track number of the song on the album.
-//     * @returns The list of songs on a playlist.
-//     */
-//    async addSongToPlaylist(id, asin, trackNumber, errorCallback) {
-//        try {
-//            const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
-//            const response = await this.axiosClient.post(`playlists/${id}/songs`, {
-//                id: id,
-//                asin: asin,
-//                trackNumber: trackNumber
-//            }, {
-//                headers: {
-//                    Authorization: `Bearer ${token}`
-//                }
-//            });
-//            return response.data.songList;
-//        } catch (error) {
-//            this.handleError(error, errorCallback)
-//        }
-//    }
-//
-//    /**
-//     * Search for a song.
-//     * @param criteria A string containing search criteria to pass to the API.
-//     * @returns The playlists that match the search criteria.
-//     */
-//    async search(criteria, errorCallback) {
-//        try {
-//            const queryParams = new URLSearchParams({ q: criteria })
-//            const queryString = queryParams.toString();
-//
-//            const response = await this.axiosClient.get(`playlists/search?${queryString}`);
-//
-//            return response.data.playlists;
-//        } catch (error) {
-//            this.handleError(error, errorCallback)
-//        }
-//
-//    }
 
     /**
      * Helper method to log the error and run any error functions.
