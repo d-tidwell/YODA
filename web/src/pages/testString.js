@@ -40,8 +40,8 @@ class TestString extends BindingClass {
     async clientLoaded(){
         const identity =  await this.client.getIdentity();
         const provider =  await this.client.getProvider(identity.name);
-        this.populatePatientsPending(provider);
-        this.populatePhrPending(provider);
+        await this.populatePatientsPending(provider);
+        await this.populatePhrPending(provider.name);
         
     }
     /**
@@ -73,8 +73,8 @@ class TestString extends BindingClass {
     }
 
 
-    async populatePhrPending(provider) {
-        const response = await this.client.getAllPHRByProvider(provider.name);
+    async populatePhrPending(providerName) {
+        const response = await this.client.getAllPHRByProvider(providerName);
         const responseId = response.phrId;
         const phrList = document.getElementById('phrPendingList');
     
@@ -110,6 +110,7 @@ class TestString extends BindingClass {
             // Create buttons container and append buttons
             let buttonsDiv = document.createElement('div');
             buttonsDiv.className = 'buttons-container';
+ 
 
             let signButton = document.createElement('button');
             signButton.className = 'btn seen-btn';
@@ -171,50 +172,54 @@ class TestString extends BindingClass {
     
     
     async populatePatientsPending(provider){
-        console.log(provider.name,"patients provider")
+        console.log(provider,"patients provider")
         var listGroup = document.getElementById('desktopListGroupPatients');
         const identity = await this.client.getIdentity();
-        const self = this; // add this line
+        const self = this; 
+        let counter = 0;
         for (const patient of provider.pendingPatients) {
+            let patientName;
             try {
                 var listItem = document.createElement('li');
                 listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
                 listItem.innerHTML = `<h4>Loading ...<h4>`
-        
+               
                 // add await before this.client.getPatient(patient)
-                const patientName = await this.client.getPatient(patient);
-        
+                patientName = await this.client.getPatient(patient);
+                listItem.id = `patient-${patientName.name}-${counter}`;
+                counter += 1;
+    
+    
                 listItem.innerHTML = `
                     <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
                     ${patientName.name}
                     <div>
                     <button class="btn  visit-btn">Visit</button>
-                    <button class="btn seen-btn">Seen</button>
+                    <button class="btn seen-btn" id="seen-${patientName.name}-${counter}">Seen</button>
                     </div>
                 `;
-        
+    
                 listGroup.appendChild(listItem);
-        
-                (function(self, listItem, patient) { 
-                    listItem.querySelector('.visit-btn').addEventListener('click', function() {
-                        window.open('/visit.html?id=' + patient, '_blank');
-                    });
-        
-                    listItem.querySelector('.seen-btn').addEventListener('click', async () => {
-                        const result = await self.client.removePatient(patient, identity.name); 
-                        console.log(result.success, "test");
-                        if (result.success === true) {
-                            listItem.remove();  
-                        }
-                    });
-                })(self, listItem, patient); 
+    
+                listItem.querySelector('.visit-btn').addEventListener('click', function() {
+                    window.open('/visit.html?id=' + patient, '_blank');
+                });
+    
+                listItem.querySelector(`#seen-${patientName.name}-${counter}`).addEventListener('click', async (patientName, counter) => {
+                    const result = await self.client.removePatient(patient, identity.name); 
+                    console.log(result.success, "test");
+                    if (result.success === true) {
+                        document.getElementById('desktopListGroupPatients').innerHTML = "";
+                        let refreshedProvider = await this.client.getProvider(identity.name);
+                        await this.populatePatientsPending(refreshedProvider);
+                    }
+                });
+    
             } catch (err) {
                 console.log(err);  
             }
         }
     }
-    
-    
     
     
     async getAllPatientsAndDisplay() {
@@ -356,7 +361,7 @@ class TestString extends BindingClass {
         // Check if the result is an array. If so, assign it directly to phrResultsArray. If not, wrap it in an array.
         phrResultsArray = result && Array.isArray(result.phrId) ? result.phrId : [];
 
-        console.log(phrResultsArray, "after check for array")
+        console.log(phrResultsArray.reverse(), "after check for array")
         // Now the results are in phrResultsArray, which can be iterated over to populate the accordion
         if (phrResultsArray.length > 0) {
             phrResultsArray.forEach((phr, index) => {
@@ -376,7 +381,7 @@ class TestString extends BindingClass {
                 accordionButton.setAttribute('aria-expanded', 'false');
                 accordionButton.setAttribute('aria-controls', `collapse${index+1}`);
                 // !Change This
-                accordionButton.innerText = `PHR ${phr.date}`;
+                accordionButton.innerText = `Date ${phr.date}`;
     
                 const accordionCollapse = document.createElement('div');
                 accordionCollapse.id = `collapse${index+1}`;
@@ -391,9 +396,16 @@ class TestString extends BindingClass {
                 <p>Provider Name: ${phr.providerName}</p>
                 <p>Date: ${phr.date}</p>
                 <p>Status: ${phr.status}</p>
-                <p>Comprehension: ${phr.comprehendData}</p>
                 `; 
-    
+                if (phr.comprehendData != null) {
+                    this.client.parseComp(phr.comprehendData)
+                      .then(additionToAccordion => {
+                        accordionBody.appendChild(additionToAccordion);
+                      })
+                      .catch(error => {
+                        console.error('Error parsing compData:', error);
+                      });
+                  }
                 accordionHeader.appendChild(accordionButton);
                 accordionCollapse.appendChild(accordionBody);
                 accordionItem.appendChild(accordionHeader);

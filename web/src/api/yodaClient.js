@@ -361,7 +361,6 @@ export default class YodaClient extends BindingClass {
                 const rents = jsonObject[parentKey];
                 
                 for(const children in rents) {
-                    console.log(children)
                     const childHeading = document.createElement("h6");
                     childHeading.innerHTML = children;
                     const seperator = document.createElement("div");
@@ -371,9 +370,10 @@ export default class YodaClient extends BindingClass {
 
                     for (const sibling in jsonObject[parentKey][children]) {
                         const siblingText = document.createElement("p");
+                        siblingText.style ="font-weight: bold";
                         seperator.appendChild(siblingText);
-                        console.log(siblingText)
                         siblingText.innerHTML = sibling;
+                        siblingText.textContent = await this.capitalizeFirstLetter(sibling);
                         const cuz = jsonObject[parentKey][children][sibling];
                         const sepSibs = document.createElement("div");
                         const sepSibsTakes = document.createElement("div");
@@ -383,6 +383,8 @@ export default class YodaClient extends BindingClass {
                             const subObject = cuz[key];
                 
                             const subObjectElement = document.createElement("p");
+                            const subObjectElementBreak = document.createElement("hr");
+                            subObjectElementBreak.classList.add("breaker-point");
                             let subObjectContent = '';
                       
                             for (const subKey in subObject) {
@@ -392,9 +394,10 @@ export default class YodaClient extends BindingClass {
                               }
                             }
                       
-                            subObjectElement.textContent = `${subObjectContent.slice(0, -2)}`;
+                            subObjectElement.textContent = `${subObjectContent}`;
                             
                             sepSibsTakes.appendChild(subObjectElement);
+                            sepSibsTakes.appendChild(subObjectElementBreak);
                             
                           }
                         }
@@ -404,15 +407,17 @@ export default class YodaClient extends BindingClass {
                           sepSibs.appendChild(sepSibsTakes);
                           containerKeys.appendChild(sepSibs);
                         }
-                      }                      
-                      
+                      }                        
                 };
             }
           }
         }
         return containerKeys;
       }
-      
+    
+      async capitalizeFirstLetter(str) {
+        return await str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
 
     /**
      * Helper method to log the error and run any error functions.

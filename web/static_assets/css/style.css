@@ -6,7 +6,11 @@
     --error-color: #EE3A23;
 }
 
+
+
+
 .background {
+    font-family: 'Baloo 2', cursive;
     background-color:  var(--tertiary-color);
     margin: 0;
     counter-reset: section;
@@ -15,6 +19,7 @@
 
 .header {
     /* Flexbox: https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+    font-family: 'Baloo 2', cursive;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,12 +28,14 @@
     padding: 4px 20px;
 }
 .site-title {
+    font-family: 'Baloo 2', cursive;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
   
 .button {
+  font-family: 'Baloo 2', cursive;
   background-color: var(--primary-color);
   outline: 2px solid var(--primary-color);
   border: none;
@@ -46,18 +53,21 @@
   object-fit: cover; /* Ensures the image covers the whole container */
 }
 .buttons-container {
+    font-family: 'Baloo 2', cursive;
     display: flex;
     flex-wrap: nowrap;
   }
   
 
 .button-group {
+    font-family: 'Baloo 2', cursive;
     display: flex;
     justify-content: space-between;
 
 }
 
 .headingBoxPHR {
+    font-family: 'Baloo 2', cursive;
     border: 2px solid  rgb(234, 235, 236);
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -70,32 +80,41 @@
     
 }
 .subHeadingBox {
+    font-family: 'Baloo 2', cursive;
     border: 2px solid  black;
     background-color: rgb(234, 235, 236);
 
 }
 .resultsPHRtext {
+    font-family: 'Baloo 2', cursive;
     border: 2px solid  black;
     background-color: rgb(234, 235, 236);
 }
 .accordion-button-phr {
+    font-family: 'Baloo 2', cursive;
     display: flex;
     justify-content: space-between;
 }
 .accordion-button.show {
+    font-family: 'Baloo 2', cursive;
     background-color: var(--tertiary-color) !important;
 }
 
 .attr {
     width: 30%;  /* Or whatever width you find appropriate */
 }
-
+.breaker-point {
+    border-top: 1px solid transparent;  /* Top border will be transparent */
+    border-bottom: 1px solid black; /* Bottom border will be black */
+}
 button.visit-btn {
+    font-family: 'Baloo 2', cursive;
     background-color: var(--primary-color);
     color: white !important;
 }
 
 button.seen-btn {
+    font-family: 'Baloo 2', cursive;
     background-color: var(--primary-color);
     color: white !important;
 }
@@ -109,6 +128,7 @@ button.seen-btn {
 }
 
 .card {
+    font-family: 'Baloo 2', cursive;
     color: var(--primary-color);
     background-color: var(--secondary-color);
     margin: 20px;
@@ -116,23 +136,28 @@ button.seen-btn {
 }
 
 .error {
+    font-family: 'Baloo 2', cursive;
     color: var(--error-color);
     border: 1px solid var(--error-color);
     padding: 8px;
 }
 
 .validated-field:invalid {
+    font-family: 'Baloo 2', cursive;
     outline: 2px solid var(--error-color);
 }
 .validated-field:focus:invalid {
+    font-family: 'Baloo 2', cursive;
     color: var(--error-color);
 }
 
 .card-content {
+    font-family: 'Baloo 2', cursive;
     max-width: 500px;
 }
 
 .card-content .form-field {
+    font-family: 'Baloo 2', cursive;
     display: flex;
     flex-direction: column;
 }
@@ -148,6 +173,7 @@ button.seen-btn {
 }
 
 .header-button {
+  font-family: 'Baloo 2', cursive;
   background-color: var(--tertiary-color);
   outline: 2px solid var(--primary-color);
   border: none;
@@ -159,6 +185,9 @@ button.seen-btn {
   text-decoration: none;
   cursor: pointer;
 }
+li {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
 
 .digital-clock {
     font-family: 'Courier New', Courier, monospace;  /* choose a digital-style font */
@@ -169,16 +198,36 @@ button.seen-btn {
     line-height: 100px;  /* center the text vertically, adjust as needed */
     font-family: 'LED Digital 7', sans-serif;}
 
-
+p {
+    font-family: 'Baloo 2', cursive;
+}
+.my-3.withShadow {
+    font-family: 'Baloo 2', cursive;
+    box-shadow: 0 6px 6px rbga(0,0,0,0.2) !important;
+}
+h1 h2 h3 h4 h5 h6 {
+    font-family: 'Baloo 2', cursive;
+}
+h4 {
+ font-family: 'Baloo 2', cursive;
+ font-weight: bold !important;
+}
+.text-center {
+    font-family: 'Baloo 2', cursive;
+}
 .tabs-color {
     background-color: rgb(234, 235, 236);
 
 }
 .nav-link.tabs-color {
+    font-family: 'Baloo 2', cursive;
     color: var(--tabs-color) !important;
+    background-color: rgb(234, 235, 236)
+    box-shadow: 4 -3px 3px rgba(0, 0, 0, 0.2) !important
 }
 .nav-link.active.tabs-color {
-    color: var(--tabs-color) !important;
+    background-color: rgb(247, 249, 250);
+    box-shadow: 0 -6px 6px rgba(0, 0, 0, 0.2) !important;
 }
 
 #nav-home-tab {

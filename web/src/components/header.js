@@ -68,12 +68,14 @@ export default class Header extends BindingClass {
     createLoginButton() {
         const loginBtn = this.createButton('Login', this.client.login);
         loginBtn.classList.add('btn');
+        loginBtn.style = "font-family: 'Baloo 2', cursive;"
         return loginBtn;
     }
 
     createLogoutButton(currentUser) {
         const logoutBtn =  this.createButton(`Logout: ${currentUser.name}`, this.client.logout);
         logoutBtn.classList.add('btn')
+        logoutBtn.style = "box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2) !important";
         return logoutBtn
     }
 
