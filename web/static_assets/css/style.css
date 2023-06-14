@@ -80,10 +80,11 @@
     margin-bottom: 1rem
     
 }
-#logout {
+#logout-desktop {
     position: fixed;
     bottom: 0;
     right: 0;
+    cursor: pointer;
 }
 .subHeadingBox {
     font-family: 'Baloo 2', cursive;
@@ -173,6 +174,7 @@ button.seen-btn {
 .header-image-quarter {
     width: 10%; /* Reduce the width by 50% */
     height: auto; /* Maintain the aspect ratio */
+    cursor: pointer;
 }
 
 .header-button {

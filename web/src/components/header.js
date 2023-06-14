@@ -40,19 +40,28 @@ export default class Header extends BindingClass {
         imageHeader.src = "images/logo-no-background.png";
         imageHeader.classList.add("header-image-quarter", "glowing-image");
         imageHeader.id = "logoId";
+        
         const imageHeader2 = document.createElement('img');
         imageHeader2.src = "images/yoda.png";
         imageHeader2.classList.add("header-image-quarter", "glowing-image");
         imageHeader2.id ="imageYoda";
+        imageHeader2.title = "Logout"; 
+        
+        // Add the event listener for logout
+        imageHeader2.addEventListener('click', async () => {
+            await this.client.logout();
+        });
+        
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');
         const clock = this.createDigitalClock();
         siteTitle.appendChild(imageHeader);
         siteTitle.appendChild(clock);
         siteTitle.appendChild(imageHeader2);
-
+    
         return siteTitle;
     }
+    
 
     createUserInfoForHeader(currentUser) {
         const userInfo = document.createElement('div');
@@ -70,14 +79,14 @@ export default class Header extends BindingClass {
     createLoginButton() {
         const loginBtn = this.createButton('Login', this.client.login);
         loginBtn.classList.add('btn');
-        loginBtn.id ="logout";
+        loginBtn.id ="logout-desktop";
         loginBtn.style = "font-family: 'Baloo 2', cursive;";
         return loginBtn;
     }
 
     createLogoutButton(currentUser) {
         const logoutBtn =  this.createButton(`Logout: ${currentUser.name}`, this.client.logout);
-        logoutBtn.id ="logout";
+        logoutBtn.id ="logout-desktop";
         logoutBtn.classList.add('btn');
         return logoutBtn
     }
