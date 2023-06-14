@@ -30,7 +30,6 @@ class LandingPage extends BindingClass {
     }
 
 
-
 }
 /**
  * Main method to run when the page contents have loaded.

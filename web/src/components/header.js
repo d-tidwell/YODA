@@ -13,7 +13,6 @@ export default class Header extends BindingClass {
             'createLoginButton', 'createLogoutButton', 'createDigitalClock', 'getCurrentTime'
         ];
         this.bindClassMethods(methodsToBind, this);
-
         this.client = new yodaClient();
     }
 
@@ -26,22 +25,24 @@ export default class Header extends BindingClass {
 
         const siteTitle = this.createSiteTitle();
         const userInfo = this.createUserInfoForHeader(currentUser);
-  
-
+        
         const header = document.getElementById('header');
 
         header.appendChild(siteTitle);
         header.appendChild(userInfo);
+        
         
     }
 
     createSiteTitle() {
         const imageHeader = document.createElement('img');
         imageHeader.src = "images/logo-no-background.png";
-        imageHeader.classList.add("header-image-quarter");
+        imageHeader.classList.add("header-image-quarter", "glowing-image");
+        imageHeader.id = "logoId";
         const imageHeader2 = document.createElement('img');
         imageHeader2.src = "images/yoda.png";
-        imageHeader2.classList.add("header-image-quarter");
+        imageHeader2.classList.add("header-image-quarter", "glowing-image");
+        imageHeader2.id ="imageYoda";
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');
         const clock = this.createDigitalClock();

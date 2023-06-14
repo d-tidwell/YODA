@@ -104,12 +104,11 @@ class TestString extends BindingClass {
             let idValue = document.createElement('span');
             idValue.style.cssText = valueStyle; // Apply the value style
             idValue.innerText = phrId.phrId;
-            idContainer.appendChild(idLabel);
-            idContainer.appendChild(idValue);
+
 
             // Create buttons container and append buttons
             let buttonsDiv = document.createElement('div');
-            buttonsDiv.className = 'buttons-container';
+            buttonsDiv.className = '';
  
 
             let signButton = document.createElement('button');
@@ -134,6 +133,7 @@ class TestString extends BindingClass {
             phrContainer.appendChild(idContainer);
             phrContainer.appendChild(buttonsDiv);
 
+
             // Create container for Name and Status
             let infoContainer = document.createElement('div');
             infoContainer.className = 'info-container';
@@ -153,10 +153,12 @@ class TestString extends BindingClass {
             statusValue.innerText = phrId.status;
 
             // Append Name and Status to the infoContainer
-            infoContainer.appendChild(nameLabel);
-            infoContainer.appendChild(nameValue);
-            infoContainer.appendChild(statusLabel);
-            infoContainer.appendChild(statusValue);
+            idContainer.appendChild(nameLabel);
+            idContainer.appendChild(nameValue);
+            idContainer.appendChild(statusLabel);
+            idContainer.appendChild(statusValue);
+            infoContainer.appendChild(idLabel);
+            infoContainer.appendChild(idValue);
 
             // Append phrContainer and infoContainer to the list item
             li.appendChild(phrContainer);
@@ -182,14 +184,12 @@ class TestString extends BindingClass {
             try {
                 var listItem = document.createElement('li');
                 listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-                listItem.innerHTML = `<h4>Loading ...<h4>`
                
                 // add await before this.client.getPatient(patient)
                 patientName = await this.client.getPatient(patient);
                 listItem.id = `patient-${patientName.name}-${counter}`;
                 counter += 1;
-    
-    
+
                 listItem.innerHTML = `
                     <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
                     ${patientName.name}

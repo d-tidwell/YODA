@@ -107,12 +107,13 @@ class Visit extends BindingClass {
 
       try {
           const uploadResponse = await this.client.dropInTheBucket(presignedS3Url, audioBlob);
-          return uploadResponse;
+          // return uploadResponse;
+          return "http:://fakeS3toReturnLine111Visit.js";
       } catch (error) {
           console.error('Error uploading audio to S3: ', error);
       }
     }
-      
+
     startRecording = () => {
 
       navigator.mediaDevices.getUserMedia({ video: false, audio: true })
@@ -137,19 +138,19 @@ class Visit extends BindingClass {
   
     stopRecording = () => {
 
-        this.mediaRecorder.stop();
-        this.mediaRecorder = null;
-        this.recordButton.disabled = false;
-        this.stopButton.disabled = true;
-        this.playButton.disabled = false;
-    
-        setTimeout(() => {
-        const audioBlob = new Blob(this.chunks, { type: "audio/ogg" });
-        const audioURL = window.URL.createObjectURL(audioBlob);
-        this.recordedAudio = new Audio(audioURL);
-        this.chunks = [];
-        }, 100);
-    };
+      this.mediaRecorder.stop();
+      this.mediaRecorder = null;
+      this.recordButton.disabled = false;
+      this.stopButton.disabled = true;
+      this.playButton.disabled = false;
+  
+      setTimeout(() => {
+      const audioBlob = new Blob(this.chunks, { type: "audio/ogg" });
+      const audioURL = window.URL.createObjectURL(audioBlob);
+      this.recordedAudio = new Audio(audioURL);
+      this.chunks = [];
+      }, 100);
+  };
       
   
     playAudio = () => {
@@ -159,7 +160,17 @@ class Visit extends BindingClass {
         console.warn("No recorded audio available.");
       }
     }
-  
+    
+    stopRecordedAudio = () => {
+      this.recordButton.disabled = false;
+      this.stopButton.disabled = true;
+      this.playButton.disabled = false;
+      if (this.recordedAudio) {
+        this.recordedAudio.stop();
+      }
+
+    }
+
     // Handle available audio data
     onDataAvailable = (event) => {
       this.chunks.push(event.data);
@@ -174,6 +185,7 @@ class Visit extends BindingClass {
     async getAllPHR(patientName) {
       const accordion = document.getElementById('phrAccordion');
       const result = await this.client.getAllPHR(patientName);
+      result.phrId.reverse();
       if (result.phrId.length > 0) {
         result.phrId.forEach((phr, index) => {
             const accordionItem = document.createElement('div');
@@ -230,8 +242,7 @@ class Visit extends BindingClass {
                   console.error('Error parsing compData:', error);
                 });
             }
-            
-    
+                
             accordionHeader.appendChild(accordionButton);
             accordionCollapse.appendChild(accordionBody);
             accordionItem.appendChild(accordionHeader);

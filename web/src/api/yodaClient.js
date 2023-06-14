@@ -330,12 +330,39 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback);
         }
     }
+    async iconoclass(typeHead) {
+        let medicationImage = "/images/Icons/pillhand.png";
+        let anatomyImage = "/images/Icons/kidney.png";
+        let medicalConditionImage = "/images/Icons/hospital.png";
+        let timeExpressionImage = "/images/Icons/handshield.png";
+        let behavioralImage = "/images/Icons/kidney.png";
+        let protectedHealthImage = "/images/Icons/suitcase.png";
+        let testTreatmentImage = "/images/Icons/testsh.png";
+    
+        switch (typeHead) {
+            case 'ANATOMY':
+                return anatomyImage;
+            case 'BEHAVIORAL_ENVIRONMENTAL_SOCIAL':
+                return behavioralImage;
+            case 'MEDICAL_CONDITION':
+                return medicalConditionImage;
+            case 'MEDICATION':
+                return medicationImage;
+            case 'PROTECTED_HEALTH_INFORMATION':
+                return protectedHealthImage;
+            case 'TEST_TREATMENT_PROCEDURE':
+                return testTreatmentImage;
+            case 'TIME_EXPRESSION':
+                return timeExpressionImage;
+            default:
+                return '/images/Icons/doc.png';
+        }
+    }
     
     async parseComp(compData) {
         let containerKeys = document.createElement("div");
-        containerKeys.className="containerKeys"
-        
-      
+        containerKeys.className="containerKeys";
+
         if (compData != null) {
           const hashMap = { key: compData };
           const jsonString = hashMap.key;
@@ -355,6 +382,11 @@ export default class YodaClient extends BindingClass {
                 const parentHeading = document.createElement("h5");
                 parentHeading.innerHTML = parentKey;
                 parentHeading.style ="color: white;"
+                const icon = document.createElement("img");
+                icon.style = "iconography-phr-result";
+                icon.src = await this.iconoclass(parentKey.toString());
+                icon.className ="iconography-phr-result";
+                boxLabels.appendChild(icon);
                 boxLabels.appendChild(parentHeading);
                 containerKeys.appendChild(boxLabels);
         
@@ -364,7 +396,7 @@ export default class YodaClient extends BindingClass {
                     const childHeading = document.createElement("h6");
                     childHeading.innerHTML = children;
                     const seperator = document.createElement("div");
-                    childHeading.className ="subHeadingBox"
+                    childHeading.className ="subHeadingBox"                    
                     seperator.appendChild(childHeading);
                     containerKeys.appendChild(seperator);
 
@@ -390,7 +422,7 @@ export default class YodaClient extends BindingClass {
                             for (const subKey in subObject) {
                               if (subObject.hasOwnProperty(subKey)) {
                                 const subValue = subObject[subKey];
-                                subObjectContent += `${subKey}: ${JSON.stringify(subValue)}, `;
+                                subObjectContent += `${subKey}: ${JSON.stringify(subValue)} `;
                               }
                             }
                       
