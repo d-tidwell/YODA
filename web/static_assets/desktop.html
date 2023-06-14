@@ -60,17 +60,18 @@
       <!--HOME END-->
    <!--PATIENTS BEGIN-->
     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-      <div class="container py-5">
+
+      <div class="container">
         <div class="row">
-
-        <h3 class="text-center">Patients</h3>
-        <div class="accordion withShadow" id="patientAccordion">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="createPatientsAccordionHeader"></h2>
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#createPatientForm" aria-expanded="false" aria-controls="createPatientForm">
-              Create Patient
+         <h2 class="text-center py-4">Patients</h2>
+        <div class="accordion " id="patientAccordion">
+          <div class="accordion-item phr-shadows">
+            <h2 class="accordion-header " id="createPatientsAccordionHeader"></h2>
+            <button class="accordion-button collapsed d-block text-center" type="button" data-bs-toggle="collapse" data-bs-target="#createPatientForm" aria-expanded="false" aria-controls="createPatientForm">
+              <img class="iconography" src="/images/Icons/PHR.png">
+              <h4 class="text-center">Create</h4>
             </button>
-
+            
             <div class="collapse" id="createPatientForm">
               <div class="container py-5">
                 <div class="row justify-content-center">
@@ -107,11 +108,13 @@
           </div>
         </div>
             <div class="accordion mb-4 py-1" id="allPatientAccordion">
-              <div class="accordion-item">
+              <div class="accordion-item phr-shadows">
                 <h2 class="accordion-header" id="patientsAccordionHeader">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#patientsAccordionCollapse" aria-expanded="false" aria-controls="patientsAccordionCollapse">
-                    See All Patients
+                  <button class="accordion-button collapsed d-block text-center" type="button" data-bs-toggle="collapse" data-bs-target="#patientsAccordionCollapse" aria-expanded="false" aria-controls="patientsAccordionCollapse">
+                    <img class="iconography" src="/images/Icons/sunshine.png">
+                    <h4 class="text-center">See All Patients</h4>
                   </button>
+                  
                 </h2>
                 <div id="patientsAccordionCollapse" class="accordion-collapse collapse" aria-labelledby="patientsAccordionHeader" data-bs-parent="#patientAccordion">
                   <div class="accordion-body">
@@ -130,7 +133,7 @@
 
     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
               <!--PHRs BEGIN-->
-      <div class="container py-5">
+      <div class="container py-5 phr-shadows">
         <div class="row justify-content-center">
           <div class="col-10 ">
             <form class="my-3 withShadow">
@@ -166,7 +169,7 @@
               <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    PHR Results
+                    <img class="iconography" src="/images/Icons/PHR.png">PHR Results
                   </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#phrAccordion">

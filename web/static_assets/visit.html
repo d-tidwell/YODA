@@ -19,9 +19,9 @@
 </head>
 <header class="header" id="header"></header>
 <body class="tabs-color">
-  <div class="container mt-4">
+  <div class="container mt-4 phr-visit">
     <!-- Patient Details Section -->
-    <div class="card mb-4">
+    <div class="card mb-4 phr-shadows">
       <div class="card-body">
         <div class="row">
           <div class="col-sm-3">
@@ -40,19 +40,21 @@
  
   
     <!-- PHR Details Section -->
-    <div id="phrVisit">
-      <div class="text-center">
-        <h4 class="mb-3 y-4">Create PHR</h4>
+    <div id="phrVisit ">
+      <div class=" ">
       </div>
       <div class="accordion" id="createAccordion">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingCreate">
-            <button class="accordion-button collapsed" id="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCreate" aria-expanded="false" aria-controls="collapseCreate">
-                NEW PHR / CREATE
-            </button>          
+        <div class="accordion-item phr-shadows">
+          <h2 class="accordion-header" id="headingCreate" >
+            <button class="accordion-button collapsed d-block text-center" id="accordion-button" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseCreate" aria-expanded="false" aria-controls="collapseCreate">
+              <img src="/images/Icons/nursed.png" class="iconography" id="iconography">
+              <h4 class="mb-3 y-2 text-center">Create PHR</h4>
+            </button>   
+            
+       
         </h2>
         
-          <div id="collapseCreate" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#createAccordion" style="">
+          <div id="collapseCreate" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#createAccordion" >
             <div class="accordion-body">
             <form>
               <div class="mb-3">
@@ -76,7 +78,8 @@
             </div>
           </div>
           </div>
-          <div class="text-center py-5">
+          <div class="text-center py-2 phr-shadows" style="background-color:white;">
+            <img src="/images/Icons/PHR.png" class="iconography">
             <h4 class="mb-3">Past PHR's</h4>
             <div class="accordion" id="phrAccordion">
                 <!-- Accordion content here -->

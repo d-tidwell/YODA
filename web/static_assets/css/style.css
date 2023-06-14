@@ -50,7 +50,7 @@
 .img-fit {
   width: 10%;
   height: auto;
-  object-fit: cover; /* Ensures the image covers the whole container */
+  object-fit: cover; 
 }
 .buttons-container {
     font-family: 'Baloo 2', cursive;
@@ -118,7 +118,11 @@ button.seen-btn {
     background-color: var(--primary-color);
     color: white !important;
 }
+.phr-shadows {
+    margin-top: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 
+}
 .header_home {
     font-size: 36px;
     line-height: 40px;
@@ -163,8 +167,8 @@ button.seen-btn {
 }
 
 .half-scaled-image {
-    width: 25%; /* Reduce the width by 50% */
-    height: auto; /* Maintain the aspect ratio */
+    width: 25%; 
+    height: auto; 
 }
 
 .header-image-quarter {
@@ -188,7 +192,19 @@ button.seen-btn {
 li {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
-
+.iconography {
+    width: 10%; 
+    height: auto;
+}
+.iconography-phr-result{
+        width: 10%; 
+        height: auto;
+}
+.accordion-item.accordion-header.iconography {
+    width: 10%; 
+    height: auto;
+ 
+}
 .digital-clock {
     font-family: 'Courier New', Courier, monospace;  /* choose a digital-style font */
     font-size: 3em;  /* adjust size as needed */
