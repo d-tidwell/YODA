@@ -118,8 +118,8 @@ export default class Header extends BindingClass {
         hours = hours < 10 ? '0' + hours : hours;
         minutes = minutes < 10 ? '0' + minutes : minutes;
         seconds = seconds < 10 ? '0' + seconds : seconds;
-
-        return `${year}-${month}-${day}:${hours}:${minutes}:${seconds}`;
+        
+        return `${year}-${month}-${day}  ${hours}:${minutes}:${seconds}`;
     }
 
         /**
@@ -130,6 +130,7 @@ export default class Header extends BindingClass {
         clockDiv.id = 'digital-clock';
         clockDiv.classList.add('digital-clock');  
         clockDiv.innerText = this.getCurrentTime();
+        
 
         setInterval(() => {
             clockDiv.innerText = this.getCurrentTime();
