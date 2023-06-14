@@ -80,6 +80,11 @@
     margin-bottom: 1rem
     
 }
+#logout {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
 .subHeadingBox {
     font-family: 'Baloo 2', cursive;
     border: 2px solid  black;
