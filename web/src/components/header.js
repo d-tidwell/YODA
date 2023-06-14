@@ -27,6 +27,7 @@ export default class Header extends BindingClass {
         const userInfo = this.createUserInfoForHeader(currentUser);
         
         const header = document.getElementById('header');
+        
 
         header.appendChild(siteTitle);
         header.appendChild(userInfo);
@@ -76,13 +77,12 @@ export default class Header extends BindingClass {
     createLogoutButton(currentUser) {
         const logoutBtn =  this.createButton(`Logout: ${currentUser.name}`, this.client.logout);
         logoutBtn.classList.add('btn')
-        logoutBtn.style = "box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2) !important";
         return logoutBtn
     }
 
     createButton(text, clickHandler) {
         const button = document.createElement('button');
-        button.classList.add('header-button');
+        button.classList.add('header-button','seen-btn');
         button.href = '#';
         button.innerText = text;
 
@@ -102,7 +102,7 @@ export default class Header extends BindingClass {
         let minutes = date.getMinutes();
         let seconds = date.getSeconds();
 
-        month = month < 10 ? '0' + month : month;
+        month = ((month + 1) < 10) ? '0' + (month + 1) : month + 1;
         day = day < 10 ? '0' + day : day;
         hours = hours < 10 ? '0' + hours : hours;
         minutes = minutes < 10 ? '0' + minutes : minutes;
@@ -117,7 +117,6 @@ export default class Header extends BindingClass {
     createDigitalClock() {
         const clockDiv = document.createElement('div');
         clockDiv.id = 'digital-clock';
-        clockDiv.classList.add('clock');
         clockDiv.classList.add('digital-clock');  
         clockDiv.innerText = this.getCurrentTime();
 

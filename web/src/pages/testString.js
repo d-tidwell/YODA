@@ -36,7 +36,7 @@ class TestString extends BindingClass {
         this.header = new Header(this.dataStore);
         this.patientsNullable = null;
     }
-
+    
     async clientLoaded(){
         const identity =  await this.client.getIdentity();
         const provider =  await this.client.getProvider(identity.name);
@@ -65,10 +65,12 @@ class TestString extends BindingClass {
              this.getAllPatientsAndDisplay();
          });
 
+
         const createPatientSubmitButton = document.getElementById('createPatientSubmit');
         createPatientSubmitButton.addEventListener('click', (event) => this.createPatient(event));
         const phrSearchSubmitButton = document.getElementById('submitPHRSearch');
         phrSearchSubmitButton.addEventListener('click', (event) => this.searchPHR(event));
+        
 
     }
 
@@ -142,17 +144,17 @@ class TestString extends BindingClass {
             nameLabel.style.cssText = labelStyle;
             nameLabel.innerText = 'Name:';
             let nameValue = document.createElement('span');
-            nameValue.style.cssText = valueStyle; // Apply the value style
+            nameValue.style.cssText = valueStyle; 
             nameValue.innerText = patient.name;
 
             let statusLabel = document.createElement('span');
             statusLabel.style.cssText = labelStyle;
             statusLabel.innerText = 'Status:';
             let statusValue = document.createElement('span');
-            statusValue.style.cssText = valueStyle; // Apply the value style
+            statusValue.style.cssText = valueStyle; 
             statusValue.innerText = phrId.status;
 
-            // Append Name and Status to the infoContainer
+            // Append Name and Status and Id to the id/infoContainer
             idContainer.appendChild(nameLabel);
             idContainer.appendChild(nameValue);
             idContainer.appendChild(statusLabel);
@@ -358,6 +360,7 @@ class TestString extends BindingClass {
             // For date or date range search, patientIdInput must be provided
             result = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
         }
+        console.log(result,"result");
         // Check if the result is an array. If so, assign it directly to phrResultsArray. If not, wrap it in an array.
         phrResultsArray = result && Array.isArray(result.phrId) ? result.phrId : [];
 

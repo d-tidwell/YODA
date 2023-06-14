@@ -122,36 +122,47 @@
 
     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
               <!--PHRs BEGIN-->
-      <div class="container py-5 phr-shadows">
-        <div class="row justify-content-center">
+      <div class="container">
+        <div class="row">
           <div class="col-10 ">
-            <form class="my-3 withShadow">
-              <h3 class="text-center">Personal Health Records</h3>
-              <div class="mb-3">
-                <label for="phrId" class="form-label">PHR ID</label>
-                <input type="text" class="form-control" id="phrId">
-              </div>
-              <div class="mb-3">
-                <label for="patientId" class="form-label">Patient ID</label>
-                <input type="text" class="form-control" id="patientId">
-              </div>
-              <div class="mb-3">
-                <label for="phrDate" class="form-label">Date</label>
-                <input type="date" class="form-control" id="phrDate">
-              </div>
-              <div class="mb-3">
-                <label for="fromDate" class="form-label">From Date</label>
-                <input type="date" class="form-control" id="fromDate">
-              </div>
-              <div class="mb-3">
-                <label for="toDate" class="form-label">To Date</label>
-                <input type="date" class="form-control" id="toDate">
-              </div>
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn seen-btn" id="submitPHRSearch">Search</button>
-              </div>
-              
-            </form>
+            <div class="accordion " id="patientHealthAccordion">
+              <div class="accordion-item phr-shadows">
+                <h2 class="accordion-header " id="searchPatientsAccordionHeader"></h2>
+                <button class="accordion-button collapsed d-block text-center" type="button" data-bs-toggle="collapse"" data-bs-target="#searchPatientForm" aria-expanded="true" aria-controls="searchPatientForm">
+                  <img class="iconography" src="/images/Icons/tools.png">
+                  <h4 class="text-center">Search</h4>
+                </button>
+                <div class="collapse show" id="searchPatientForm">
+                  <div class="container py-5">
+                    <div class="row justify-content-center">
+                      <div class="col-10">
+                      <form >
+                        <h3 class="text-center">Personal Health Records</h3>
+                        <div class="mb-3">
+                          <label for="phrId" class="form-label">PHR ID</label>
+                          <input type="text" class="form-control" id="phrId">
+                        </div>
+                        <div class="mb-3">
+                          <label for="patientId" class="form-label">Patient ID</label>
+                          <input type="text" class="form-control" id="patientId">
+                        </div>
+                        <div class="mb-3">
+                          <label for="phrDate" class="form-label">Date</label>
+                          <input type="date" class="form-control" id="phrDate">
+                        </div>
+                        <div class="mb-3">
+                          <label for="fromDate" class="form-label">From Date</label>
+                          <input type="date" class="form-control" id="fromDate">
+                        </div>
+                        <div class="mb-3">
+                          <label for="toDate" class="form-label">To Date</label>
+                          <input type="date" class="form-control" id="toDate">
+                        </div>
+                        <div class="d-grid gap-2">
+                          <button type="submit" class="btn seen-btn" id="submitPHRSearch">Search</button>
+                        </div>
+                        
+                      </form>
             
             <!--PHR items-->
             <div class="accordion text-center" id="phrAccordion">
