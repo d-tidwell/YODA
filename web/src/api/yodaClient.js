@@ -11,7 +11,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['parseComp','clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider','getPatient', 'createPatient','removePatient','getAllPHRByProvider','getAllPatients'];
+        const methodsToBind = ['parseComp', 'clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider', 'getPatient', 'createPatient', 'removePatient', 'getAllPHRByProvider', 'getAllPatients'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -69,18 +69,18 @@ export default class YodaClient extends BindingClass {
         return await this.authenticator.getUserToken();
     }
 
-    async isLoggedIn(){
+    async isLoggedIn() {
         return this.authenticator.isUserLoggedIn();
     }
 
-     /**
-     * Gets the profile for the given ID.
-     * @param id Unique identifier for a profile
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The profile's metadata.
-     */
+    /**
+    * Gets the profile for the given ID.
+    * @param id Unique identifier for a profile
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The profile's metadata.
+    */
 
-     async getProvider(providerName, errorCallback){
+    async getProvider(providerName, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
             const response = await this.axiosClient.get(`/provider/${providerName}`, {
@@ -92,15 +92,15 @@ export default class YodaClient extends BindingClass {
             return response.data;
         } catch (error) {
             console.error(error); // or do something with the error
-            if(errorCallback){
+            if (errorCallback) {
                 errorCallback(error);
             }
             throw error; // rethrow the error
         }
     }
-    
-    
-    async createProvider(providerName, providerEmail, errorCallback){
+
+
+    async createProvider(providerName, providerEmail, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
             const response = await this.axiosClient.post(`/provider/create/${providerName}/${providerEmail}`, {
@@ -110,14 +110,14 @@ export default class YodaClient extends BindingClass {
                 }
             });
             return response.data;
-        }  catch (error) {
-            console.error(error,"ORIGINAL ERROR"); 
+        } catch (error) {
+            console.error(error, "ORIGINAL ERROR");
             this.handleError(error);
-            return undefined; 
+            return undefined;
         }
     }
 
-    async getPatient(patientId, errorCallback){
+    async getPatient(patientId, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.get(`/patient/${patientId}`, {
@@ -132,7 +132,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async getAllPatients(errorCallback){
+    async getAllPatients(errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.get(`/patient/all/anyone`, {
@@ -147,7 +147,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async createPatient(name, age, errorCallback){
+    async createPatient(name, age, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can create patients.");
             const response = await this.axiosClient.post(`/patient/new`, {
@@ -165,7 +165,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async createPHR(patientId, providerName, date, type, errorCallback){
+    async createPHR(patientId, providerName, date, type, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can create patients.");
             const response = await this.axiosClient.post(`/patient/phr/${patientId}`, {
@@ -181,10 +181,11 @@ export default class YodaClient extends BindingClass {
             return response.data;
         } catch (error) {
             this.handleError(error, errorCallback)
+            return undefined;
         }
     }
-    
-    async addPatientToProvider(patientId, providerName, errorCallback){
+
+    async addPatientToProvider(patientId, providerName, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.post(`/provider/${providerName}/${patientId}`, {
@@ -199,7 +200,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async removePatient(patientId, providerName, errorCallback){
+    async removePatient(patientId, providerName, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.put(`/provider/remove/${patientId}/${providerName}`, {
@@ -215,7 +216,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async getPHR(phrId, errorCallback){
+    async getPHR(phrId, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.get(`/patient/phr/single/${phrId}`, {
@@ -231,7 +232,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async getPHRDate(patientId, date, errorCallback){
+    async getPHRDate(patientId, date, errorCallback) {
         console.log("hit date");
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
@@ -248,10 +249,11 @@ export default class YodaClient extends BindingClass {
             return response.data;
         } catch (error) {
             this.handleError(error, errorCallback)
+            return undefined;
         }
     }
 
-    async getPHRDateRange(patientId, from, to, errorCallback){
+    async getPHRDateRange(patientId, from, to, errorCallback) {
         console.log("hit range");
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
@@ -267,11 +269,12 @@ export default class YodaClient extends BindingClass {
             });
             return response.data;
         } catch (error) {
-            this.handleError(error, errorCallback)
+            this.handleError(error, errorCallback);
+            return undefined;
         }
     }
-    
-    async getAllPHRByProvider(providerName, errorCallback){
+
+    async getAllPHRByProvider(providerName, errorCallback) {
         console.log("get all by provider");
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
@@ -287,7 +290,7 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async getAllPHR(patientId, errorCallback){
+    async getAllPHR(patientId, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.get(`/patient/byId/${patientId}`, {
@@ -298,29 +301,30 @@ export default class YodaClient extends BindingClass {
             });
             return response.data;
         } catch (error) {
-            this.handleError(error, errorCallback)
+            this.handleError(error, errorCallback);
+            return undefined;
         }
     }
 
     async getPresignedS3(filename, phrId, date, errorCallback) {
         try {
-          const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
-          const response = await this.axiosClient.get(`/dictation/audio/${filename}`, {
-              params: {
-                phrId: phrId,
-                date: date
-              },
-              headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              }
-          });
-          return response.data;
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/dictation/audio/${filename}`, {
+                params: {
+                    phrId: phrId,
+                    date: date
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
         } catch (error) {
-          this.handleError(error, errorCallback);
+            this.handleError(error, errorCallback);
         }
-      }
-    
+    }
+
     async dropInTheBucket(presignedS3Url, audioBlob, errorCallback) {
         try {
             const response = await this.axiosClient.put(presignedS3Url, audioBlob, {
@@ -334,14 +338,14 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async updateDictation(PhrId, PhrDate, fileName, type, errorCallback){
+    async updateDictation(PhrId, PhrDate, fileName, type, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.put(`/dictate/${PhrId}/${PhrDate}/${fileName}/${type}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
-                  }
+                }
             });
             console.log(response);
             return response;
@@ -357,7 +361,7 @@ export default class YodaClient extends BindingClass {
         let behavioralImage = "/images/Icons/kidney.png";
         let protectedHealthImage = "/images/Icons/suitcase.png";
         let testTreatmentImage = "/images/Icons/testsh.png";
-    
+
         switch (typeHead) {
             case 'ANATOMY':
                 return anatomyImage;
@@ -377,96 +381,96 @@ export default class YodaClient extends BindingClass {
                 return '/images/Icons/doc.png';
         }
     }
-    
+
     async parseComp(compData) {
         let containerKeys = document.createElement("div");
-        containerKeys.className="containerKeys";
+        containerKeys.className = "containerKeys";
 
         if (compData != null) {
-          const hashMap = { key: compData };
-          const jsonString = hashMap.key;
-          let jsonObject;
-      
-          try {
-            jsonObject = JSON.parse(jsonString);
-          } catch (error) {
-            console.error('Invalid JSON string:', error);
-            return containerKeys;
-          }
-      
-          for (const parentKey in jsonObject) {
-            if (jsonObject.hasOwnProperty(parentKey)) {
-                const boxLabels = document.createElement("div");
-                boxLabels.className = "headingBoxPHR"
-                const parentHeading = document.createElement("h5");
-                parentHeading.innerHTML = parentKey;
-                parentHeading.style ="color: white;"
-                const icon = document.createElement("img");
-                icon.style = "iconography-phr-result";
-                icon.src = await this.iconoclass(parentKey.toString());
-                icon.className ="iconography-phr-result";
-                boxLabels.appendChild(icon);
-                boxLabels.appendChild(parentHeading);
-                containerKeys.appendChild(boxLabels);
-        
-                const rents = jsonObject[parentKey];
-                
-                for(const children in rents) {
-                    const childHeading = document.createElement("h6");
-                    childHeading.innerHTML = children;
-                    const seperator = document.createElement("div");
-                    childHeading.className ="subHeadingBox"                    
-                    seperator.appendChild(childHeading);
-                    containerKeys.appendChild(seperator);
+            const hashMap = { key: compData };
+            const jsonString = hashMap.key;
+            let jsonObject;
 
-                    for (const sibling in jsonObject[parentKey][children]) {
-                        const siblingText = document.createElement("p");
-                        siblingText.style ="font-weight: bold";
-                        seperator.appendChild(siblingText);
-                        siblingText.innerHTML = sibling;
-                        siblingText.textContent = await this.capitalizeFirstLetter(sibling);
-                        const cuz = jsonObject[parentKey][children][sibling];
-                        const sepSibs = document.createElement("div");
-                        const sepSibsTakes = document.createElement("div");
-                      
-                        for (const key in cuz) {
-                          if (cuz.hasOwnProperty(key) && Object.keys(cuz[key]).length !== 0) {
-                            const subObject = cuz[key];
-                
-                            const subObjectElement = document.createElement("p");
-                            const subObjectElementBreak = document.createElement("hr");
-                            subObjectElementBreak.classList.add("breaker-point");
-                            let subObjectContent = '';
-                      
-                            for (const subKey in subObject) {
-                              if (subObject.hasOwnProperty(subKey)) {
-                                const subValue = subObject[subKey];
-                                subObjectContent += `${subKey}: ${JSON.stringify(subValue)} `;
-                              }
-                            }
-                      
-                            subObjectElement.textContent = `${subObjectContent}`;
-                            
-                            sepSibsTakes.appendChild(subObjectElement);
-                            sepSibsTakes.appendChild(subObjectElementBreak);
-                            
-                          }
-                        }
-                      
-                        if (sepSibsTakes.childElementCount > 0) {
-                          sepSibs.appendChild(siblingText);
-                          sepSibs.appendChild(sepSibsTakes);
-                          containerKeys.appendChild(sepSibs);
-                        }
-                      }                        
-                };
+            try {
+                jsonObject = JSON.parse(jsonString);
+            } catch (error) {
+                console.error('Invalid JSON string:', error);
+                return containerKeys;
             }
-          }
+
+            for (const parentKey in jsonObject) {
+                if (jsonObject.hasOwnProperty(parentKey)) {
+                    const boxLabels = document.createElement("div");
+                    boxLabels.className = "headingBoxPHR"
+                    const parentHeading = document.createElement("h5");
+                    parentHeading.innerHTML = parentKey;
+                    parentHeading.style = "color: white;"
+                    const icon = document.createElement("img");
+                    icon.style = "iconography-phr-result";
+                    icon.src = await this.iconoclass(parentKey.toString());
+                    icon.className = "iconography-phr-result";
+                    boxLabels.appendChild(icon);
+                    boxLabels.appendChild(parentHeading);
+                    containerKeys.appendChild(boxLabels);
+
+                    const rents = jsonObject[parentKey];
+
+                    for (const children in rents) {
+                        const childHeading = document.createElement("h6");
+                        childHeading.innerHTML = children;
+                        const seperator = document.createElement("div");
+                        childHeading.className = "subHeadingBox"
+                        seperator.appendChild(childHeading);
+                        containerKeys.appendChild(seperator);
+
+                        for (const sibling in jsonObject[parentKey][children]) {
+                            const siblingText = document.createElement("p");
+                            siblingText.style = "font-weight: bold";
+                            seperator.appendChild(siblingText);
+                            siblingText.innerHTML = sibling;
+                            siblingText.textContent = await this.capitalizeFirstLetter(sibling);
+                            const cuz = jsonObject[parentKey][children][sibling];
+                            const sepSibs = document.createElement("div");
+                            const sepSibsTakes = document.createElement("div");
+
+                            for (const key in cuz) {
+                                if (cuz.hasOwnProperty(key) && Object.keys(cuz[key]).length !== 0) {
+                                    const subObject = cuz[key];
+
+                                    const subObjectElement = document.createElement("p");
+                                    const subObjectElementBreak = document.createElement("hr");
+                                    subObjectElementBreak.classList.add("breaker-point");
+                                    let subObjectContent = '';
+
+                                    for (const subKey in subObject) {
+                                        if (subObject.hasOwnProperty(subKey)) {
+                                            const subValue = subObject[subKey];
+                                            subObjectContent += `${subKey}: ${JSON.stringify(subValue)} `;
+                                        }
+                                    }
+
+                                    subObjectElement.textContent = `${subObjectContent}`;
+
+                                    sepSibsTakes.appendChild(subObjectElement);
+                                    sepSibsTakes.appendChild(subObjectElementBreak);
+
+                                }
+                            }
+
+                            if (sepSibsTakes.childElementCount > 0) {
+                                sepSibs.appendChild(siblingText);
+                                sepSibs.appendChild(sepSibsTakes);
+                                containerKeys.appendChild(sepSibs);
+                            }
+                        }
+                    };
+                }
+            }
         }
         return containerKeys;
-      }
-    
-      async capitalizeFirstLetter(str) {
+    }
+
+    async capitalizeFirstLetter(str) {
         return await str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 

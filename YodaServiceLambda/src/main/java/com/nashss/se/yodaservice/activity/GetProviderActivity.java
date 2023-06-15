@@ -12,11 +12,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javax.inject.Inject;
 
-
-
 public class GetProviderActivity {
 
-    private final Logger log = LogManager.getLogger();
     private final ProviderDAO providerDAO;
 
     @Inject
@@ -26,7 +23,7 @@ public class GetProviderActivity {
 
     public GetProviderResult handleRequest(final GetProviderRequest request) {
         Optional<Provider> providerOpt = providerDAO.getProvider(request.getProviderName());
-    
+
         if (providerOpt.isPresent()) {
             Provider provider = providerOpt.get();
             return GetProviderResult.builder()

@@ -33,6 +33,7 @@ class TestString extends BindingClass {
         
         let provider;
         const identity =  await this.client.getIdentity();
+        
         try {
             console.log("making request", identity.name);
             provider = await this.client.getProvider("Dr."+ identity.name);
@@ -41,6 +42,7 @@ class TestString extends BindingClass {
             console.log(identity,"couldn't find the provider");
             let toastHTMLElement = document.querySelector('.toast');
             let toastElement = new bootstrap.Toast(toastHTMLElement);
+            toastElement.style = "text-center"
             toastElement.show();
             let created = await this.client.createProvider(identity.name, identity.email);
             provider = await this.client.getProvider("Dr."+identity.name);
@@ -48,12 +50,12 @@ class TestString extends BindingClass {
             toastHTMLElement.addEventListener('hidden.bs.toast', function () {
                 toastHTMLElement.parentNode.removeChild(toastHTMLElement);
               });
-            toastElement.hide();
-
-                      
-
         }
-        
+        let toastHTMLElement2 = document.getElementById('YodaSuccess');
+        let toastElement2 = new bootstrap.Toast(toastHTMLElement2);
+        toastElement2.style = "text-center";
+        toastElement2.show();
+       
 
         await this.populatePatientsPending(provider);
         await this.populatePhrPending(provider.name);
@@ -251,7 +253,7 @@ class TestString extends BindingClass {
             
          
                 // Make sure the patients data is an array
-                console.log(patients, "here");
+                console.log(patients, "get all patients");
         
                 // Get the identity
                 const identity = await this.client.getIdentity();
@@ -265,7 +267,7 @@ class TestString extends BindingClass {
         
                     // Create a new list item for each patient
                     let li = document.createElement('li');
-                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'text-center','align-items-center');
                     
                     // Create text node for patient name and age
                     let textNode = document.createTextNode(`Name: ${patient.name}, Age: ${patient.age}`);
@@ -350,14 +352,13 @@ class TestString extends BindingClass {
 
     async searchPHR(event) {
         event.preventDefault();
-    
+
         // Get the input values from the form
         const phrIdInput = document.getElementById('phrId').value.trim();
-        const phrDateInput = document.getElementById('phrDate').value;
         const fromDateInput = document.getElementById('fromDate').value;
         const toDateInput = document.getElementById('toDate').value;
         const patientIdInput = document.getElementById('patientId').value.trim();  // New patient ID input
-    
+
         let phrResultsArray = [];
     
         // Get a reference to the accordion and clear any existing results
@@ -366,24 +367,32 @@ class TestString extends BindingClass {
     
         // Decide which function to call based on inputs provided
         let temp;
-        if (patientIdInput !== "" && phrIdInput === "" && phrDateInput === "" && fromDateInput === "" && toDateInput === "") {
+        if (patientIdInput !== "" && phrIdInput === "" && fromDateInput === "" && toDateInput === "") {
             // If only patientIdInput is provided, call getPHR with patientIdInput
             temp = await this.client.getAllPHR(patientIdInput);
-            
         } else if (phrIdInput !== "") {
             temp = await this.client.getPHR(phrIdInput);
-        } else if (phrDateInput !== "" && patientIdInput !== "") {
-            // For date or date range search, patientIdInput must be provided
-            temp = await this.client.getPHRDate(patientIdInput, phrDateInput);
         } else if (fromDateInput !== "" && toDateInput !== "" && patientIdInput !== "") {
             // For date or date range search, patientIdInput must be provided
             temp = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
+        } else if (fromDateInput !== "" && toDateInput !== "" && patientIdInput !== "") {
+            // For date or date range search, patientIdInput must be provided
+            temp = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
+        } 
+        if (temp == undefined) { 
+            let toastHTMLElement = document.getElementById('YodaSearchBad');
+            let toastElement = new bootstrap.Toast(toastHTMLElement);
+            toastElement.style = "text-center"
+            toastElement.show();
         }
-
         // Check if the result is an array. If so, assign it directly to phrResultsArray. If not, wrap it in an array.
         phrResultsArray = temp && Array.isArray(temp.phrId) ? temp.phrId :  temp.phrId = [temp];
 
         console.log(phrResultsArray.reverse(), "after check for array")
+        let toastHTMLElement = document.getElementById('YodaSearch');
+        let toastElement = new bootstrap.Toast(toastHTMLElement);
+        toastElement.style = "text-center"
+        toastElement.show();
         // Now the results are in phrResultsArray, which can be iterated over to populate the accordion
         if (phrResultsArray.length > 0) {
             phrResultsArray.forEach((phr, index) => {
@@ -445,6 +454,10 @@ class TestString extends BindingClass {
                 accordion.appendChild(accordionItem);
             });
         }else {
+            let toastHTMLElement = document.getElementById('YodaSearchBad');
+            let toastElement = new bootstrap.Toast(toastHTMLElement);
+            toastElement.style = "text-center"
+            toastElement.show();
             const noResultsMessage = document.createElement('p');
             noResultsMessage.innerText = 'No PHR\'s Found for the search criteria';
             accordion.appendChild(noResultsMessage);
