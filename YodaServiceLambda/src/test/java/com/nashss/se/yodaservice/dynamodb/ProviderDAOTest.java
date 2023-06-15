@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -38,8 +40,8 @@ public class ProviderDAOTest {
 
         when(dynamoDbMapper.load(Provider.class, testProviderName)).thenReturn(testProvider);
 
-        Provider provider = providerDAO.getProvider(testProviderName);
-        assertEquals(testProvider, provider, "Expected the returned provider to be the test provider");
+        Optional<Provider> provider = providerDAO.getProvider(testProviderName);
+        assertEquals(testProvider, provider.get(), "Expected the returned provider to be the test provider");
 
         verify(dynamoDbMapper, times(1)).load(Provider.class, testProviderName);
     }
@@ -50,8 +52,9 @@ public class ProviderDAOTest {
 
         when(dynamoDbMapper.load(Provider.class, testProviderName)).thenReturn(null);
 
-        Provider provider = providerDAO.getProvider(testProviderName);
-        assertNull(provider, "Expected the returned provider to be null when not found");
+        Optional<Provider> provider = providerDAO.getProvider(testProviderName);
+
+        assertTrue(provider.isEmpty(), "Expected the returned provider to be empty when not found");
 
         verify(dynamoDbMapper, times(1)).load(Provider.class, testProviderName);
     }

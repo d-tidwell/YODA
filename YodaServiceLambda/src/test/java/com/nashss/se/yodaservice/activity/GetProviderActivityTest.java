@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +46,7 @@ public class GetProviderActivityTest {
         provider.setMedicalSpecialty("specialty");
         provider.setPendingPatients(new ArrayList<>(Arrays.asList("patient1", "patient2")));
 
-        when(providerDao.getProvider(providerName)).thenReturn(provider);
+        when(providerDao.getProvider(providerName)).thenReturn(Optional.of(provider));
 
         // execute
         GetProviderResult result = handler.handleRequest(request);

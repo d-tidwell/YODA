@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Deque;
 import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 
 
@@ -31,11 +32,11 @@ public class AddPatientToProviderActivity {
 
     public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request) {
         patientDAO.getPatient(request.getPatientId());
-        Provider provider = providerDAO.getProvider(request.getProviderName());
-        List<String> q = provider.getPendingPatients();
+        Optional<Provider> provider = providerDAO.getProvider(request.getProviderName());
+        List<String> q = provider.get().getPendingPatients();
         q.add(request.getPatientId());
-        provider.setPendingPatients(q);
-        boolean success = providerDAO.updateProvider(provider);
+        provider.get().setPendingPatients(q);
+        boolean success = providerDAO.updateProvider(provider.get());
         return AddPatientToProviderResult.builder()
                 .withSuccess(success)
                 .build();

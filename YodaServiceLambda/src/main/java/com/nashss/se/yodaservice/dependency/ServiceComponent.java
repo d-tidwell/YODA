@@ -43,4 +43,6 @@ public interface ServiceComponent {
     GetOpenPHRByProviderActivity provideGetOpenPHRByProviderActivity();
 
     GetAllPatientActivity provideGetAllPatientActivity();
+
+    CreateProviderActivity provideCreateProviderActivity();
 }

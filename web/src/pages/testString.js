@@ -25,29 +25,49 @@ class TestString extends BindingClass {
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
         this.header = new Header(this.dataStore);
         this.patientsNullable = null;
+        this.client = new yodaClient();
     }
     
     async clientLoaded(){
+    
+        
+        let provider;
         const identity =  await this.client.getIdentity();
-        let provider =  await this.client.getProvider(identity.name);
-        if (provider === undefined) {
-            provider = await this.client.createProvider(identity.name, identity.email);
+        try {
+            console.log("making request", identity.name);
+            provider = await this.client.getProvider("Dr."+ identity.name);
+            console.log(provider,"here")
+        } catch (error) {
+            console.log(identity,"couldn't find the provider");
+            let toastHTMLElement = document.querySelector('.toast');
+            let toastElement = new bootstrap.Toast(toastHTMLElement);
+            toastElement.show();
+            let created = await this.client.createProvider(identity.name, identity.email);
+            provider = await this.client.getProvider("Dr."+identity.name);
+            console.log(provider,"there");
+            toastHTMLElement.addEventListener('hidden.bs.toast', function () {
+                toastHTMLElement.parentNode.removeChild(toastHTMLElement);
+              });
+            toastElement.hide();
+
+                      
+
         }
+        
+
         await this.populatePatientsPending(provider);
         await this.populatePhrPending(provider.name);
-    }
-    
+
+        }
+        
 
     /**
      * Add the header to the page and load the Client.
      */
     mount() {
 
-        this.header.addHeaderToPage();
-
-        this.client = new yodaClient();
-       
         this.clientLoaded();
+        this.header.addHeaderToPage();
 
          // Get the Patients tab button
          let patientTab = document.getElementById('nav-profile-tab-button');
@@ -65,6 +85,7 @@ class TestString extends BindingClass {
         const phrSearchSubmitButton = document.getElementById('submitPHRSearch');
         phrSearchSubmitButton.addEventListener('click', (event) => this.searchPHR(event));
         
+        
 
     }
 
@@ -75,93 +96,93 @@ class TestString extends BindingClass {
         const phrList = document.getElementById('phrPendingList');
     
         phrList.innerHTML = '';
-        
-        // CSS styles for the labels
-        const labelStyle = 'width: 80px; font-weight: bold;';
-        const valueStyle = 'margin-left: 5px; margin-right:20px'; 
 
-        for (const phrId of responseId) {
-            // Use getPatient() method to fetch patient details
-            const patient = await this.client.getPatient(phrId.patientId);
+        if(responseId){
+            for (const phrId of responseId) {
+                const labelStyle = 'width: 80px; font-weight: bold;';
+                const valueStyle = 'margin-left: 5px; margin-right:20px'; 
+                // Use getPatient() method to fetch patient details
+                const patient = await this.client.getPatient(phrId.patientId);
 
-            // Create a list item for each PHR
-            let li = document.createElement('li');
-            li.className = 'list-group-item d-flex flex-wrap'; // Add flex-wrap to allow wrapping of content
+                // Create a list item for each PHR
+                let li = document.createElement('li');
+                li.className = 'list-group-item d-flex flex-wrap'; // Add flex-wrap to allow wrapping of content
 
-            // Create container for phrID and buttons
-            let phrContainer = document.createElement('div');
-            phrContainer.className = 'phr-container d-flex justify-content-between align-items-center flex-grow-1';
+                // Create container for phrID and buttons
+                let phrContainer = document.createElement('div');
+                phrContainer.className = 'phr-container d-flex justify-content-between align-items-center flex-grow-1';
 
-            let idContainer = document.createElement('div');
-            idContainer.className = 'label-value-container';
-            let idLabel = document.createElement('span');
-            idLabel.style.cssText = labelStyle;
-            idLabel.innerText = 'Id:';
-            let idValue = document.createElement('span');
-            idValue.style.cssText = valueStyle; // Apply the value style
-            idValue.innerText = phrId.phrId;
-
-
-            // Create buttons container and append buttons
-            let buttonsDiv = document.createElement('div');
-            buttonsDiv.className = '';
- 
-
-            let signButton = document.createElement('button');
-            signButton.className = 'btn seen-btn';
-            signButton.innerText = 'Sign';
-            signButton.style.marginRight = '4px';
-            buttonsDiv.appendChild(signButton);
-
-            let editButton = document.createElement('button');
-            editButton.className = 'btn seen-btn';
-            editButton.innerText = 'Edit';
-
-            // Add an event listener to the Edit button
-            editButton.addEventListener('click', function () {
-                // Open a new tab and pass phrId as a URL parameter
-                window.open(`editPHR.html?phrId=${phrId.phrId}`, '_blank');
-            });
-
-            buttonsDiv.appendChild(editButton);
-
-            // Append phrID, buttons, and buttons container to the phrContainer
-            phrContainer.appendChild(idContainer);
-            phrContainer.appendChild(buttonsDiv);
+                let idContainer = document.createElement('div');
+                idContainer.className = 'label-value-container';
+                let idLabel = document.createElement('span');
+                idLabel.style.cssText = labelStyle;
+                idLabel.innerText = 'Id:';
+                let idValue = document.createElement('span');
+                idValue.style.cssText = valueStyle; // Apply the value style
+                idValue.innerText = phrId.phrId;
 
 
-            // Create container for Name and Status
-            let infoContainer = document.createElement('div');
-            infoContainer.className = 'info-container';
+                // Create buttons container and append buttons
+                let buttonsDiv = document.createElement('div');
+                buttonsDiv.className = '';
+    
 
-            let nameLabel = document.createElement('span');
-            nameLabel.style.cssText = labelStyle;
-            nameLabel.innerText = 'Name:';
-            let nameValue = document.createElement('span');
-            nameValue.style.cssText = valueStyle; 
-            nameValue.innerText = patient.name;
+                let signButton = document.createElement('button');
+                signButton.className = 'btn seen-btn';
+                signButton.innerText = 'Sign';
+                signButton.style.marginRight = '4px';
+                buttonsDiv.appendChild(signButton);
 
-            let statusLabel = document.createElement('span');
-            statusLabel.style.cssText = labelStyle;
-            statusLabel.innerText = 'Status:';
-            let statusValue = document.createElement('span');
-            statusValue.style.cssText = valueStyle; 
-            statusValue.innerText = phrId.status;
+                let editButton = document.createElement('button');
+                editButton.className = 'btn seen-btn';
+                editButton.innerText = 'Edit';
 
-            // Append Name and Status and Id to the id/infoContainer
-            idContainer.appendChild(nameLabel);
-            idContainer.appendChild(nameValue);
-            idContainer.appendChild(statusLabel);
-            idContainer.appendChild(statusValue);
-            infoContainer.appendChild(idLabel);
-            infoContainer.appendChild(idValue);
+                // Add an event listener to the Edit button
+                editButton.addEventListener('click', function () {
+                    // Open a new tab and pass phrId as a URL parameter
+                    window.open(`editPHR.html?phrId=${phrId.phrId}`, '_blank');
+                });
 
-            // Append phrContainer and infoContainer to the list item
-            li.appendChild(phrContainer);
-            li.appendChild(infoContainer);
+                buttonsDiv.appendChild(editButton);
 
-            // Append the list item to the container element (phrList in this case)
-            phrList.appendChild(li);
+                // Append phrID, buttons, and buttons container to the phrContainer
+                phrContainer.appendChild(idContainer);
+                phrContainer.appendChild(buttonsDiv);
+
+
+                // Create container for Name and Status
+                let infoContainer = document.createElement('div');
+                infoContainer.className = 'info-container';
+
+                let nameLabel = document.createElement('span');
+                nameLabel.style.cssText = labelStyle;
+                nameLabel.innerText = 'Name:';
+                let nameValue = document.createElement('span');
+                nameValue.style.cssText = valueStyle; 
+                nameValue.innerText = patient.name;
+
+                let statusLabel = document.createElement('span');
+                statusLabel.style.cssText = labelStyle;
+                statusLabel.innerText = 'Status:';
+                let statusValue = document.createElement('span');
+                statusValue.style.cssText = valueStyle; 
+                statusValue.innerText = phrId.status;
+
+                // Append Name and Status and Id to the id/infoContainer
+                idContainer.appendChild(nameLabel);
+                idContainer.appendChild(nameValue);
+                idContainer.appendChild(statusLabel);
+                idContainer.appendChild(statusValue);
+                infoContainer.appendChild(idLabel);
+                infoContainer.appendChild(idValue);
+
+                // Append phrContainer and infoContainer to the list item
+                li.appendChild(phrContainer);
+                li.appendChild(infoContainer);
+
+                // Append the list item to the container element (phrList in this case)
+                phrList.appendChild(li);
+            }
         }
 
         console.log(response, "patient pendings");
@@ -175,44 +196,47 @@ class TestString extends BindingClass {
         const identity = await this.client.getIdentity();
         const self = this; 
         let counter = 0;
-        for (const patient of provider.pendingPatients) {
-            let patientName;
-            try {
-                var listItem = document.createElement('li');
-                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-               
-                // add await before this.client.getPatient(patient)
-                patientName = await this.client.getPatient(patient);
-                listItem.id = `patient-${patientName.name}-${counter}`;
-                counter += 1;
+        if(provider.pendingPatients) {
+            for (const patient of provider.pendingPatients) {
+                let patientName;
+                try {
+                    var listItem = document.createElement('li');
+                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                
+                    // add await before this.client.getPatient(patient)
+                    patientName = await this.client.getPatient(patient);
+                    listItem.id = `patient-${patientName.name}-${counter}`;
+                    counter += 1;
 
-                listItem.innerHTML = `
-                    <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
-                    ${patientName.name}
-                    <div>
-                    <button class="btn  visit-btn">Visit</button>
-                    <button class="btn seen-btn" id="seen-${patientName.name}-${counter}">Seen</button>
-                    </div>
-                `;
-    
-                listGroup.appendChild(listItem);
-    
-                listItem.querySelector('.visit-btn').addEventListener('click', function() {
-                    window.open('/visit.html?id=' + patient, '_blank');
-                });
-    
-                listItem.querySelector(`#seen-${patientName.name}-${counter}`).addEventListener('click', async (patientName, counter) => {
-                    const result = await self.client.removePatient(patient, identity.name); 
-                    console.log(result.success, "test");
-                    if (result.success === true) {
-                        document.getElementById('desktopListGroupPatients').innerHTML = "";
-                        let refreshedProvider = await this.client.getProvider(identity.name);
-                        await this.populatePatientsPending(refreshedProvider);
-                    }
-                });
-    
-            } catch (err) {
-                console.log(err);  
+                    listItem.innerHTML = `
+                        <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
+                        ${patientName.name}
+                        <div>
+                        <button class="btn  visit-btn">Visit</button>
+                        <button class="btn seen-btn" id="seen-${patientName.name}-${counter}">Seen</button>
+                        </div>
+                    `;
+        
+                    listGroup.appendChild(listItem);
+        
+                    listItem.querySelector('.visit-btn').addEventListener('click', function() {
+                        window.open('/visit.html?id=' + patient, '_blank');
+                    });
+        
+                    listItem.querySelector(`#seen-${patientName.name}-${counter}`).addEventListener('click', async (patientName, counter) => {
+                        const result = await self.client.removePatient(patient, identity.name); 
+                        console.log(result.success, "test");
+                        if (result.success === true) {
+                            document.getElementById('desktopListGroupPatients').innerHTML = "";
+                            console.log("here first");
+                            let refreshedProvider = await this.client.getProvider(identity.name);
+                            await this.populatePatientsPending(refreshedProvider);
+                        }
+                    });
+        
+                } catch (err) {
+                    console.log(err);  
+                }
             }
         }
     }

@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 public class ProviderDAO {
@@ -20,13 +22,13 @@ public class ProviderDAO {
         this.dynamoDbMapper = dynamoDbMapper;
     }
 
-    public Provider getProvider(String providerName) {
+    public Optional<Provider> getProvider(String providerName) {
         Provider provider = this.dynamoDbMapper.load(Provider.class, providerName);
 
         if (Objects.isNull(provider)) {
-            log.info(String.format("ProviderNotFoundException, %s", providerName));
+            log.error(String.format("ProviderNotFoundException, %s", providerName));
         }
-        return provider;
+       return Optional.ofNullable((Provider) provider);
     }
 
     public boolean updateProvider(Provider provider) {

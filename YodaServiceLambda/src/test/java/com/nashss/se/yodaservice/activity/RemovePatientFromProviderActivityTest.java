@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.nashss.se.yodaservice.activity.RemovePatientFromProviderActivity;
 import com.nashss.se.yodaservice.activity.requests.RemovePatientFromProviderRequest;
@@ -48,7 +49,7 @@ public class RemovePatientFromProviderActivityTest {
         provider.setName(providerName);
         List<String> q = new ArrayList<>(Arrays.asList("TEST1", patientId, "TEST2"));
         provider.setPendingPatients(q);
-        when(providerDAO.getProvider(providerName)).thenReturn(provider);
+        when(providerDAO.getProvider(providerName)).thenReturn(Optional.of(provider));
         when(providerDAO.updateProvider(provider)).thenReturn(true);
 
         // execute

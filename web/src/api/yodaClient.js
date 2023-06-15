@@ -80,7 +80,7 @@ export default class YodaClient extends BindingClass {
      * @returns The profile's metadata.
      */
 
-    async getProvider(providerName, errorCallback){
+     async getProvider(providerName, errorCallback){
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
             const response = await this.axiosClient.get(`/provider/${providerName}`, {
@@ -91,13 +91,19 @@ export default class YodaClient extends BindingClass {
             });
             return response.data;
         } catch (error) {
-            this.handleError(error, errorCallback)
+            console.error(error); // or do something with the error
+            if(errorCallback){
+                errorCallback(error);
+            }
+            throw error; // rethrow the error
         }
     }
+    
+    
     async createProvider(providerName, providerEmail, errorCallback){
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
-            const response = await this.axiosClient.get(`/provider/${providerName}/${providerEmail}`, {
+            const response = await this.axiosClient.post(`/provider/create/${providerName}/${providerEmail}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -106,9 +112,7 @@ export default class YodaClient extends BindingClass {
             return response.data;
         }  catch (error) {
             console.error(error,"ORIGINAL ERROR"); 
-            if(errorCallback){
-                errorCallback(error);
-            }
+            this.handleError(error);
             return undefined; 
         }
     }

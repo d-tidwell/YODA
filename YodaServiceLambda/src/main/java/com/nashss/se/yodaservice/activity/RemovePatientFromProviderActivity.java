@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 public class RemovePatientFromProviderActivity {
 
@@ -28,13 +29,13 @@ public class RemovePatientFromProviderActivity {
 
     public RemovePatientFromProviderResult handleRequest(final RemovePatientFromProviderRequest request) {
         patientDAO.getPatient(request.getPatientId());
-        Provider provider = providerDAO.getProvider(request.getProviderName());
-        List<String> pendingPatients = provider.getPendingPatients();
+        Optional<Provider> provider = providerDAO.getProvider(request.getProviderName());
+        List<String> pendingPatients = provider.get().getPendingPatients();
         boolean success = pendingPatients.remove(request.getPatientId()); 
-        provider.setPendingPatients(pendingPatients);
+        provider.get().setPendingPatients(pendingPatients);
     
         if (success) {
-            success = providerDAO.updateProvider(provider);  
+            success = providerDAO.updateProvider(provider.get());
         }
     
         return RemovePatientFromProviderResult.builder()

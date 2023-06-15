@@ -16,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,7 +52,7 @@ public class AddPatientToProviderTest {
         List<String> q = new ArrayList<>(Arrays.asList("TEST1","TEST2"));
         q.add(testPatient);
         provider.setPendingPatients(q);
-        when(providerDAO.getProvider(providerName)).thenReturn(provider);
+        when(providerDAO.getProvider(providerName)).thenReturn(Optional.of(provider));
         when(providerDAO.updateProvider(provider)).thenReturn(true);
 
         // execute
