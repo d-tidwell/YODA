@@ -90,8 +90,12 @@
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="0">
       <filter id="glow">
-        <feGaussianBlur stdDeviation="11" result="coloredBlur"/>
+        <feComponentTransfer result="glow1">
+          <feFuncA type="linear" slope="4" intercept="0" />
+        </feComponentTransfer>
+        <feGaussianBlur stdDeviation="25" result="coloredBlur"/>
         <feMerge>
+          <feMergeNode in="glow1"/>
           <feMergeNode in="coloredBlur"/>
           <feMergeNode in="SourceGraphic"/>
         </feMerge>

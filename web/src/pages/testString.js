@@ -29,11 +29,15 @@ class TestString extends BindingClass {
     
     async clientLoaded(){
         const identity =  await this.client.getIdentity();
-        const provider =  await this.client.getProvider(identity.name);
+        let provider =  await this.client.getProvider(identity.name);
+        if (provider === undefined) {
+            provider = await this.client.createProvider(identity.name, identity.email);
+        }
         await this.populatePatientsPending(provider);
         await this.populatePhrPending(provider.name);
-        
     }
+    
+
     /**
      * Add the header to the page and load the Client.
      */
@@ -337,22 +341,23 @@ class TestString extends BindingClass {
         accordion.innerHTML = "";
     
         // Decide which function to call based on inputs provided
-        let result;
+        let temp;
         if (patientIdInput !== "" && phrIdInput === "" && phrDateInput === "" && fromDateInput === "" && toDateInput === "") {
             // If only patientIdInput is provided, call getPHR with patientIdInput
-            result = await this.client.getAllPHR(patientIdInput);
+            temp = await this.client.getAllPHR(patientIdInput);
+            
         } else if (phrIdInput !== "") {
-            result = await this.client.getPHR(phrIdInput);
+            temp = await this.client.getPHR(phrIdInput);
         } else if (phrDateInput !== "" && patientIdInput !== "") {
             // For date or date range search, patientIdInput must be provided
-            result = await this.client.getPHRDate(patientIdInput, phrDateInput);
+            temp = await this.client.getPHRDate(patientIdInput, phrDateInput);
         } else if (fromDateInput !== "" && toDateInput !== "" && patientIdInput !== "") {
             // For date or date range search, patientIdInput must be provided
-            result = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
+            temp = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
         }
-        console.log(result,"result");
+
         // Check if the result is an array. If so, assign it directly to phrResultsArray. If not, wrap it in an array.
-        phrResultsArray = result && Array.isArray(result.phrId) ? result.phrId : [];
+        phrResultsArray = temp && Array.isArray(temp.phrId) ? temp.phrId :  temp.phrId = [temp];
 
         console.log(phrResultsArray.reverse(), "after check for array")
         // Now the results are in phrResultsArray, which can be iterated over to populate the accordion
@@ -373,8 +378,18 @@ class TestString extends BindingClass {
                 accordionButton.dataset.bsTarget = `#collapse${index+1}`;
                 accordionButton.setAttribute('aria-expanded', 'false');
                 accordionButton.setAttribute('aria-controls', `collapse${index+1}`);
+                accordionButton.classList.add("text-center","d-block","py-3");
                 // !Change This
                 accordionButton.innerText = `Date ${phr.date}`;
+                const iconSearch = document.createElement('img');
+                iconSearch.classList.add('iconography');
+                iconSearch.src = '/images/Icons/PHR.png';
+                const statusDiv = document.createElement('div');
+                const statusHead = document.createElement("h4");
+                statusHead.innerText += `Status: ${phr.status}`
+                accordionButton.appendChild(iconSearch);
+                statusDiv.appendChild(statusHead);
+                accordionButton.appendChild(statusHead);
     
                 const accordionCollapse = document.createElement('div');
                 accordionCollapse.id = `collapse${index+1}`;

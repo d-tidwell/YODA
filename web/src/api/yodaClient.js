@@ -94,6 +94,24 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+    async createProvider(providerName, providerEmail, errorCallback){
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
+            const response = await this.axiosClient.get(`/provider/${providerName}/${providerEmail}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        }  catch (error) {
+            console.error(error,"ORIGINAL ERROR"); 
+            if(errorCallback){
+                errorCallback(error);
+            }
+            return undefined; 
+        }
+    }
 
     async getPatient(patientId, errorCallback){
         try {
@@ -250,6 +268,7 @@ export default class YodaClient extends BindingClass {
     }
     
     async getAllPHRByProvider(providerName, errorCallback){
+        console.log("get all by provider");
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.get(`/phr/byProviderId/${providerName}`, {
