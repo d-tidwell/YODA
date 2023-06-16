@@ -25,14 +25,14 @@ export default class Header extends BindingClass {
 
         const siteTitle = this.createSiteTitle();
         const userInfo = this.createUserInfoForHeader(currentUser);
-        
+
         const header = document.getElementById('header');
-        
+
 
         header.appendChild(siteTitle);
         header.appendChild(userInfo);
-        
-        
+
+
     }
 
     createSiteTitle() {
@@ -40,28 +40,28 @@ export default class Header extends BindingClass {
         imageHeader.src = "images/logo-no-background.png";
         imageHeader.classList.add("header-image-quarter", "glowing-image");
         imageHeader.id = "logoId";
-        
+
         const imageHeader2 = document.createElement('img');
         imageHeader2.src = "images/yoda.png";
         imageHeader2.classList.add("header-image-quarter", "glowing-image");
-        imageHeader2.id ="imageYoda";
-        imageHeader2.title = "Logout"; 
-        
+        imageHeader2.id = "imageYoda";
+        imageHeader2.title = "Logout";
+
         // Add the event listener for logout
         imageHeader2.addEventListener('click', async () => {
             await this.client.logout();
         });
-        
+
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');
         const clock = this.createDigitalClock();
         siteTitle.appendChild(imageHeader);
         siteTitle.appendChild(clock);
         siteTitle.appendChild(imageHeader2);
-    
+
         return siteTitle;
     }
-    
+
 
     createUserInfoForHeader(currentUser) {
         const userInfo = document.createElement('div');
@@ -77,23 +77,29 @@ export default class Header extends BindingClass {
     }
 
     createLoginButton() {
-        const loginBtn = this.createButton('Login', this.client.login);
+        const loginBtn = this.createButton('Login  Dr.', this.client.login);
         loginBtn.classList.add('btn');
-        loginBtn.id ="logout-desktop";
+        loginBtn.id = "logout-desktop";
         loginBtn.style = "font-family: 'Baloo 2', cursive;";
+        loginBtn.addEventListener('click', async () => {
+            await this.client.logout();
+        });
         return loginBtn;
     }
 
     createLogoutButton(currentUser) {
-        const logoutBtn =  this.createButton(`Logout: ${currentUser.name}`, this.client.logout);
-        logoutBtn.id ="logout-desktop";
+        const logoutBtn = this.createButton(`Logout: Dr. ${currentUser.name}`, this.client.logout);
+        logoutBtn.id = "logout-desktop";
         logoutBtn.classList.add('btn');
+        logoutBtn.addEventListener('click', async () => {
+            await this.client.logout();
+        });
         return logoutBtn
     }
 
     createButton(text, clickHandler) {
         const button = document.createElement('button');
-        button.classList.add('header-button','seen-btn');
+        button.classList.add('header-button', 'seen-btn');
         button.href = '#';
         button.innerText = text;
 
@@ -113,24 +119,24 @@ export default class Header extends BindingClass {
         let minutes = date.getMinutes();
         let seconds = date.getSeconds();
 
-        month = ((month + 1) < 10) ? '0' + (month + 1) : month + 1;
+        month = (month + 1 < 10) ? '0' + (month + 1) : '' + (month + 1);
         day = day < 10 ? '0' + day : day;
         hours = hours < 10 ? '0' + hours : hours;
         minutes = minutes < 10 ? '0' + minutes : minutes;
         seconds = seconds < 10 ? '0' + seconds : seconds;
-        
+
         return `${year}-${month}-${day}  ${hours}:${minutes}:${seconds}`;
     }
 
-        /**
-     * Create a digital military time clock.
-     */
+    /**
+ * Create a digital military time clock.
+ */
     createDigitalClock() {
         const clockDiv = document.createElement('div');
         clockDiv.id = 'digital-clock';
-        clockDiv.classList.add('digital-clock');  
+        clockDiv.classList.add('digital-clock');
         clockDiv.innerText = this.getCurrentTime();
-        
+
 
         setInterval(() => {
             clockDiv.innerText = this.getCurrentTime();

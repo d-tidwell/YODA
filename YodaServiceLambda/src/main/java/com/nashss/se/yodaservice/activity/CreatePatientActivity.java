@@ -28,7 +28,7 @@ public class CreatePatientActivity {
         Patient madePatient = new Patient();
         madePatient.setPatientId(newPatientId);
         madePatient.setName(request.getPatientName());
-        madePatient.setAge(RandoAgeGenerator.generateRandomAge());
+        madePatient.setAge(request.getPatientAge());
         boolean confirmation = patientDAO.savePatient(madePatient);
         return CreatePatientResult.builder()
                 .withSuccess(confirmation)

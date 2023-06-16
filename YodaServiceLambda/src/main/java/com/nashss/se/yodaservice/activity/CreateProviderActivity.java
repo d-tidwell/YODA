@@ -25,7 +25,7 @@ public class CreateProviderActivity {
     }
 
     public CreateProviderResult handleRequest(final CreateProviderRequest request) {
-        String newProviderId = "Dr." + request.getProviderName();
+        String newProviderId = request.getProviderName();
         boolean confirmation;
         if (!Objects.isNull(providerDAO.getProvider(newProviderId))) {
             Provider madeProvider = new Provider();

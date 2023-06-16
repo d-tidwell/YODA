@@ -77,7 +77,8 @@
     padding-top: 1rem;
     padding-bottom: .5rem;
     position: relative;
-    margin-bottom: 1rem
+    margin-bottom: 1rem;
+    
     
 }
 #logout-desktop {
@@ -190,6 +191,7 @@ button.seen-btn {
   text-decoration: none;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 8px !important;
+  z-index: 3;
 }
 li {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -208,16 +210,16 @@ li {
  
 }
 .digital-clock {
-    font-family: 'Courier New', Courier;  
+    font-family: 'Baloo 2', monospace; 
     font-size: 3em;  
     color: rgb(125, 227, 115); 
     background-color: var(--teritiary-color);  
     text-align: center;  
     line-height: 100px;  
-    /* font-family: 'LED Digital 7', sans-serif; */
-    text-shadow: 0px 3px 3px rgb(62, 101, 60), 4px 5px 6px rgb(125, 227, 115
-    );
+    width: 600px; /* Change this value to suit your needs */
+    text-shadow: 0px 3px 3px rgb(62, 101, 60), 4px 5px 6px rgb(125, 227, 115);
 }
+
 
 
 p {
@@ -258,7 +260,6 @@ h1 h2 h3 h4 h5 h6 {
 #nav-contact-tab{
     background-color: rgb(234, 235, 236);
 }
-
 
   .glowing-image {
     filter: url(#glow);

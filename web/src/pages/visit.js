@@ -62,6 +62,14 @@ class Visit extends BindingClass {
    async setPatientAttributes(patient){
       document.getElementById("visitName").innerText = patient.name
       document.getElementById("visitAge").innerText = "Age: " + patient.age
+      // const sex = document.getElementById("visitSex");
+      if (patient.sex == M) {
+        sex.src ="images/men.png";
+      } else {
+        sex.src ="images/womens.png";
+      }
+      // document.getElementById("visitAddress").innerHtml = "Address " +patient.address;
+      // document.getElementById("visitPhone").innerHtml = "Phone " + patient.phone;
    }
 
     async submitForm(event){

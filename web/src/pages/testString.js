@@ -4,12 +4,12 @@ import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
 
-const SEARCH_CRITERIA_KEY = 'search-criteria';
-const SEARCH_RESULTS_KEY = 'search-results';
-const EMPTY_DATASTORE_STATE = {
-    [SEARCH_CRITERIA_KEY]: '',
-    [SEARCH_RESULTS_KEY]: [],
-};
+// const SEARCH_CRITERIA_KEY = 'search-criteria';
+// const SEARCH_RESULTS_KEY = 'search-results';
+// const EMPTY_DATASTORE_STATE = {
+//     [SEARCH_CRITERIA_KEY]: '',
+//     [SEARCH_RESULTS_KEY]: [],
+// };
 
 
 /**
@@ -36,7 +36,7 @@ class TestString extends BindingClass {
         
         try {
             console.log("making request", identity.name);
-            provider = await this.client.getProvider("Dr."+ identity.name);
+            provider = await this.client.getProvider(identity.name);
             console.log(provider,"here")
         } catch (error) {
             console.log(identity,"couldn't find the provider");
@@ -250,8 +250,7 @@ class TestString extends BindingClass {
             if (this.patientsNullable == null){
                 const patients = await this.client.getAllPatients();
                 this.patientsNullable = 1;
-            
-         
+
                 // Make sure the patients data is an array
                 console.log(patients, "get all patients");
         
@@ -267,10 +266,12 @@ class TestString extends BindingClass {
         
                     // Create a new list item for each patient
                     let li = document.createElement('li');
-                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'text-center','align-items-center');
+                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between','align-items-center');
+                    li.id ="searchAllId";
                     
                     // Create text node for patient name and age
-                    let textNode = document.createTextNode(`Name: ${patient.name}, Age: ${patient.age}`);
+                    let textNode = document.createElement('p');
+                    textNode.innerHTML = `Name: ${patient.name}, Age: ${patient.age}`; 
                     li.appendChild(textNode);
                     
                     // Create the button container
@@ -287,6 +288,15 @@ class TestString extends BindingClass {
                         console.log("clicked")
                         const confirm = await this.client.addPatientToProvider(patient.id, identity.name);
                         if(confirm.success == true){
+                            let newProvider = this.client.getProvider(identity.name);
+                            let counterConfirm = 0;
+                            let truthyAdd = newProvider.patientsPending.includes(patient.id);
+                            while (truthyAdd){
+                                counterConfirm ++;
+                                setTimeout(function() {
+                                    console.log(`counterConfirm: ${counterConfirm}`);
+                                  }, 1000);
+                            }
                             location.reload();
                         }
                     });
@@ -326,9 +336,13 @@ class TestString extends BindingClass {
         // Get the form values
         const name = document.getElementById('patientName').value;
         const age = document.getElementById('patientAge').value;
+        const sex = document.getElementById('patientSex').value;
+        const address = document.getElementById('patientAddress').value;
+        const phone = document.getElementById('patientPhone').value;
+        const image = document.getElementById('patientImage').value;
     
         // Call createPatient() method
-        this.client.createPatient(name, age)
+        this.client.createPatient(name, age, sex, address, phone, image)
             .then(() => {
                 // The patient was created successfully
                 console.log('Patient created successfully');
