@@ -62,8 +62,8 @@ class Visit extends BindingClass {
    async setPatientAttributes(patient){
       document.getElementById("visitName").innerText = patient.name
       document.getElementById("visitAge").innerText = "Age: " + patient.age
-      // const sex = document.getElementById("visitSex");
-      if (patient.sex == M) {
+      const sex = document.getElementById("visitSex");
+      if (patient.sex == 'M') {
         sex.src ="images/men.png";
       } else {
         sex.src ="images/womens.png";

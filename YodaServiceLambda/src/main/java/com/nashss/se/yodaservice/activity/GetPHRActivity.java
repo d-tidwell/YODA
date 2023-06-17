@@ -26,6 +26,7 @@ public class GetPHRActivity {
                 .withProviderName(result.getProviderName())
                 .withDate(result.getDate())
                 .withStatus(result.getStatus())
+                .withComprehendData(result.getComprehendData())
                 .build();
     }
 }

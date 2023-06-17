@@ -4,12 +4,12 @@ import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
 
-// const SEARCH_CRITERIA_KEY = 'search-criteria';
-// const SEARCH_RESULTS_KEY = 'search-results';
-// const EMPTY_DATASTORE_STATE = {
-//     [SEARCH_CRITERIA_KEY]: '',
-//     [SEARCH_RESULTS_KEY]: [],
-// };
+const SEARCH_CRITERIA_KEY = 'search-criteria';
+const SEARCH_RESULTS_KEY = 'search-results';
+const EMPTY_DATASTORE_STATE = {
+    [SEARCH_CRITERIA_KEY]: '',
+    [SEARCH_RESULTS_KEY]: [],
+};
 
 
 /**
@@ -30,12 +30,14 @@ class TestString extends BindingClass {
     
     async clientLoaded(){
     
-        
+        //set the object
         let provider;
+        //get the identity
         const identity =  await this.client.getIdentity();
         
         try {
             console.log("making request", identity.name);
+            //look in the table to see if they exist yet
             provider = await this.client.getProvider(identity.name);
             console.log(provider,"here")
         } catch (error) {
@@ -44,7 +46,9 @@ class TestString extends BindingClass {
             let toastElement = new bootstrap.Toast(toastHTMLElement);
             toastElement.style = "text-center"
             toastElement.show();
+            //create this new never before person
             let created = await this.client.createProvider(identity.name, identity.email);
+            //double check to see if was made and also set the object for the page
             provider = await this.client.getProvider("Dr."+identity.name);
             console.log(provider,"there");
             toastHTMLElement.addEventListener('hidden.bs.toast', function () {
