@@ -28,20 +28,19 @@ public class GetPresignedAudioActivity {
 
     public GetPresigneds3Result handleRequest(final GetPresigneds3Request request) {
 
-        String objectKey = request.getFileName();
+        String objectKey = request.getPhrId();
         Date expiration = new java.util.Date();
 
         long expTimeMillis = expiration.getTime();
         // Add 1 hour.
-        expTimeMillis += 1000 * 60;
+        expTimeMillis += 1000 * 60 * 60;
         expiration.setTime(expTimeMillis);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(bucketName, objectKey)
                         .withMethod(HttpMethod.GET)
                         .withExpiration(expiration);
-        generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/webm");
-
+        
         URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
 
         return GetPresigneds3Result.builder()

@@ -324,6 +324,23 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback);
         }
     }
+    async getPresignedAudio(phrId, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/audio/${phrId}`, {
+                params: {
+                    phrId: phrId
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+        }
+    }
 
     async dropInTheBucket(presignedS3Url, audioBlob, errorCallback) {
         try {
