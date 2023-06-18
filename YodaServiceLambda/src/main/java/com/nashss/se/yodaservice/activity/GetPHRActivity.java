@@ -27,6 +27,7 @@ public class GetPHRActivity {
                 .withDate(result.getDate())
                 .withStatus(result.getStatus())
                 .withComprehendData(result.getComprehendData())
+                .withTranscription(result.getTranscription())
                 .build();
     }
 }

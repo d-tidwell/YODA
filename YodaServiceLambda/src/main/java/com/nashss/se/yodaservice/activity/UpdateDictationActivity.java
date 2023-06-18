@@ -77,7 +77,7 @@ public class UpdateDictationActivity {
 //        Dictation dictation = dicDao.getDictation(existingRecord.getPhrId(), existingRecord.getDate());
 //
 //        //create a job name which ends up the filename in s3
-//        String transcribeJobName =  request.getPhrId() + "_" + existingRecord.getProviderName();
+//        String transcribeJobName =  request.getPhrId();
 //        //get a URL
 //        String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
 //        String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
@@ -165,6 +165,7 @@ public class UpdateDictationActivity {
 //                        List<TranscriptJSON> transcripts = apiResponse.getTextTranscribedResults().getTranscripts();
                     TranscriptJSON transcriptsRaw = new TranscriptJSON();
                     transcriptsRaw.setTranscript("SUBJECTIVE:,  This 23-year-old white female presents with complaint of allergies.  She used to have allergies when she lived in Seattle but she thinks they are worse here.  In the past, she has tried Claritin, and Zyrtec.  Both worked for short time but then seemed to lose effectiveness.  She has used Allegra also.  She used that last summer and she began using it again two weeks ago.  It does not appear to be working very well.  She has used over-the-counter sprays but no prescription nasal sprays.  She does have asthma but doest not require daily medication for this and does not think it is flaring up.,MEDICATIONS: , Her only medication currently is Ortho Tri-Cyclen and the Allegra.,ALLERGIES: , She has no known medicine allergies.,OBJECTIVE:,Vitals:  Weight was 130 pounds and blood pressure 124/78.,HEENT:  Her throat was mildly erythematous without exudate.  Nasal mucosa was erythematous and swollen.  Only clear drainage was seen.  TMs were clear.,Neck:  Supple without adenopathy.,Lungs:  Clear.,ASSESSMENT:,  Allergic rhinitis.,PLAN:,1.  She will try Zyrtec instead of Allegra again.  Another option will be to use loratadine.  She does not think she has prescription coverage so that might be cheaper.,2.  Samples of Nasonex two sprays in each nostril given for three weeks.  A prescription was written as well.");
+                    existingRecord.setTranscription(transcriptsRaw.toString());
                     List<TranscriptJSON> transcripts = new ArrayList<>(Arrays.asList(transcriptsRaw));
                     // Print out each transcript
                     for (TranscriptJSON transcript : transcripts) {

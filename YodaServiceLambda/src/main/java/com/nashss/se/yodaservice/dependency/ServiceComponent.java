@@ -4,7 +4,9 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.yodaservice.activity.*;
 
 import com.nashss.se.yodaservice.activity.requests.GetOpenPHRByProviderRequest;
+import com.nashss.se.yodaservice.activity.requests.GetPresigneds3Request;
 import com.nashss.se.yodaservice.dynamodb.AmazonS3AndTranscribeProviders;
+import com.nashss.se.yodaservice.lambda.GetPresignedAudioLambda;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -45,4 +47,6 @@ public interface ServiceComponent {
     GetAllPatientActivity provideGetAllPatientActivity();
 
     CreateProviderActivity provideCreateProviderActivity();
+
+    GetPresignedAudioActivity provideGetPresignedAudioActivity();
 }

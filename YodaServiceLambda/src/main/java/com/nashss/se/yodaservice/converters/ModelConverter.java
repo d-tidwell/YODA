@@ -19,6 +19,7 @@ public class ModelConverter {
                 .date(Optional.ofNullable(phr.getDate()).orElse(null))
                 .status(Optional.ofNullable(phr.getStatus()).orElse(null))
                 .comprehendData(Optional.ofNullable(phr.getComprehendData()).orElse(null))
+                .transcription(Optional.ofNullable(phr.getTranscription()).orElse(null))
                 .build();
     }
 
@@ -31,6 +32,7 @@ public class ModelConverter {
                         .date(Optional.ofNullable(phr.getDate()).orElse(null))
                         .status(Optional.ofNullable(phr.getStatus()).orElse(null))
                         .comprehendData(Optional.ofNullable(phr.getComprehendData()).orElse(null))
+                        .transcription(Optional.ofNullable(phr.getTranscription()).orElse(null))
                         .build())
                 .collect(Collectors.toList());
     }

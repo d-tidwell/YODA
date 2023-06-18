@@ -14,9 +14,8 @@ public class PHR {
     private String providerName;
     private String recordDate;
     private String status;
-
     private String comprehendData;
-
+    private String transcription;
 
     @DynamoDBHashKey(attributeName = "phrId")
     public String getPhrId() {
@@ -70,5 +69,11 @@ public class PHR {
     public void setComprehendData(String comprehendData) {
         this.comprehendData = comprehendData;
     }
-
+    @DynamoDBAttribute(attributeName = "transcription")
+    public String getTranscription() {
+        return transcription;
+    }
+    public void setTranscription(String transcription) {
+        this.transcription = transcription;
+    }
 }

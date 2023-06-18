@@ -10,5 +10,11 @@ public class TranscriptJSON {
         this.transcript = transcript;
     }
 
-    // getters and setters
+    @Override
+    public String toString() {
+        return "TranscriptJSON{" +
+                "transcript='" + transcript + '\'' +
+                '}';
+    }
+
 }

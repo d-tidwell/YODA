@@ -2,8 +2,6 @@ package com.nashss.se.yodaservice.activity;
 
 import com.nashss.se.yodaservice.activity.requests.GetPresigneds3Request;
 import com.nashss.se.yodaservice.activity.results.GetPresigneds3Result;
-import com.nashss.se.yodaservice.dynamodb.DictationDAO;
-import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 
 
 import com.amazonaws.HttpMethod;
@@ -17,14 +15,14 @@ import java.net.URL;
 import java.util.Date;
 import javax.inject.Inject;
 
-public class GetPresigneds3Activity {
+public class GetPresignedAudioActivity {
     private final String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
     private final Logger log = LogManager.getLogger();
     private final AmazonS3 s3client;
 
 
     @Inject
-    public GetPresigneds3Activity(AmazonS3 s3client) {
+    public GetPresignedAudioActivity(AmazonS3 s3client) {
         this.s3client = s3client;
     }
 
@@ -40,7 +38,7 @@ public class GetPresigneds3Activity {
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(bucketName, objectKey)
-                        .withMethod(HttpMethod.PUT)
+                        .withMethod(HttpMethod.GET)
                         .withExpiration(expiration);
         generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/webm");
 

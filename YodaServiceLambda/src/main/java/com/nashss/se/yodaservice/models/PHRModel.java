@@ -1,7 +1,5 @@
 package com.nashss.se.yodaservice.models;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class PHRModel {
@@ -11,15 +9,17 @@ public class PHRModel {
     private String date;
     private String status;
     private String comprehendData;
+    private String transcription;
 
     public PHRModel(String phrId, String patientId, String providerName, String date, String status,
-                    String comprehendData) {
+                    String comprehendData, String transcription) {
         this.phrId = phrId;
         this.patientId = patientId;
         this.providerName = providerName;
         this.date = date;
         this.status = status;
         this.comprehendData = comprehendData;
+        this.transcription = transcription;
     }
     public PHRModel(){}
 
@@ -45,12 +45,17 @@ public class PHRModel {
 
     public String getComprehendData() { return comprehendData; }
 
+    public String getTranscription() {return transcription;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PHRModel)) return false;
         PHRModel phrModel = (PHRModel) o;
-        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) && getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) && getStatus().equals(phrModel.getStatus()) && Objects.equals(getComprehendData(), phrModel.getComprehendData());
+        return getPhrId().equals(phrModel.getPhrId()) && getPatientId().equals(phrModel.getPatientId()) &&
+                getProviderName().equals(phrModel.getProviderName()) && getDate().equals(phrModel.getDate()) &&
+                getStatus().equals(phrModel.getStatus()) &&
+                Objects.equals(getComprehendData(), phrModel.getComprehendData());
     }
 
     @Override
@@ -81,6 +86,7 @@ public class PHRModel {
         private String date;
         private String status;
         private String comprehendData;
+        private String transcription;
 
         public Builder phrId(String phrId) {
             this.phrId = phrId;
@@ -112,8 +118,13 @@ public class PHRModel {
             return this;
         }
 
+        public Builder transcription(String transcription) {
+            this.transcription = transcription;
+            return this;
+        }
+
         public PHRModel build() {
-            return new PHRModel(phrId, patientId, providerName, date, status, comprehendData);
+            return new PHRModel(phrId, patientId, providerName, date, status, comprehendData, transcription);
         }
 
     }

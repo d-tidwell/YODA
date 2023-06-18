@@ -33,7 +33,7 @@
       "PutRequest": {
         "Item": {
           "providerId": { "S": "conversations.and.L@gmail.com" },
-          "name": { "S": "Dr.Darek" },
+          "name": { "S": "Darek" },
           "medicalSpecialty": { "S": "PRIMARYCARE" },
           "pendingPatients": { "L": [
             { "S": "TEST_PATIENT3" },
@@ -48,7 +48,7 @@
       "PutRequest": {
         "Item": {
           "providerId": { "S": "vavrichyna.lize@gmail.com" },
-          "name": { "S": "Dr.Yelyzaveta" },
+          "name": { "S": "Yelyzaveta" },
           "medicalSpecialty": { "S": "PRIMARYCARE" },
           "pendingPatients": { "L": [
             { "S": "TEST_PATIENT1" },
