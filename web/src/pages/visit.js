@@ -83,7 +83,7 @@ class Visit extends BindingClass {
         const newPHR = await this.client.createPHR(this.dataStore.get("patientId"), this.dataStore.get("provider"), dateString, type)
         const idForPhr = newPHR.phr.phrId;
         //create the filename
-        const filename = dateString +"-"+patientName+"-"+providerName+"-"+type;
+        const filename = idForPhr;
         console.log(filename,"filename");
         const s3string = await this.client.getPresignedS3(filename, idForPhr,dateString);
         console.log(s3string.url);

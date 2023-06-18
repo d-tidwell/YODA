@@ -11,7 +11,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['parseComp', 'clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider', 'getPatient', 'createPatient', 'removePatient', 'getAllPHRByProvider', 'getAllPatients'];
+        const methodsToBind = ['editCompForm','parseComp', 'clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider', 'getPatient', 'createPatient', 'removePatient', 'getAllPHRByProvider', 'getAllPatients'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -467,9 +467,97 @@ export default class YodaClient extends BindingClass {
                 }
             }
         }
+        console.log(containerKeys)
         return containerKeys;
     }
+    async editCompForm(compData) {
+        let containerKeys = document.createElement("div");
+        containerKeys.className = "containerKeys";
 
+        if (compData != null) {
+            const hashMap = { key: compData };
+            const jsonString = hashMap.key;
+            let jsonObject;
+
+            try {
+                jsonObject = JSON.parse(jsonString);
+            } catch (error) {
+                console.error('Invalid JSON string:', error);
+                return containerKeys;
+            }
+
+            for (const parentKey in jsonObject) {
+                if (jsonObject.hasOwnProperty(parentKey)) {
+                    const boxLabels = document.createElement("div");
+                    boxLabels.className = "headingBoxPHR"
+                    const parentHeading = document.createElement("h5");
+                    parentHeading.innerHTML = parentKey;
+                    parentHeading.style = "color: white;"
+                    const icon = document.createElement("img");
+                    icon.style = "iconography-phr-result";
+                    icon.src = await this.iconoclass(parentKey.toString());
+                    icon.className = "iconography-phr-result";
+                    boxLabels.appendChild(icon);
+                    boxLabels.appendChild(parentHeading);
+                    containerKeys.appendChild(boxLabels);
+
+                    const rents = jsonObject[parentKey];
+
+                    for (const children in rents) {
+                        const childHeading = document.createElement("h6");
+                        childHeading.innerHTML = children;
+                        const seperator = document.createElement("div");
+                        childHeading.className = "subHeadingBox"
+                        seperator.appendChild(childHeading);
+                        containerKeys.appendChild(seperator);
+
+                        for (const sibling in jsonObject[parentKey][children]) {
+                            const siblingText = document.createElement("p");
+                            siblingText.style = "font-weight: bold";
+                            seperator.appendChild(siblingText);
+                            siblingText.innerHTML = sibling;
+                            siblingText.textContent = await this.capitalizeFirstLetter(sibling);
+                            const cuz = jsonObject[parentKey][children][sibling];
+                            const sepSibs = document.createElement("div");
+                            const sepSibsTakes = document.createElement("div");
+
+                            for (const key in cuz) {
+                                if (cuz.hasOwnProperty(key) && Object.keys(cuz[key]).length !== 0) {
+                                    const subObject = cuz[key];
+
+                                    const subObjectElement = document.createElement("p");
+                                    const subObjectElementBreak = document.createElement("hr");
+                                    subObjectElementBreak.classList.add("breaker-point");
+                                    let subObjectContent = '';
+
+                                    for (const subKey in subObject) {
+                                        if (subObject.hasOwnProperty(subKey)) {
+                                            const subValue = subObject[subKey];
+                                            subObjectContent += `${subKey}: ${JSON.stringify(subValue)} `;
+                                        }
+                                    }
+
+                                    subObjectElement.textContent = `${subObjectContent}`;
+
+                                    sepSibsTakes.appendChild(subObjectElement);
+                                    sepSibsTakes.appendChild(subObjectElementBreak);
+
+                                }
+                            }
+
+                            if (sepSibsTakes.childElementCount > 0) {
+                                sepSibs.appendChild(siblingText);
+                                sepSibs.appendChild(sepSibsTakes);
+                                containerKeys.appendChild(sepSibs);
+                            }
+                        }
+                    };
+                }
+            }
+        }
+        console.log(containerKeys)
+        return containerKeys;
+    }
     async capitalizeFirstLetter(str) {
         return await str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
