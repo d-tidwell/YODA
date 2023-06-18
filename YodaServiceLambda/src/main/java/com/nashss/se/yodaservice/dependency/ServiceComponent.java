@@ -3,9 +3,11 @@ package com.nashss.se.yodaservice.dependency;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.yodaservice.activity.*;
 
+import com.nashss.se.yodaservice.activity.requests.EditPHRRequest;
 import com.nashss.se.yodaservice.activity.requests.GetOpenPHRByProviderRequest;
 import com.nashss.se.yodaservice.activity.requests.GetPresigneds3Request;
 import com.nashss.se.yodaservice.dynamodb.AmazonS3AndTranscribeProviders;
+import com.nashss.se.yodaservice.lambda.EditPHRLambda;
 import com.nashss.se.yodaservice.lambda.GetPresignedAudioLambda;
 import dagger.Component;
 
@@ -49,4 +51,6 @@ public interface ServiceComponent {
     CreateProviderActivity provideCreateProviderActivity();
 
     GetPresignedAudioActivity provideGetPresignedAudioActivity();
+
+    EditPHRActivity provideEditPHRActivity();
 }

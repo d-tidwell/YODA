@@ -6,5 +6,6 @@ public enum PHRStatus {
     FAILED,
     PENDING_SIGNATURE,
     AWAITING_ANALYSIS,
+    EDITING_TEXTRECORD,
     COMPLETED
 }

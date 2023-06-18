@@ -30,7 +30,7 @@ class TestString extends BindingClass {
     
     async clientLoaded(){
     
-        //set the object
+        //set the objecturl
         let provider;
         //get the identity
         const identity =  await this.client.getIdentity();
@@ -202,6 +202,7 @@ class TestString extends BindingClass {
         const identity = await this.client.getIdentity();
         const self = this; 
         let counter = 0;
+        
         if(provider.pendingPatients) {
             for (const patient of provider.pendingPatients) {
                 let patientName;
@@ -213,23 +214,22 @@ class TestString extends BindingClass {
                     patientName = await this.client.getPatient(patient);
                     listItem.id = `patient-${patientName.name}-${counter}`;
                     counter += 1;
-
-                    listItem.innerHTML = `
-                        <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
-                        ${patientName.name}
-                        <div>
-                        <button class="btn  visit-btn">Visit</button>
-                        <button class="btn seen-btn" id="seen-${patientName.name}-${counter}">Seen</button>
-                        </div>
-                    `;
-        
-                    listGroup.appendChild(listItem);
-        
-                    listItem.querySelector('.visit-btn').addEventListener('click', function() {
+                    console.log(patientName.name,"FOR WHAT")
+    
+                    // Create visit button
+                    let visitButton = document.createElement('button');
+                    visitButton.className = 'btn visit-btn';
+                    visitButton.innerText = "Visit";
+                    visitButton.addEventListener('click', function() {
                         window.open('/visit.html?id=' + patient, '_blank');
                     });
-        
-                    listItem.querySelector(`#seen-${patientName.name}-${counter}`).addEventListener('click', async (patientName, counter) => {
+    
+                    // Create seen button
+                    let seenButton = document.createElement('button');
+                    seenButton.className = 'btn seen-btn';
+                    seenButton.id = `seen-${patientName.name}-${counter}`;
+                    seenButton.innerText = "Seen";
+                    seenButton.addEventListener('click', async () => {
                         const result = await self.client.removePatient(patient, identity.name); 
                         console.log(result.success, "test");
                         if (result.success === true) {
@@ -239,13 +239,29 @@ class TestString extends BindingClass {
                             await this.populatePatientsPending(refreshedProvider);
                         }
                     });
-        
+    
+                    // Create div for buttons and append buttons to it
+                    let buttonDiv = document.createElement('div');
+                    buttonDiv.appendChild(visitButton);
+                    buttonDiv.appendChild(seenButton);
+    
+                    // Append the image, name, and buttons to the list item
+                    listItem.innerHTML = `
+                        <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
+                        ${patientName.name}
+                    `;
+                    listItem.appendChild(buttonDiv);
+    
+                    // Append the list item to the list group
+                    listGroup.appendChild(listItem);
+    
                 } catch (err) {
                     console.log(err);  
                 }
             }
         }
     }
+    
     
     
     async getAllPatientsAndDisplay() {

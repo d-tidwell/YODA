@@ -370,6 +370,25 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback);
         }
     }
+
+    async updatePHRStatus(phrId, status, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.put(`/patient/PHR/update/${phrId}`, {
+                params: {
+                    status: status
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+        }
+
+    }
     async iconoclass(typeHead) {
         let medicationImage = "/images/Icons/pillhand.png";
         let anatomyImage = "/images/Icons/kidney.png";
@@ -575,6 +594,26 @@ export default class YodaClient extends BindingClass {
         console.log(containerKeys)
         return containerKeys;
     }
+    async editPHR(phrId, text, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.put(`/patient/PHR/edit/${phrId}`, 
+                {
+                    text: text
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+        }
+    }
+    
     async capitalizeFirstLetter(str) {
         return await str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }

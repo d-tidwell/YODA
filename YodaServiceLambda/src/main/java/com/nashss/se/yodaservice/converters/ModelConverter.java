@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class ModelConverter {
 
     public static PHRModel phrConvertSingle(PHR phr) {
+        System.out.println("MODEL CONVERTER= "+phr.toString());
         return PHRModel.builder()
                 .phrId(Optional.ofNullable(phr.getPhrId()).orElse(null))
                 .patientId(Optional.ofNullable(phr.getPatientId()).orElse(null))

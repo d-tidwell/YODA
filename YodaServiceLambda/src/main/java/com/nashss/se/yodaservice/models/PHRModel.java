@@ -72,6 +72,7 @@ public class PHRModel {
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
                 ", comprehendData='" + comprehendData + '\'' +
+                ", transcription='" + transcription + '\'' +
                 '}';
     }
     //CHECKSTYLE:OFF:Builder

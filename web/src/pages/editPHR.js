@@ -6,7 +6,7 @@ import DataStore from "../util/DataStore";
 class EditPHR extends BindingClass {
     constructor() {
       super();
-      this.bindClassMethods(['clientLoaded', 'mount', 'getFormattedDate','createEditablePHR'], this);
+      this.bindClassMethods(['clientLoaded', 'mount', 'getFormattedDate','createEditablePHR','editForm','submitForm'], this);
       this.dataStore = new DataStore();
       this.header = new Header(this.dataStore);
       this.client = new yodaClient();
@@ -17,28 +17,20 @@ class EditPHR extends BindingClass {
       //get the URL param for identity of patient
       const urlParams = new URLSearchParams(window.location.search);
       this.dataStore.set("phrId", urlParams.get("phrId"));
+      //!!change the hardcode audio url phrId
       this.dataStore.set("audio", await this.client.getPresignedAudio("2023-06-05-TEST_PATIENT3-Dr.Yelyzaveta-preVisit"))
-      console.log(this.dataStore.get("phrId"));
       const providerObj = await this.client.getIdentity();
-      console.log(providerObj,"Prov");
       this.dataStore.set("provider", providerObj.name);
       //!!! return to normal
     //   const phr = await this.client.getPHR(urlParams.get("phrId"));
       const phr = await this.client.getPHR("postVisit_TEST_PATIENT1_2023-06-10_0000000000");
+      this.dataStore.set("patientId", phr.patientId);
       const patient = await this.client.getPatient(phr.patientId);
-      console.log(patient,"patient");
       this.setPatientAttributes(patient);
       this.createEditablePHR(phr);
   
   
-    //   // Get reference to record, stop, play buttons, and audio element
-    //   this.submitButton = document.getElementById("sign");
-    //   this.editButton = document.getElementById("edit");
 
-  
-    //   // Attach event listeners
-    //   this.submitButton.addEventListener("click", this.submitForm);
-    //   this.editButton.addEventListener("click", this.editForm);
 
   
     }
@@ -82,6 +74,7 @@ class EditPHR extends BindingClass {
         <p>Status: ${phr.status}</p>
         <p>ID: ${this.dataStore.get("phrId")}
         `;
+        console.log(phr.transcription)
         this.dataStore.set("transcription",phr.transcription);
         if (phr.comprehendData != null) {
             this.client.editCompForm(phr.comprehendData)
@@ -92,7 +85,7 @@ class EditPHR extends BindingClass {
                 audioPreview.id ="audioPreview";
                 const audioUrl = this.dataStore.get("audio")
                 audioPreview.src = audioUrl.url;
-                console.log(audioUrl.url,"url")
+                //console.log(audioUrl.url,"url")
                 audioPreview.type="audio/webm";
                 audioPreview.controls ="true";
                 const img = document.createElement("img");
@@ -110,8 +103,10 @@ class EditPHR extends BindingClass {
                 dictationLabel.for = `patientNotes-${self.dataStore.get("phrId")}`;
                 const dictationText = document.createElement('textArea');
                 dictationText.value = self.dataStore.get("transcription");
+                console.log(dictationText.value,"dic text value recorded");
                 dictationText.classList.add("form-control");
-                dictationText.id = `patientNotes-${phr.patientID}`;
+                dictationText.id = `patientNotes-${self.dataStore.get("phrId")}`;
+                console.log("patient id text area id ", self.dataStore.get("patientID"));
                 dictationText.rows = "10";
                 dictationText.columns = "12"
                 accordionBody.appendChild(dictationDiv);
@@ -132,7 +127,13 @@ class EditPHR extends BindingClass {
                 editBtn.innerHTML = "edit";
                 editBtn.style.flex = "1";
                 editBtn.id = "edit";
-                
+                      // Get reference to record, stop, play buttons, and audio element
+
+
+  
+                 // Attach event listeners
+                signatureBtn.addEventListener("click", self.submitForm);
+                editBtn.addEventListener("click", self.editForm);
                 buttonsDiv.appendChild(signatureBtn);
                 buttonsDiv.appendChild(editBtn);
                 const titleDiv = document.createElement("div");
@@ -152,12 +153,17 @@ class EditPHR extends BindingClass {
   }
     async submitForm(event){
         event.preventDefault();
-        this.client.updatePHRStatus(phrId, "COMPLETED");
-        return 0;
+        const updated = this.client.updatePHRStatus(phrId, "COMPLETED");
+        console.log(updated);
     }
 
     async editForm(event) {
       event.preventDefault();
+      const text = document.getElementById(`patientNotes-${this.dataStore.get("phrId")}`);
+      console.log(this.dataStore.get('patientId'), "recorded ID")
+      console.log(text.value,"text");
+      const returnText = await this.client.editPHR(this.dataStore.get("phrId"), text.value);
+      console.log(returnText)
     }
  
   }
