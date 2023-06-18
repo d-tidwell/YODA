@@ -23,7 +23,7 @@ class EditPHR extends BindingClass {
       this.dataStore.set("provider", providerObj.name);
       //!!! return to normal
     //   const phr = await this.client.getPHR(urlParams.get("phrId"));
-      const phr = await this.client.getPHR("postVisit_TEST_PATIENT1_2023-06-10_0000000000");
+      const phr = await this.client.getPHR("postVisit_TEST_PATIENT1_2023-06-10_IJLY3XU4LV");
       this.dataStore.set("patientId", phr.patientId);
       const patient = await this.client.getPatient(phr.patientId);
       this.setPatientAttributes(patient);
@@ -161,9 +161,8 @@ class EditPHR extends BindingClass {
       event.preventDefault();
       const text = document.getElementById(`patientNotes-${this.dataStore.get("phrId")}`);
       console.log(this.dataStore.get('patientId'), "recorded ID")
-      console.log(text.value,"text");
       const returnText = await this.client.editPHR(this.dataStore.get("phrId"), text.value);
-      console.log(returnText)
+      this.createEditablePHR(await this.client.get(this.dataStore.get("phrId")));
     }
  
   }
