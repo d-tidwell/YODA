@@ -26,6 +26,7 @@ class EditPHR extends BindingClass {
       const phr = await this.client.getPHR("postVisit_TEST_PATIENT1_2023-06-10_IJLY3XU4LV");
       this.dataStore.set("patientId", phr.patientId);
       const patient = await this.client.getPatient(phr.patientId);
+      this.dataStore.set("date", phr.date);
       this.setPatientAttributes(patient);
       this.createEditablePHR(phr);
   
@@ -142,38 +143,43 @@ class EditPHR extends BindingClass {
                 modelDiv.style.background ="#ffc160";
                 
                 const modelComp = document.createElement("h3");
-                
                 modelComp.style = "text-center";
                 modelComp.style.color ="white";
-                modelComp.innerText = "Ai Assitant";
+                modelComp.innerText = "Ai Assistant";
                 
                 const openDiv = document.createElement("div");
-
-
+                
                 const modelResult = document.createElement("textarea");
-                modelResult.style = "display: none;"; // added styles for full width and resizable
+                modelResult.style = "visibility: hidden; width: 100%; resize: both;"; // added styles for full width and resizable
                 
                 const aiButton = document.createElement("button");
                 aiButton.style = "width: 100%; margin-bottom: 10px;"; // full width button with some margin at the bottom
                 aiButton.innerText = "Request Differential Diagnosis";
                 aiButton.style.background = "#f4befb"
                 
-                // assuming `phrId` and `self` are available in this context
                 aiButton.addEventListener("click", function() {
-                  modelResult.style = "width: 100%; resize: both;"
-                    self.client.differential(self.dataStore.get("phrId")).then(result => {
-                        modelResult.value = result;
+                    modelResult.style.visibility = "visible";  // correct property is 'visible'
+                    openDiv.innerText = "Generating Differential with the force, I am . . . Please Wait, You should.";
+                
+                    const phrId = self.dataStore.get("phrId");
+                    const date = self.dataStore.get("date");
+                
+                    self.client.differential(phrId, date).then(result => {
+                        modelResult.value = result.differential;
+                        openDiv.innerText = "";
+                        console.log(result);
+                    }).catch(error => {
+                        console.log('Error:', error);
+                        openDiv.innerText = "Error occurred. Please try again.";
+                        modelResult.style.visibility = "hidden";  // hide the modelResult again
                     });
                 });
+                
                 modelDiv.appendChild(modelComp); 
-                openDiv.appendChild(modelResult);
-                openDiv.appendChild(aiButton);
+                modelDiv.appendChild(openDiv);
+                modelDiv.appendChild(modelResult);
+                modelDiv.appendChild(aiButton);
                 
-                
-                 
-                
-                
-
                 const titleDiv = document.createElement("div");
                 titleDiv.classList.add("row","text-center");
                 const titleComp = document.createElement("h5");
@@ -182,9 +188,9 @@ class EditPHR extends BindingClass {
                 titleDiv.appendChild(titleComp);
                 accordionBody.appendChild(buttonsDiv);
                 accordionBody.appendChild(modelDiv);
-                accordionBody.appendChild(openDiv);
                 accordionBody.appendChild(titleDiv);
                 accordionBody.appendChild(additionToAccordion);
+                
             })
             .catch(error => {
                 console.error('Error parsing compData', error);

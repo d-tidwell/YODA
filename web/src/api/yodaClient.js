@@ -11,7 +11,7 @@ export default class YodaClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['editCompForm','parseComp', 'clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider', 'getPatient', 'createPatient', 'removePatient', 'getAllPHRByProvider', 'getAllPatients'];
+        const methodsToBind = ['editCompForm','parseComp', 'clientLoaded', 'getIdentity', 'login', 'logout', 'getProvider', 'getPatient', 'createPatient', 'removePatient', 'getAllPHRByProvider', 'getAllPatients','differential'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -608,6 +608,21 @@ export default class YodaClient extends BindingClass {
                     }
                 }
             );
+            return response.data;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+        }
+    }
+
+    async differential(phrId, date, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
+            const response = await this.axiosClient.get(`/ai/${phrId}/${date}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+            });
             return response.data;
         } catch (error) {
             this.handleError(error, errorCallback);
