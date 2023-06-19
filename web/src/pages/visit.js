@@ -123,7 +123,8 @@ class Visit extends BindingClass {
     }
 
     startRecording = () => {
-
+      const visualizer = document.getElementById("visualizer");
+      visualizer.style = "display: flex;  height: 50px;";
       navigator.mediaDevices.getUserMedia({ video: false, audio: true })
         .then((stream) => {
           this.audioElement.srcObject = stream;
@@ -145,7 +146,8 @@ class Visit extends BindingClass {
     }
   
     stopRecording = () => {
-
+      const visualizer = document.getElementById("visualizer");
+      visualizer.style = "display: none;  height: 50px;";
       this.mediaRecorder.stop();
       this.mediaRecorder = null;
       this.recordButton.disabled = false;
