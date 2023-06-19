@@ -74,7 +74,7 @@ class EditPHR extends BindingClass {
         <p>Status: ${phr.status}</p>
         <p>ID: ${this.dataStore.get("phrId")}
         `;
-        console.log(phr.transcription)
+        //console.log(phr.transcription)
         this.dataStore.set("transcription",phr.transcription);
         if (phr.comprehendData != null) {
             this.client.editCompForm(phr.comprehendData)
@@ -103,10 +103,10 @@ class EditPHR extends BindingClass {
                 dictationLabel.for = `patientNotes-${self.dataStore.get("phrId")}`;
                 const dictationText = document.createElement('textArea');
                 dictationText.value = self.dataStore.get("transcription");
-                console.log(dictationText.value,"dic text value recorded");
+                //console.log(dictationText.value,"dic text value recorded");
                 dictationText.classList.add("form-control");
                 dictationText.id = `patientNotes-${self.dataStore.get("phrId")}`;
-                console.log("patient id text area id ", self.dataStore.get("patientID"));
+                //console.log("patient id text area id ", self.dataStore.get("patientID"));
                 dictationText.rows = "10";
                 dictationText.columns = "12"
                 accordionBody.appendChild(dictationDiv);
@@ -136,6 +136,44 @@ class EditPHR extends BindingClass {
                 editBtn.addEventListener("click", self.editForm);
                 buttonsDiv.appendChild(signatureBtn);
                 buttonsDiv.appendChild(editBtn);
+                const modelDiv = document.createElement("div");
+                modelDiv.classList.add("headingBoxPHR");
+                modelDiv.classList.add("row","text-center");
+                modelDiv.style.background ="#ffc160";
+                
+                const modelComp = document.createElement("h3");
+                
+                modelComp.style = "text-center";
+                modelComp.style.color ="white";
+                modelComp.innerText = "Ai Assitant";
+                
+                const openDiv = document.createElement("div");
+
+
+                const modelResult = document.createElement("textarea");
+                modelResult.style = "display: none;"; // added styles for full width and resizable
+                
+                const aiButton = document.createElement("button");
+                aiButton.style = "width: 100%; margin-bottom: 10px;"; // full width button with some margin at the bottom
+                aiButton.innerText = "Request Differential Diagnosis";
+                aiButton.style.background = "#f4befb"
+                
+                // assuming `phrId` and `self` are available in this context
+                aiButton.addEventListener("click", function() {
+                  modelResult.style = "width: 100%; resize: both;"
+                    self.client.differential(self.dataStore.get("phrId")).then(result => {
+                        modelResult.value = result;
+                    });
+                });
+                modelDiv.appendChild(modelComp); 
+                openDiv.appendChild(modelResult);
+                openDiv.appendChild(aiButton);
+                
+                
+                 
+                
+                
+
                 const titleDiv = document.createElement("div");
                 titleDiv.classList.add("row","text-center");
                 const titleComp = document.createElement("h5");
@@ -143,6 +181,8 @@ class EditPHR extends BindingClass {
                 titleComp.innerText = "COMPREHENSION"
                 titleDiv.appendChild(titleComp);
                 accordionBody.appendChild(buttonsDiv);
+                accordionBody.appendChild(modelDiv);
+                accordionBody.appendChild(openDiv);
                 accordionBody.appendChild(titleDiv);
                 accordionBody.appendChild(additionToAccordion);
             })

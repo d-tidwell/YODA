@@ -3,6 +3,7 @@ package com.nashss.se.yodaservice.dependency;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.yodaservice.activity.*;
 
+import com.nashss.se.yodaservice.activity.requests.AiRequest;
 import com.nashss.se.yodaservice.activity.requests.EditPHRRequest;
 import com.nashss.se.yodaservice.activity.requests.GetOpenPHRByProviderRequest;
 import com.nashss.se.yodaservice.activity.requests.GetPresigneds3Request;
@@ -53,4 +54,6 @@ public interface ServiceComponent {
     GetPresignedAudioActivity provideGetPresignedAudioActivity();
 
     EditPHRActivity provideEditPHRActivity();
+
+    AiActivity provideAiActivity();
 }

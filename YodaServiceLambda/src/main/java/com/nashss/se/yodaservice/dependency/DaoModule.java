@@ -7,6 +7,8 @@ import com.nashss.se.yodaservice.dynamodb.DynamoDbClientProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
+import com.nashss.se.yodaservice.dynamodb.OpenAiProviders;
+import com.theokanning.openai.service.OpenAiService;
 import dagger.Module;
 import dagger.Provides;
 import software.amazon.awssdk.services.comprehendmedical.ComprehendMedicalClient;
@@ -48,6 +50,12 @@ public class DaoModule {
     @Singleton
     public ComprehendMedicalClient provideComprehendClient() {
         return AmazonS3AndTranscribeProviders.getComprehendClient();
+    }
+
+    @Provides
+    @Singleton
+    public OpenAiService provideOpenAiService() {
+        return OpenAiProviders.getOpenAiService();
     }
 }
 
