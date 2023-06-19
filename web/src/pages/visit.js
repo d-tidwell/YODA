@@ -92,13 +92,20 @@ class Visit extends BindingClass {
         if (s3response.status === 200) {
           const resultUpdateDictation = await this.client.updateDictation( idForPhr, dateString,filename,type);
           //do something for feedback to the user and redirect to desktop
-          console.log(resultUpdateDictation, "--dictations has completed-line97 visit.js");
+          let toastHTMLElement = document.getElementById('YodaSent');
+          let toastElement = new bootstrap.Toast(toastHTMLElement);
+          toastElement.style = "text-center"
+          toastElement.show();
           this.recordButton.disabled = false;
           this.stopButton.disabled = false;
           this.playButton.disabled = true;
           this.recordedAudio = null;
         } else {
           console.log("terrible the update dictation failed biotch");
+          let toastHTMLElement = document.getElementById('YodaSentFail');
+          let toastElement = new bootstrap.Toast(toastHTMLElement);
+          toastElement.style = "text-center"
+          toastElement.show();
         }
 
     }
@@ -125,6 +132,10 @@ class Visit extends BindingClass {
     startRecording = () => {
       const visualizer = document.getElementById("visualizer");
       visualizer.style = "display: flex;  height: 50px;";
+      let toastHTMLElement = document.getElementById('YodaRecord');
+      let toastElement = new bootstrap.Toast(toastHTMLElement);
+      toastElement.style = "text-center"
+      toastElement.show();
       navigator.mediaDevices.getUserMedia({ video: false, audio: true })
         .then((stream) => {
           this.audioElement.srcObject = stream;
