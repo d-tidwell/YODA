@@ -43,6 +43,17 @@ public class AiActivity {
             try {
                 System.out.println("Completion initiated");
                 String completion = openAiService.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage().getContent();
+                try {
+                    List<String> pastAi = existingPhr.getAiDifferentials();
+                    pastAi.add(completion);
+                    existingPhr.setAiDifferentials(pastAi);
+                    phrdao.savePHR(existingPhr);
+                } catch (NullPointerException npe) {
+                    List<String> pastAi = new ArrayList<>();
+                    pastAi.add(completion);
+                    existingPhr.setAiDifferentials(pastAi);
+                    phrdao.savePHR(existingPhr);
+                }
                 return AiResult.builder()
                         .withDifferential(completion)
                         .build();

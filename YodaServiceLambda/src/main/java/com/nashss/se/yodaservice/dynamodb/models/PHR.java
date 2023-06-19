@@ -7,6 +7,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
+import java.util.List;
+
 @DynamoDBTable(tableName = "phrs_")
 public class PHR {
     private String phrId;
@@ -16,6 +18,7 @@ public class PHR {
     private String status;
     private String comprehendData;
     private String transcription;
+    private List<String> aiDifferentials;
 
     @DynamoDBHashKey(attributeName = "phrId")
     public String getPhrId() {
@@ -75,5 +78,14 @@ public class PHR {
     }
     public void setTranscription(String transcription) {
         this.transcription = transcription;
+    }
+
+    @DynamoDBAttribute(attributeName = "aiDifferentials")
+    public List<String> getAiDifferentials() {
+        return aiDifferentials;
+    }
+
+    public void setAiDifferentials(List<String> aiDifferentials) {
+        this.aiDifferentials = aiDifferentials;
     }
 }

@@ -18,21 +18,16 @@ class EditPHR extends BindingClass {
       const urlParams = new URLSearchParams(window.location.search);
       this.dataStore.set("phrId", urlParams.get("phrId"));
       //!!change the hardcode audio url phrId
-      this.dataStore.set("audio", await this.client.getPresignedAudio("2023-06-05-TEST_PATIENT3-Dr.Yelyzaveta-preVisit"))
+      this.dataStore.set("audio", await this.client.getPresignedAudio(this.dataStore.get("phrId")))
       const providerObj = await this.client.getIdentity();
       this.dataStore.set("provider", providerObj.name);
       //!!! return to normal
-    //   const phr = await this.client.getPHR(urlParams.get("phrId"));
-      const phr = await this.client.getPHR("postVisit_TEST_PATIENT1_2023-06-10_IJLY3XU4LV");
+      const phr = await this.client.getPHR(urlParams.get("phrId"));
       this.dataStore.set("patientId", phr.patientId);
       const patient = await this.client.getPatient(phr.patientId);
       this.dataStore.set("date", phr.date);
       this.setPatientAttributes(patient);
       this.createEditablePHR(phr);
-  
-  
-
-
   
     }
   
@@ -60,8 +55,8 @@ class EditPHR extends BindingClass {
         } else {
           sex.src ="images/womens.png";
         }
-        document.getElementById("visitAddress").innerHtml = "Address " +patient.address;
-        document.getElementById("visitPhone").innerHtml = "Phone " + patient.phone;
+        document.getElementById("visitAddress").innerHtml = "Address: " +patient.address;
+        document.getElementById("visitPhone").innerHtml = "Phone: " + patient.phone;
       }
 
     async createEditablePHR(phr){
