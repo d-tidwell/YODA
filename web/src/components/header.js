@@ -78,7 +78,7 @@ export default class Header extends BindingClass {
 
     createLoginButton() {
         const loginBtn = this.createButton('Login  Dr.', this.client.login);
-        loginBtn.classList.add('btn');
+        loginBtn.classList.add('header-button', 'seen-btn');
         loginBtn.id = "logout-desktop";
         loginBtn.style = "font-family: 'Baloo 2', cursive;";
         loginBtn.addEventListener('click', async () => {
@@ -90,7 +90,7 @@ export default class Header extends BindingClass {
     createLogoutButton(currentUser) {
         const logoutBtn = this.createButton(`Logout: Dr. ${currentUser.name}`, this.client.logout);
         logoutBtn.id = "logout-desktop";
-        logoutBtn.classList.add('btn');
+        logoutBtn.classList.add('header-button', 'seen-btn');
         logoutBtn.addEventListener('click', async () => {
             await this.client.logout();
         });
@@ -100,6 +100,7 @@ export default class Header extends BindingClass {
     createButton(text, clickHandler) {
         const button = document.createElement('button');
         button.classList.add('header-button', 'seen-btn');
+        button.type = "button"
         button.href = '#';
         button.innerText = text;
 

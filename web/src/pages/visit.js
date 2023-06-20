@@ -21,6 +21,7 @@ class Visit extends BindingClass {
       this.dataStore.set("provider", providerObj.name);
       const patient = await this.client.getPatient(urlParams.get("id"));
       this.setPatientAttributes(patient);
+      console.log(patient, "client")
   
       // Initialize audio recording variables
       this.mediaRecorder = null;
@@ -45,7 +46,6 @@ class Visit extends BindingClass {
   
     async mount() {
       this.header.addHeaderToPage();
-      const loggedIn = await this.client.isLoggedIn();
       await this.getAllPHR(this.dataStore.get("patientId"));
     }
 
@@ -59,18 +59,22 @@ class Visit extends BindingClass {
       return `${year}-${month}-${day}`;
     }
 
-   async setPatientAttributes(patient){
-      document.getElementById("visitName").innerText = patient.name
-      document.getElementById("visitAge").innerText = "Age: " + patient.age
-      const sex = document.getElementById("visitSex");
-      if (patient.sex == 'M') {
-        sex.src ="images/men.png";
-      } else {
-        sex.src ="images/womens.png";
+    async setPatientAttributes(patient){
+      console.log(patient.sex, "SEX")
+        document.getElementById("visitName").innerText = patient.name
+        document.getElementById("visitAge").innerText = "Age: " + patient.age
+        const sex = document.getElementById("visitSex");
+        const profilePic = document.getElementById("profilepic");
+        sex.innerText ="Sex: " + patient.sex;
+        if (patient.sex == 'M') {
+          profilePic.src ="images/mens.png";
+        } else {
+          profilePic.src ="images/womens.jpg";
+        }
+        document.getElementById("visitAddress").innerText = "Address: " + (patient.address || "1234 Somewhere ln Nashville, TN 37206");
+        document.getElementById("visitPhone").innerText = "Phone: " + (patient.phone || "555-555-5555");
+        
       }
-      // document.getElementById("visitAddress").innerHtml = "Address " +patient.address;
-      // document.getElementById("visitPhone").innerHtml = "Phone " + patient.phone;
-   }
 
     async submitForm(event){
         event.preventDefault();

@@ -8,16 +8,12 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.net.URL;
 import java.util.Date;
 import javax.inject.Inject;
 
 public class GetPresignedAudioActivity {
     private final String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
-    private final Logger log = LogManager.getLogger();
     private final AmazonS3 s3client;
 
 

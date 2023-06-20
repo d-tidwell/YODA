@@ -24,6 +24,9 @@ public class GetPatientActivity {
         return GetPatientResult.builder()
                 .withName(patient.getName())
                 .withAge(patient.getAge())
+                .withSex(patient.getSex())
+                .withAddress(patient.getAddress())
+                .withPhoneNumber(patient.getPhoneNumber())
                 .build();
     }
 }

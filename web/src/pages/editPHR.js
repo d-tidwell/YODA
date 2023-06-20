@@ -47,16 +47,20 @@ class EditPHR extends BindingClass {
     }
 
     async setPatientAttributes(patient){
+      console.log(patient.sex, "SEX")
         document.getElementById("visitName").innerText = patient.name
         document.getElementById("visitAge").innerText = "Age: " + patient.age
         const sex = document.getElementById("visitSex");
+        const profilePic = document.getElementById("patientpic");
+        sex.innerText ="Sex: " + patient.sex;
         if (patient.sex == 'M') {
-          sex.src ="images/men.png";
+          profilePic.src ="images/mens.png";
         } else {
-          sex.src ="images/womens.png";
+          profilePic.src ="images/womens.jpg";
         }
-        document.getElementById("visitAddress").innerHtml = "Address: " +patient.address;
-        document.getElementById("visitPhone").innerHtml = "Phone: " + patient.phone;
+        document.getElementById("visitAddress").innerText = "Address: " + (patient.address || "1234 Somewhere ln Nashville, TN 37206");
+        document.getElementById("visitPhone").innerText = "Phone: " + (patient.phone || "555-555-5555");
+        
       }
 
     async createEditablePHR(phr){
@@ -130,6 +134,7 @@ class EditPHR extends BindingClass {
                  // Attach event listeners
                 signatureBtn.addEventListener("click", self.submitForm);
                 editBtn.addEventListener("click", self.editForm);
+
                 buttonsDiv.appendChild(signatureBtn);
                 buttonsDiv.appendChild(editBtn);
                 const modelDiv = document.createElement("div");
@@ -195,7 +200,7 @@ class EditPHR extends BindingClass {
     async submitForm(event){
         event.preventDefault();
         const updated = this.client.updatePHRStatus(phrId, "COMPLETED");
-        console.log(updated);
+        console.log("updated",updated);
     }
 
     async editForm(event) {

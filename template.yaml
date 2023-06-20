@@ -238,6 +238,14 @@ Resources:
                   Action: dynamodb:*
                   Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations_"
 
+          - PolicyName: 'GetSecrets'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action: secretsmanager:GetSecretValue
+                  Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*"
+
     #-----------------------------------------------------
     # Lambda Functions Configuration
     #-----------------------------------------------------

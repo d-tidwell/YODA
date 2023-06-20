@@ -27,6 +27,7 @@
     background-color: var(--tertiary-color);
     color: var(--primary-color);
     padding: 4px 20px;
+    z-index-4;
 }
 .site-title {
     font-family: 'Baloo 2', cursive;
@@ -126,6 +127,14 @@ button.seen-btn {
     background-color: var(--primary-color);
     color: white !important;
 }
+button.seen-btn:hover {
+    background-color: #c6c6c6;
+    color: #fff;
+}
+button.visit-btn:hover {
+    background-color: #c6c6c6;
+    color: #fff;
+}
 .phr-shadows {
     margin-top: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -191,7 +200,7 @@ button.seen-btn {
   text-decoration: none;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 8px !important;
-  z-index: 3;
+  z-index: 4;
 }
 li {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);

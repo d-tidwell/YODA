@@ -117,7 +117,7 @@ class TestString extends BindingClass {
                 // Create container for phrID and buttons
                 let phrContainer = document.createElement('div');
                 phrContainer.className = 'phr-container d-flex justify-content-between align-items-center flex-grow-1';
-
+                
                 let idContainer = document.createElement('div');
                 idContainer.className = 'label-value-container';
                 let idLabel = document.createElement('span');
@@ -127,21 +127,13 @@ class TestString extends BindingClass {
                 idValue.style.cssText = valueStyle; // Apply the value style
                 idValue.innerText = phrId.phrId;
 
-
                 // Create buttons container and append buttons
                 let buttonsDiv = document.createElement('div');
                 buttonsDiv.className = '';
-    
-
-                let signButton = document.createElement('button');
-                signButton.className = 'btn seen-btn';
-                signButton.innerText = 'Sign';
-                signButton.style.marginRight = '4px';
-                buttonsDiv.appendChild(signButton);
 
                 let editButton = document.createElement('button');
                 editButton.className = 'btn seen-btn';
-                editButton.innerText = 'Edit';
+                editButton.innerText = 'Complete';
 
                 // Add an event listener to the Edit button
                 editButton.addEventListener('click', function () {
@@ -195,7 +187,6 @@ class TestString extends BindingClass {
 
     }
     
-    
     async populatePatientsPending(provider){
         console.log(provider,"patients provider")
         var listGroup = document.getElementById('desktopListGroupPatients');
@@ -218,7 +209,7 @@ class TestString extends BindingClass {
     
                     // Create visit button
                     let visitButton = document.createElement('button');
-                    visitButton.className = 'btn visit-btn';
+                    visitButton.classList.add('btn','visit-btn','px-3');
                     visitButton.innerText = "Visit";
                     visitButton.addEventListener('click', function() {
                         window.open('/visit.html?id=' + patient, '_blank');
@@ -226,7 +217,7 @@ class TestString extends BindingClass {
     
                     // Create seen button
                     let seenButton = document.createElement('button');
-                    seenButton.className = 'btn seen-btn';
+                    seenButton.classList.add('btn','seen-btn','px-3');
                     seenButton.id = `seen-${patientName.name}-${counter}`;
                     seenButton.innerText = "Seen";
                     seenButton.addEventListener('click', async () => {
@@ -244,12 +235,15 @@ class TestString extends BindingClass {
                     let buttonDiv = document.createElement('div');
                     buttonDiv.appendChild(visitButton);
                     buttonDiv.appendChild(seenButton);
-    
+
+                    let picSrc = '<img class="img-fit" src="/images/womens.jpg" alt="Patient Image">';
+
+                    if (patientName.sex == 'M') {
+                      picSrc = '<img class="img-fit" src="images/mens.png" alt="Patient Image">';
+                    }                     
                     // Append the image, name, and buttons to the list item
-                    listItem.innerHTML = `
-                        <img class="img-fit" src="https://res.cloudinary.com/demo/image/upload/w_0.7,e_blur:400/front_face.jpg" alt="Patient Image">
-                        ${patientName.name}
-                    `;
+                    listItem.innerHTML = `${picSrc} ${patientName.name}`;
+                    
                     listItem.appendChild(buttonDiv);
     
                     // Append the list item to the list group
