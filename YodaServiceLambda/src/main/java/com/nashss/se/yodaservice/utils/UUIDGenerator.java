@@ -15,5 +15,4 @@ public class UUIDGenerator {
         return id.substring(Math.max(id.length() - ID_LENGTH, 0));
     }
 
-    public static String randomTranscribeJobName
 }
