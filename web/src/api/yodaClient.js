@@ -200,10 +200,12 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async removePatient(patientId, providerName, errorCallback) {
+    async removePatient(patientId, providerName, position, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.put(`/provider/remove/${patientId}/${providerName}`, {
+                position: position,
+            }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -215,6 +217,7 @@ export default class YodaClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+    
 
     async getPHR(phrId, errorCallback) {
         try {

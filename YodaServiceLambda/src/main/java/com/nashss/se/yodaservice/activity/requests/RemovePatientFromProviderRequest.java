@@ -10,9 +10,12 @@ public class RemovePatientFromProviderRequest {
 
     private final String providerName;
 
-    public RemovePatientFromProviderRequest(String patientId, String providerName) {
+    private final String position;
+
+    public RemovePatientFromProviderRequest(String patientId, String providerName, String position) {
         this.patientId = patientId;
         this.providerName = providerName;
+        this.position = position;
     }
 
     public String getPatientId() {
@@ -23,13 +26,19 @@ public class RemovePatientFromProviderRequest {
         return providerName;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
     @Override
     public String toString() {
         return "RemovePatientFromProviderRequest{" +
                 "patientId='" + patientId + '\'' +
                 ", providerName='" + providerName + '\'' +
+                ", position='" + position + '\'' +
                 '}';
     }
+
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
@@ -39,6 +48,8 @@ public class RemovePatientFromProviderRequest {
         private String patientId;
 
         private String providerName;
+
+        private String position;
 
         public Builder withPatientId(String patientId) {
             this.patientId = patientId;
@@ -50,8 +61,13 @@ public class RemovePatientFromProviderRequest {
             return this;
         }
 
+        public Builder withPosition(String position) {
+            this.position = position;
+            return this;
+        }
+
         public RemovePatientFromProviderRequest build() {
-            return new RemovePatientFromProviderRequest(patientId, providerName);
+            return new RemovePatientFromProviderRequest(patientId, providerName, position);
         }
 
     }

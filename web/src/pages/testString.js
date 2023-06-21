@@ -215,7 +215,6 @@ class TestString extends BindingClass {
                     patientName = await this.client.getPatient(patient);
                     listItem.id = `patient-${patientName.name}-${counter}`;
                     counter += 1;
-                    console.log(patientName.name,"FOR WHAT")
     
                     // Create visit button
                     let visitButton = document.createElement('button');
@@ -229,9 +228,10 @@ class TestString extends BindingClass {
                     let seenButton = document.createElement('button');
                     seenButton.classList.add('btn','seen-btn','px-3');
                     seenButton.id = `seen-${patientName.name}-${counter}`;
+                    let position = seenButton.id.slice(-1);
                     seenButton.innerText = "Seen";
                     seenButton.addEventListener('click', async () => {
-                        const result = await self.client.removePatient(patient, identity.name); 
+                        const result = await self.client.removePatient(patient, identity.name, position); 
                         console.log(result.success, "test");
                         if (result.success === true) {
                             document.getElementById('desktopListGroupPatients').innerHTML = "";
@@ -322,6 +322,7 @@ class TestString extends BindingClass {
                                   }, 1000);
                             }
                             window.location.reload();
+                            this.getAllPatientsAndDisplay();
                         }
                     });
                     buttonContainer.appendChild(addButton);

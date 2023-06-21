@@ -13,6 +13,7 @@ import com.nashss.se.yodaservice.activity.requests.RemovePatientFromProviderRequ
 import com.nashss.se.yodaservice.activity.results.RemovePatientFromProviderResult;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
+import com.nashss.se.yodaservice.dynamodb.models.Patient;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,16 +40,24 @@ public class RemovePatientFromProviderActivityTest {
     @Test
     public void testHandleRequest() {
         // setup
+        String patientName = "patientName";
+        Patient patient = new Patient();
         String patientId = "patientId";
+        patient.setName(patientName);
+        patient.setPatientId(patientId);
+
         String providerName = "providerName";
+        String position = "1";
         RemovePatientFromProviderRequest request = RemovePatientFromProviderRequest.builder()
                 .withPatientId(patientId)
                 .withProviderName(providerName)
+                .withPosition(position)
                 .build();
         Provider provider = new Provider();
         provider.setName(providerName);
         List<String> q = new ArrayList<>(Arrays.asList("TEST1", patientId, "TEST2"));
         provider.setPendingPatients(q);
+        when(patientDAO.getPatient(patientId)).thenReturn(patient);
         when(providerDAO.getProvider(providerName)).thenReturn(Optional.of(provider));
         when(providerDAO.updateProvider(provider)).thenReturn(true);
 
@@ -59,6 +68,7 @@ public class RemovePatientFromProviderActivityTest {
         verify(patientDAO, times(1)).getPatient(patientId);
         verify(providerDAO, times(1)).getProvider(providerName);
         verify(providerDAO, times(1)).updateProvider(provider);
+        verify(patientDAO, times(1)).getPatient(patientId);
         assertTrue(result.getSuccess());
         assertFalse(provider.getPendingPatients().contains(patientId));
     }

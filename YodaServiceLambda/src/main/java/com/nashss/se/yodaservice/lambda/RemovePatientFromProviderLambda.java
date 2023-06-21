@@ -13,10 +13,12 @@ public class RemovePatientFromProviderLambda
     @Override
     public LambdaResponse handleRequest(
             AuthenticatedLambdaRequest<RemovePatientFromProviderRequest> input, Context context) {
+        RemovePatientFromProviderRequest unauthenticatedRequest = input.fromBody(RemovePatientFromProviderRequest.class);
         return super.runActivity(
                 () -> input.fromPath(path -> RemovePatientFromProviderRequest.builder()
                         .withPatientId(path.get("patientId"))
                         .withProviderName(path.get("providerName"))
+                        .withPosition(unauthenticatedRequest.getPosition())
                         .build()),
                 (request, serviceComponent) ->
                         serviceComponent.provideRemovePatientFromProviderActivity().handleRequest(request)
