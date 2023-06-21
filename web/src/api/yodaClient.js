@@ -147,12 +147,15 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-    async createPatient(name, age, errorCallback) {
+    async createPatient(name, age, sex, address, phoneNumber, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can create patients.");
             const response = await this.axiosClient.post(`/patient/new`, {
                 patientName: name,
-                patientAge: age
+                patientAge: age,
+                sex: sex,
+                address: address,
+                phoneNumber: phoneNumber
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,

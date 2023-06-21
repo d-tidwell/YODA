@@ -226,17 +226,25 @@ Resources:
             PolicyDocument:
               Version: '2012-10-17'
               Statement:
-                - Effect: Allow
+                - Sid: AccessTableAllIndexesOnExhibitions
+                  Effect: Allow
                   Action: dynamodb:*
-                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs_"
+                  Resource: [
+                    !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs_",
+                    !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/phrs_/index/*"
+                  ]
 
           - PolicyName: 'AccessDictationTable'
             PolicyDocument:
               Version: '2012-10-17'
               Statement:
-                - Effect: Allow
+                - Sid: AccessAllIndexofDictation
+                  Effect: Allow
                   Action: dynamodb:*
-                  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations_"
+                  Resource: [
+                    !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations_",
+                    !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dictations_/index/*"
+                  ]
 
           - PolicyName: 'GetSecrets'
             PolicyDocument:
@@ -245,7 +253,7 @@ Resources:
                 - Effect: Allow
                   Action: secretsmanager:GetSecretValue
                   Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*"
-
+          
     #-----------------------------------------------------
     # Lambda Functions Configuration
     #-----------------------------------------------------

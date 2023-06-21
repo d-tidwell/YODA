@@ -230,7 +230,7 @@ class TestString extends BindingClass {
                     // add await before this.client.getPatient(patient)
                     patientName = await this.client.getPatient(patient);
                     listItem.id = `patient-${patientName.name}-${counter}`;
-                    counter += 1;
+      
     
                     // Create visit button
                     let visitButton = document.createElement('button');
@@ -247,8 +247,8 @@ class TestString extends BindingClass {
                     let position = seenButton.id.slice(-1);
                     seenButton.innerText = "Seen";
                     seenButton.addEventListener('click', async () => {
-                        const result = await self.client.removePatient(patient, identity.name, position); 
-                        console.log(result.success, "test");
+                        const result = await self.client.removePatient(patient, identity.name, position);
+                        console.log(position, "test");
                         if (result.success === true) {
                             document.getElementById('desktopListGroupPatients').innerHTML = "";
                             console.log("here first");
@@ -278,6 +278,7 @@ class TestString extends BindingClass {
                 } catch (err) {
                     console.log(err);  
                 }
+                counter += 1;
             }
         }
     }
@@ -327,18 +328,22 @@ class TestString extends BindingClass {
                     addButton.addEventListener('click', async () => {
                         console.log("clicked")
                         const confirm = await this.client.addPatientToProvider(patient.id, identity.name);
+                        console.log(confirm.success,"confirm success");
                         if(confirm.success == true){
                             let newProvider = this.client.getProvider(identity.name);
                             let counterConfirm = 0;
                             let truthyAdd = newProvider.patientsPending.includes(patient.id);
                             while (truthyAdd){
                                 counterConfirm ++;
+                                console.log(counterConfirm,"counter add patient")
                                 setTimeout(function() {
                                     console.log(`counterConfirm: ${counterConfirm}`);
                                   }, 1000);
                             }
                             window.location.reload();
                             this.getAllPatientsAndDisplay();
+                        } else {
+                            console.log("add patient error confirm skipped?")
                         }
                     });
                     buttonContainer.appendChild(addButton);
@@ -367,11 +372,11 @@ class TestString extends BindingClass {
         const age = document.getElementById('patientAge').value;
         const sex = document.getElementById('patientSex').value;
         const address = document.getElementById('patientAddress').value;
-        const phone = document.getElementById('patientPhoneNumber').value;
+        const phoneNumber = document.getElementById('patientPhoneNumber').value;
         const image = document.getElementById('patientImage').value;
     
         // Call createPatient() method
-        this.client.createPatient(name, age, sex, address, phone, image)
+        this.client.createPatient(name, age, sex, address, phoneNumber, image)
             .then(() => {
                 // The patient was created successfully
                 console.log('Patient creation submitted successfully');
@@ -385,6 +390,7 @@ class TestString extends BindingClass {
     
                 // Refresh the list of patients
                 this.getAllPatientsAndDisplay();
+                window.location.reload();
                 
             })
         .catch((err) => {

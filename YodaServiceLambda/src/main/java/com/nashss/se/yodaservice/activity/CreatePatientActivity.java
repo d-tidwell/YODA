@@ -30,7 +30,12 @@ public class CreatePatientActivity {
 
         madePatient.setPatientId(newPatientId);
         String patientName = request.getPatientName().replaceAll("\\s+","");
-
+        System.out.println("CREATE REQUEST ISSUEE !!!!!!!!!!!!!!!!!!!!");
+        System.out.println(patientName);
+        System.out.println(request.getPatientName());
+        System.out.println(request.getAddress());
+        System.out.println(request.getPatientAge());
+        System.out.println(request.getPhoneNumber());
         madePatient.setName(Sanitizer.sanitizeField(patientName));
         madePatient.setAge(Sanitizer.sanitizeField(request.getPatientAge()));
         madePatient.setSex( Sanitizer.sanitizeField(request.getSex()));
