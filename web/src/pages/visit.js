@@ -21,7 +21,7 @@ class Visit extends BindingClass {
       this.dataStore.set("provider", providerObj.name);
       const patient = await this.client.getPatient(urlParams.get("id"));
       this.setPatientAttributes(patient);
-      console.log(patient, "client")
+      console.log(patient.name, "clientLoaded")
   
       // Initialize audio recording variables
       this.mediaRecorder = null;
@@ -123,10 +123,10 @@ closeAlert() {
         console.log(s3string.url);
         const s3response = await this.uploadAudioToS3(s3string.url);
         //make a call to updateDict object and trigger transcription
-        if (s3response.status === 200) {
+        if (s3response.status === "200") {
           const resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
           //do something for feedback to the user and redirect to desktop
-          console.log(resultUpdateDictation);
+          console.log(resultUpdateDictation,"updateDictation!!!!!");
           if (resultUpdateDictation.status == "SUCCESS") {
             let toastHTMLElement = document.getElementById('YodaSent');
             let toastElement = new bootstrap.Toast(toastHTMLElement);
@@ -143,7 +143,7 @@ closeAlert() {
             let toastElement = new bootstrap.Toast(toastHTMLElement);
             toastElement.style = "text-center"
             toastElement.show();
-            resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
+            //resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
           }
 
         } else {

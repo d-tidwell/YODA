@@ -321,13 +321,14 @@ class TestString extends BindingClass {
                     // Create the Add button
                     let addButton = document.createElement('button');
                     addButton.classList.add('btn', 'seen-btn');
+                    addButton.id = patient.id;
                     addButton.textContent = 'Add';
                     addButton.style.marginRight = '4px';
         
                     // Add event listener to Add button
                     addButton.addEventListener('click', async () => {
-                        console.log("clicked")
-                        const confirm = await this.client.addPatientToProvider(patient.id, identity.name);
+                        console.log("clicked",patient.id, addButton.id);
+                        const confirm = await this.client.addPatientToProvider(addButton.id, identity.name);
                         console.log(confirm.success,"confirm success");
                         if(confirm.success == true){
                             let newProvider = this.client.getProvider(identity.name);
