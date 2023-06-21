@@ -19,7 +19,7 @@ class TestString extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount','populatePatientsPending','clientLoaded','populatePhrPending','getAllPatientsAndDisplay'], this);
+        this.bindClassMethods(['mount','closeAlert','populatePatientsPending','clientLoaded','populatePhrPending','getAllPatientsAndDisplay'], this);
 
         // Create a enw datastore with an initial "empty" state.
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
@@ -94,14 +94,30 @@ class TestString extends BindingClass {
         window.addEventListener('apiError', function (e) {
             // Assuming you have an element with an ID of 'alert'
             const alertElement = document.getElementById('alert');
-            alertElement.textContent = e.detail;
+            const h4 = document.createElement('h4');
+            h4.innerText = e.detail;
+        
+            const closer = document.createElement("button");
+            closer.classList.add("btn","seen-btn");
+            closer.id = "closeAlert";
+            closer.innerText = "Ok";
+           
+        
+            alertElement.innerHTML = '';
+            
+            alertElement.appendChild(h4);
+            alertElement.appendChild(closer);
             alertElement.style.display = 'block';
         }, false);
-        
-        
-
+        document.getElementById("alert").addEventListener("click", this.closeAlert);
     }
 
+    closeAlert() {
+        console.log("this");
+        document.getElementById('alert').style.display = 'none';
+        
+    }
+    
 
     async populatePhrPending(providerName) {
         const response = await this.client.getAllPHRByProvider(providerName);
@@ -358,7 +374,7 @@ class TestString extends BindingClass {
         this.client.createPatient(name, age, sex, address, phone, image)
             .then(() => {
                 // The patient was created successfully
-                console.log('Patient created successfully');
+                console.log('Patient creation submitted successfully');
                 
                 // Clear the form fields
                 document.getElementById('patientName').value = '';

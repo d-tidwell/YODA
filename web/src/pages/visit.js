@@ -6,7 +6,7 @@ import DataStore from "../util/DataStore";
 class Visit extends BindingClass {
     constructor() {
       super();
-      this.bindClassMethods(['clientLoaded', 'mount', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate', 'getAllPHR'], this);
+      this.bindClassMethods(['clientLoaded', 'mount','closeAlert', 'submitForm', 'uploadAudioToS3','setPatientAttributes','getFormattedDate', 'getAllPHR'], this);
       this.dataStore = new DataStore();
       this.header = new Header(this.dataStore);
       this.client = new yodaClient();
@@ -42,12 +42,32 @@ class Visit extends BindingClass {
       this.playButton.addEventListener("click", this.playAudio);
       this.submitButton.addEventListener("click", this.submitForm);
       window.addEventListener('apiError', function (e) {
+        // Assuming you have an element with an ID of 'alert'
         const alertElement = document.getElementById('alert');
-        alertElement.textContent = e.detail;
+        const h4 = document.createElement('h4');
+        h4.innerText = e.detail;
+    
+        const closer = document.createElement("button");
+        closer.classList.add("btn","seen-btn");
+        closer.id = "closeAlert";
+        closer.innerText = "Ok";
+       
+    
+        alertElement.innerHTML = '';
+        
+        alertElement.appendChild(h4);
+        alertElement.appendChild(closer);
         alertElement.style.display = 'block';
     }, false);
-  
-    }
+    document.getElementById("alert").addEventListener("click", this.closeAlert);
+}
+
+closeAlert() {
+    console.log("this");
+    document.getElementById('alert').style.display = 'none';
+    
+}
+
   
     async mount() {
       this.header.addHeaderToPage();
