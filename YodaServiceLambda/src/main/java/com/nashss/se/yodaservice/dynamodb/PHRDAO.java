@@ -57,11 +57,11 @@ public class PHRDAO {
     public boolean savePHR(PHR newPHR) {
         try {
             this.dynamoDbMapper.save(newPHR);
+            return true;
         } catch (AmazonDynamoDBException e) {
             log.error("Save PHR Error", e);
             return false;
         }
-        return true;
     }
 
     public List<PHR> getPhrsForPatient(String patientId) {

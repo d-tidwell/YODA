@@ -6,20 +6,14 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = UpdatePHRRequest.Builder.class)
 public class UpdatePHRRequest {
     private final String status;
-    private final String age;
     private final String phrId;
 
-    public UpdatePHRRequest(String status, String age, String phrId) {
+    public UpdatePHRRequest(String status, String phrId) {
         this.status = status;
-        this.age = age;
         this.phrId = phrId;
     }
     public String getStatus() {
         return status;
-    }
-
-    public String getAge() {
-        return age;
     }
 
     public String getPhrId() {
@@ -30,7 +24,6 @@ public class UpdatePHRRequest {
     public String toString() {
         return "UpdatePHRRequest{" +
                 ", status='" + status + '\'' +
-                ", age='" + age + '\'' +
                 ", phrId='" + phrId + '\'' +
                 '}';
     }
@@ -43,7 +36,6 @@ public class UpdatePHRRequest {
     public static class Builder {
 
         private String status;
-        private String age;
         private String phrId;
 
 
@@ -52,10 +44,6 @@ public class UpdatePHRRequest {
             return this;
         }
 
-        public Builder withAge(String age) {
-            this.age = age;
-            return this;
-        }
 
         public Builder withPhrId(String phrId){
             this.phrId = phrId;
@@ -63,7 +51,7 @@ public class UpdatePHRRequest {
         }
 
         public UpdatePHRRequest build() {
-            return new UpdatePHRRequest(status, age, phrId);
+            return new UpdatePHRRequest(status, phrId);
         }
 
 
