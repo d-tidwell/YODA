@@ -53,4 +53,5 @@ public class AddPatientToProviderActivity {
                 .withSuccess(success)
                 .build();
     }
+}
 

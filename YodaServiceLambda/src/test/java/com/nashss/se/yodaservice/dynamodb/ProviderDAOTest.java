@@ -9,11 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -52,12 +54,14 @@ public class ProviderDAOTest {
 
         when(dynamoDbMapper.load(Provider.class, testProviderName)).thenReturn(null);
 
-        Optional<Provider> provider = providerDAO.getProvider(testProviderName);
-
-        assertTrue(provider.isEmpty(), "Expected the returned provider to be empty when not found");
+        assertThrows(NoSuchElementException.class, () -> {
+            providerDAO.getProvider(testProviderName);
+        });
 
         verify(dynamoDbMapper, times(1)).load(Provider.class, testProviderName);
     }
+
+
 
     @Test
     public void testUpdatePending() {
