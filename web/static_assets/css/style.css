@@ -10,6 +10,7 @@
 
 
 #alert {
+    font-family: 'Baloo 2', cursive;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,6 +26,7 @@
 }
 
 #alert h4 {
+    font-family: 'Baloo 2', cursive;
     display: flex;
     justify-content: center;
     align-items: center;
