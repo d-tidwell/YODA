@@ -374,15 +374,17 @@ export default class YodaClient extends BindingClass {
     async updatePHRStatus(phrId, status, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
-            const response = await this.axiosClient.put(`/patient/PHR/update/${phrId}`, {
-                params: {
+            const response = await this.axiosClient.put(`/patient/PHR/update/${phrId}`,
+                {
                     status: status
                 },
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
                 }
-            });
+            );
             return response.data;
         } catch (error) {
             this.handleError(error, errorCallback);

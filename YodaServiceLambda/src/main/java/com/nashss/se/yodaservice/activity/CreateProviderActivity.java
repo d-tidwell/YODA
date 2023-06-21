@@ -8,6 +8,7 @@ import com.nashss.se.yodaservice.dynamodb.models.PHR;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
 import com.nashss.se.yodaservice.enums.COMP_TEST_DATA;
 import com.nashss.se.yodaservice.enums.PHRStatus;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -26,6 +27,9 @@ public class CreateProviderActivity {
 
     public CreateProviderResult handleRequest(final CreateProviderRequest request) {
         String newProviderId = request.getProviderName();
+        newProviderId.trim();
+        newProviderId.replaceAll("\\s+","");
+        Sanitizer.sanitizeField(newProviderId);
         boolean confirmation;
         if (!Objects.isNull(providerDAO.getProvider(newProviderId))) {
             Provider madeProvider = new Provider();

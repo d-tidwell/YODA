@@ -5,6 +5,7 @@ import com.nashss.se.yodaservice.activity.results.CreatePatientResult;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Patient;
 import com.nashss.se.yodaservice.utils.RandoAgeGenerator;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 import com.nashss.se.yodaservice.utils.UUIDGenerator;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,11 +25,15 @@ public class CreatePatientActivity {
     }
 
     public CreatePatientResult handleRequest(final CreatePatientRequest request) {
+
         String newPatientId = request.getPatientName() + UUIDGenerator.generateUniqueId();
         Patient madePatient = new Patient();
         madePatient.setPatientId(newPatientId);
-        madePatient.setName(request.getPatientName());
-        madePatient.setAge(request.getPatientAge());
+        madePatient.setName( Sanitizer.sanitizeField(request.getPatientName()));
+        madePatient.setAge(Sanitizer.sanitizeField(request.getPatientAge()));
+        madePatient.setSex(  Sanitizer.sanitizeField(request.getSex()));
+        madePatient.setAddress(Sanitizer.sanitizeField(request.getAddress()));
+        madePatient.setPhoneNumber(Sanitizer.sanitizeField(request.getPhoneNumber()));
         boolean confirmation = patientDAO.savePatient(madePatient);
         return CreatePatientResult.builder()
                 .withSuccess(confirmation)

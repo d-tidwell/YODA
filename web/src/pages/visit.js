@@ -94,19 +94,31 @@ class Visit extends BindingClass {
         const s3response = await this.uploadAudioToS3(s3string.url);
         //make a call to updateDict object and trigger transcription
         if (s3response.status === 200) {
-          const resultUpdateDictation = await this.client.updateDictation( idForPhr, dateString,filename,type);
+          const resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
           //do something for feedback to the user and redirect to desktop
-          let toastHTMLElement = document.getElementById('YodaSent');
-          let toastElement = new bootstrap.Toast(toastHTMLElement);
-          toastElement.style = "text-center"
-          toastElement.show();
-          this.recordButton.disabled = false;
-          this.stopButton.disabled = false;
-          this.playButton.disabled = true;
-          this.recordedAudio = null;
+          console.log(resultUpdateDictation);
+          if (resultUpdateDictation.status == "SUCCESS") {
+            let toastHTMLElement = document.getElementById('YodaSent');
+            let toastElement = new bootstrap.Toast(toastHTMLElement);
+            toastElement.style = "text-center"
+            toastElement.show();
+            this.recordButton.disabled = false;
+            this.stopButton.disabled = false;
+            this.playButton.disabled = true;
+            this.recordedAudio = null;
+            window.location.href = '/desktop.html';
+          } else {
+            console.log("terrible the update dictation failed: STATUS:", s3response.status);
+            let toastHTMLElement = document.getElementById('YodaSentFail');
+            let toastElement = new bootstrap.Toast(toastHTMLElement);
+            toastElement.style = "text-center"
+            toastElement.show();
+            resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
+          }
+
         } else {
-          console.log("terrible the update dictation failed biotch");
-          let toastHTMLElement = document.getElementById('YodaSentFail');
+          console.log("terrible the update dictation failed: STATUS:", s3response.status);
+          let toastHTMLElement = document.getElementById('YodaDicationFail');
           let toastElement = new bootstrap.Toast(toastHTMLElement);
           toastElement.style = "text-center"
           toastElement.show();
@@ -127,7 +139,7 @@ class Visit extends BindingClass {
       try {
           const uploadResponse = await this.client.dropInTheBucket(presignedS3Url, audioBlob);
           // return uploadResponse;
-          return "http:://fakeS3toReturnLine111Visit.js";
+          return uploadResponse;
       } catch (error) {
           console.error('Error uploading audio to S3: ', error);
       }

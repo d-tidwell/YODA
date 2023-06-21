@@ -34,6 +34,7 @@ class TestString extends BindingClass {
         let provider;
         //get the identity
         const identity =  await this.client.getIdentity();
+        console.log(identity);
         
         try {
             console.log("making request", identity.name);
@@ -49,7 +50,7 @@ class TestString extends BindingClass {
             //create this new never before person
             let created = await this.client.createProvider(identity.name, identity.email);
             //double check to see if was made and also set the object for the page
-            provider = await this.client.getProvider("Dr."+identity.name);
+            provider = await this.client.getProvider(identity.name);
             console.log(provider,"there");
             toastHTMLElement.addEventListener('hidden.bs.toast', function () {
                 toastHTMLElement.parentNode.removeChild(toastHTMLElement);
@@ -105,81 +106,84 @@ class TestString extends BindingClass {
 
         if(responseId){
             for (const phrId of responseId) {
-                const labelStyle = 'width: 80px; font-weight: bold;';
-                const valueStyle = 'margin-left: 5px; margin-right:20px'; 
-                // Use getPatient() method to fetch patient details
-                const patient = await this.client.getPatient(phrId.patientId);
+                if (phrId.status != "COMPLETED") {
+                    
+                    const labelStyle = 'width: 80px; font-weight: bold;';
+                    const valueStyle = 'margin-left: 5px; margin-right:20px'; 
+                    // Use getPatient() method to fetch patient details
+                    const patient = await this.client.getPatient(phrId.patientId);
 
-                // Create a list item for each PHR
-                let li = document.createElement('li');
-                li.className = 'list-group-item d-flex flex-wrap'; // Add flex-wrap to allow wrapping of content
+                    // Create a list item for each PHR
+                    let li = document.createElement('li');
+                    li.className = 'list-group-item d-flex flex-wrap'; // Add flex-wrap to allow wrapping of content
 
-                // Create container for phrID and buttons
-                let phrContainer = document.createElement('div');
-                phrContainer.className = 'phr-container d-flex justify-content-between align-items-center flex-grow-1';
-                
-                let idContainer = document.createElement('div');
-                idContainer.className = 'label-value-container';
-                let idLabel = document.createElement('span');
-                idLabel.style.cssText = labelStyle;
-                idLabel.innerText = 'Id:';
-                let idValue = document.createElement('span');
-                idValue.style.cssText = valueStyle; // Apply the value style
-                idValue.innerText = phrId.phrId;
+                    // Create container for phrID and buttons
+                    let phrContainer = document.createElement('div');
+                    phrContainer.className = 'phr-container d-flex justify-content-between align-items-center flex-grow-1';
+                    
+                    let idContainer = document.createElement('div');
+                    idContainer.className = 'label-value-container';
+                    let idLabel = document.createElement('span');
+                    idLabel.style.cssText = labelStyle;
+                    idLabel.innerText = 'Id:';
+                    let idValue = document.createElement('span');
+                    idValue.style.cssText = valueStyle; // Apply the value style
+                    idValue.innerText = phrId.phrId;
 
-                // Create buttons container and append buttons
-                let buttonsDiv = document.createElement('div');
-                buttonsDiv.className = '';
+                    // Create buttons container and append buttons
+                    let buttonsDiv = document.createElement('div');
+                    buttonsDiv.className = '';
 
-                let editButton = document.createElement('button');
-                editButton.className = 'btn seen-btn';
-                editButton.innerText = 'Complete';
+                    let editButton = document.createElement('button');
+                    editButton.className = 'btn seen-btn';
+                    editButton.innerText = 'Complete';
 
-                // Add an event listener to the Edit button
-                editButton.addEventListener('click', function () {
-                    // Open a new tab and pass phrId as a URL parameter
-                    window.open(`editPHR.html?phrId=${phrId.phrId}`, '_blank');
-                });
+                    // Add an event listener to the Edit button
+                    editButton.addEventListener('click', function () {
+                        // Open a new tab and pass phrId as a URL parameter
+                        window.open(`editPHR.html?phrId=${phrId.phrId}`, '_blank');
+                    });
 
-                buttonsDiv.appendChild(editButton);
+                    buttonsDiv.appendChild(editButton);
 
-                // Append phrID, buttons, and buttons container to the phrContainer
-                phrContainer.appendChild(idContainer);
-                phrContainer.appendChild(buttonsDiv);
+                    // Append phrID, buttons, and buttons container to the phrContainer
+                    phrContainer.appendChild(idContainer);
+                    phrContainer.appendChild(buttonsDiv);
 
 
-                // Create container for Name and Status
-                let infoContainer = document.createElement('div');
-                infoContainer.className = 'info-container';
+                    // Create container for Name and Status
+                    let infoContainer = document.createElement('div');
+                    infoContainer.className = 'info-container';
 
-                let nameLabel = document.createElement('span');
-                nameLabel.style.cssText = labelStyle;
-                nameLabel.innerText = 'Name:';
-                let nameValue = document.createElement('span');
-                nameValue.style.cssText = valueStyle; 
-                nameValue.innerText = patient.name;
+                    let nameLabel = document.createElement('span');
+                    nameLabel.style.cssText = labelStyle;
+                    nameLabel.innerText = 'Name:';
+                    let nameValue = document.createElement('span');
+                    nameValue.style.cssText = valueStyle; 
+                    nameValue.innerText = patient.name;
 
-                let statusLabel = document.createElement('span');
-                statusLabel.style.cssText = labelStyle;
-                statusLabel.innerText = 'Status:';
-                let statusValue = document.createElement('span');
-                statusValue.style.cssText = valueStyle; 
-                statusValue.innerText = phrId.status;
+                    let statusLabel = document.createElement('span');
+                    statusLabel.style.cssText = labelStyle;
+                    statusLabel.innerText = 'Status:';
+                    let statusValue = document.createElement('span');
+                    statusValue.style.cssText = valueStyle; 
+                    statusValue.innerText = phrId.status;
 
-                // Append Name and Status and Id to the id/infoContainer
-                idContainer.appendChild(nameLabel);
-                idContainer.appendChild(nameValue);
-                idContainer.appendChild(statusLabel);
-                idContainer.appendChild(statusValue);
-                infoContainer.appendChild(idLabel);
-                infoContainer.appendChild(idValue);
+                    // Append Name and Status and Id to the id/infoContainer
+                    idContainer.appendChild(nameLabel);
+                    idContainer.appendChild(nameValue);
+                    idContainer.appendChild(statusLabel);
+                    idContainer.appendChild(statusValue);
+                    infoContainer.appendChild(idLabel);
+                    infoContainer.appendChild(idValue);
 
-                // Append phrContainer and infoContainer to the list item
-                li.appendChild(phrContainer);
-                li.appendChild(infoContainer);
+                    // Append phrContainer and infoContainer to the list item
+                    li.appendChild(phrContainer);
+                    li.appendChild(infoContainer);
 
-                // Append the list item to the container element (phrList in this case)
-                phrList.appendChild(li);
+                    // Append the list item to the container element (phrList in this case)
+                    phrList.appendChild(li);
+                }
             }
         }
 
@@ -311,23 +315,11 @@ class TestString extends BindingClass {
                                     console.log(`counterConfirm: ${counterConfirm}`);
                                   }, 1000);
                             }
-                            location.reload();
+                            window.location.reload();
                         }
                     });
                     buttonContainer.appendChild(addButton);
-        
-                    // Create the Edit button
-                    let editButton = document.createElement('button');
-                    editButton.classList.add('btn', 'seen-btn');
-                    editButton.textContent = 'Edit';
-                    editButton.id = 'allPatientsEdit'; // Change id of the Edit button
-                    
-                    // Add event listener to Edit button
-                    editButton.addEventListener('click', () => {
-                        window.open("/editPatient.html?id=" + patient.id, "_blank");
-                    });
-                    buttonContainer.appendChild(editButton);
-                    
+                          
                     // Append the button container to the list item
                     li.appendChild(buttonContainer);
                     
@@ -352,7 +344,7 @@ class TestString extends BindingClass {
         const age = document.getElementById('patientAge').value;
         const sex = document.getElementById('patientSex').value;
         const address = document.getElementById('patientAddress').value;
-        const phone = document.getElementById('patientPhone').value;
+        const phone = document.getElementById('patientPhoneNumber').value;
         const image = document.getElementById('patientImage').value;
     
         // Call createPatient() method

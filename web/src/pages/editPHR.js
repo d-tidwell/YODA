@@ -126,13 +126,13 @@ class EditPHR extends BindingClass {
                 editBtn.classList.add("btn","seen-btn");
                 editBtn.innerHTML = "edit";
                 editBtn.style.flex = "1";
-                editBtn.id = "edit";
+                editBtn.id = "Submit Edits";
                       // Get reference to record, stop, play buttons, and audio element
 
 
   
                  // Attach event listeners
-                signatureBtn.addEventListener("click", self.submitForm);
+                signatureBtn.addEventListener("click", self.submitForm(this.dataStore.get("phrId")));
                 editBtn.addEventListener("click", self.editForm);
 
                 buttonsDiv.appendChild(signatureBtn);
@@ -195,9 +195,17 @@ class EditPHR extends BindingClass {
             .catch(error => {
                 console.error('Error parsing compData', error);
             });
+    } else {
+      const needBtn = document.getElementById("previousAccordion");
+      const clostBtn = document.createElement("button");
+      clostBtn.id = "closer";
+      clostBtn.classList.add("btn","seen-btn");
+      clostBtn.innerText ="CLOSE OUT PHR";
+      clostBtn.addEventListener('click', this.submitForm(this.dataStore.get("phrId")));
+      needBtn.appendChild(clostBtn);
     }
   }
-    async submitForm(event){
+    async submitForm(phrId){
         event.preventDefault();
         const updated = this.client.updatePHRStatus(phrId, "COMPLETED");
         console.log("updated",updated);
@@ -208,7 +216,7 @@ class EditPHR extends BindingClass {
       const text = document.getElementById(`patientNotes-${this.dataStore.get("phrId")}`);
       console.log(this.dataStore.get('patientId'), "recorded ID")
       const returnText = await this.client.editPHR(this.dataStore.get("phrId"), text.value);
-      this.createEditablePHR(await this.client.get(this.dataStore.get("phrId")));
+      this.createEditablePHR(await this.dataStore.get(this.dataStore.get("phrId")));
     }
  
   }

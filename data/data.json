@@ -5,7 +5,10 @@
         "Item": {
           "patientId": { "S": "TEST_PATIENT1" },
           "name": { "S": "Sharon" },
-          "age": { "S": "85" }
+          "age": { "S": "85" },
+          "sex": { "S": "F" },
+          "address": { "S": "1235 Cardiac Ct., Panama City Beach, FL 37201" },
+          "phoneNumber": { "S": "315-778-2732" }
         }
       }
     },
@@ -14,7 +17,10 @@
         "Item": {
           "patientId": { "S": "TEST_PATIENT2" },
           "name": { "S": "Rob" },
-          "age": { "S": "95" }
+          "age": { "S": "95" },
+          "sex": { "S": "M" },
+          "address": { "S": "1235 Cardiac Ct., Panama City Beach, FL 37201" },
+          "phoneNumber": { "S": "Unknown" }
         }
       }
     },
@@ -23,7 +29,10 @@
         "Item": {
           "patientId": { "S": "TEST_PATIENT3" },
           "name": { "S": "Liza" },
-          "age": { "S": "25" }
+          "age": { "S": "25" },
+          "sex": { "S": "F" },
+          "address": { "S": "0165 Weird Ukrainian Ways, Nashville, TN 36201" },
+          "phoneNumber": { "S": "615-335-2742" }
         }
       }
     }
@@ -47,7 +56,7 @@
     {
       "PutRequest": {
         "Item": {
-          "providerId": { "S": "vavrichyna.lize@gmail.com" },
+          "providerId": { "S": "vavrichyna.liza@gmail.com" },
           "name": { "S": "Yelyzaveta" },
           "medicalSpecialty": { "S": "PRIMARYCARE" },
           "pendingPatients": { "L": [
