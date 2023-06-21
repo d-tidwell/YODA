@@ -14,4 +14,6 @@ public class UUIDGenerator {
         String id = Long.toString(combinedBits, 36).toUpperCase();
         return id.substring(Math.max(id.length() - ID_LENGTH, 0));
     }
+
+    public static String randomTranscribeJobName
 }

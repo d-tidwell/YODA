@@ -245,6 +245,7 @@ class EditPHR extends BindingClass {
       console.log(await this.dataStore.get('patientId'), "recorded ID")
       const returnText = await this.client.editPHR(this.dataStore.get("phrId"), text.value);
       await this.createEditablePHR(await this.dataStore.get("phrId"));
+      window.location.reload();
     }
  
   }

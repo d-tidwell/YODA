@@ -114,10 +114,6 @@ closeAlert() {
         const providerName = this.dataStore.get("provider");
         const type = document.getElementById("dictationType").value;
         //create the phr to get the Id - this also creates dict object with the correct name to match s3 bucket filename
-        const checkDuplicate = await this.client.getPHR(this.dataStore.get("patientId"), this.dataStore.get("provider"), dateString, type);
-        if (checkDuplicate.phrId.substring(0,3) === type(0,3)) {
-          type = type + "2";
-        }
         const newPHR = await this.client.createPHR(this.dataStore.get("patientId"), this.dataStore.get("provider"), dateString, type)
         const idForPhr = newPHR.phr.phrId;
         //create the filename
