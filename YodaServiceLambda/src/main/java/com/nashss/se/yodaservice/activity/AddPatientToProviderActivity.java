@@ -9,8 +9,8 @@ import com.nashss.se.yodaservice.dynamodb.models.Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Deque;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.inject.Inject;
 
@@ -31,14 +31,26 @@ public class AddPatientToProviderActivity {
     }
 
     public AddPatientToProviderResult handleRequest(final AddPatientToProviderRequest request) {
+        if (request == null || request.getPatientId() == null || request.getProviderName() == null) {
+            throw new IllegalArgumentException("Invalid request or request parameters");
+        }
+
+        // Verify that the patient exists
         patientDAO.getPatient(request.getPatientId());
-        Optional<Provider> provider = providerDAO.getProvider(request.getProviderName());
-        List<String> q = provider.get().getPendingPatients();
-        q.add(request.getPatientId());
-        provider.get().setPendingPatients(q);
-        boolean success = providerDAO.updateProvider(provider.get());
+
+        Provider provider = providerDAO.getProvider(request.getProviderName()).get();
+
+
+        List<String> pendingPatients = provider.getPendingPatients();
+        pendingPatients.add(request.getPatientId());
+        provider.setPendingPatients(pendingPatients);
+
+        log.info("Successful Add Patient to Provider");
+
+        boolean success = providerDAO.updateProvider(provider);
+
         return AddPatientToProviderResult.builder()
                 .withSuccess(success)
                 .build();
     }
-}
+

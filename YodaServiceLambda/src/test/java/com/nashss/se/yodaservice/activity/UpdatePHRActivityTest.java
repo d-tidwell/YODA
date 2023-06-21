@@ -1,11 +1,8 @@
 package com.nashss.se.yodaservice.activity;
 
-import com.nashss.se.yodaservice.activity.UpdatePHRActivity;
 import com.nashss.se.yodaservice.activity.requests.UpdatePHRRequest;
 import com.nashss.se.yodaservice.activity.results.UpdatePHRResult;
-import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
-import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.models.PHR;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

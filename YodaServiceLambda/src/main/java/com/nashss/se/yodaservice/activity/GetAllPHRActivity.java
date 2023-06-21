@@ -29,9 +29,12 @@ public class GetAllPHRActivity {
     }
 
     public GetAllPHRResult handleRequest(final GetAllPHRRequest request) {
+
         patientDAO.getPatient(request.getPatientId());
+
         List<PHR> all = phrdao.getPhrsForPatient(request.getPatientId());
         List<PHRModel> results = ModelConverter.convertListPHRtoModels(all);
+
         return GetAllPHRResult.builder()
                 .withPhrId(results)
                 .build();

@@ -8,6 +8,8 @@ import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.file.ProviderNotFoundException;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +29,7 @@ public class ProviderDAO {
 
         if (Objects.isNull(provider)) {
             log.error(String.format("ProviderNotFoundException, %s", providerName));
+            throw new NoSuchElementException("Provider not found: " + providerName);
         }
        return Optional.ofNullable((Provider) provider);
     }

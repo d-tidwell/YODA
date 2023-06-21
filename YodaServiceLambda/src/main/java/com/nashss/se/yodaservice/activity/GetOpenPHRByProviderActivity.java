@@ -29,8 +29,10 @@ public class GetOpenPHRByProviderActivity {
     }
 
     public GetOpenPHRByProviderResult handleRequest(final GetOpenPHRByProviderRequest request) {
+
         List<PHR> all = phrdao.getUncompletedPHRsByProvider(request.getProviderName());
         List<PHRModel> results = ModelConverter.convertListPHRtoModels(all);
+
         return GetOpenPHRByProviderResult.builder()
                 .withPhrId(results)
                 .build();

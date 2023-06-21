@@ -1,6 +1,5 @@
 package com.nashss.se.yodaservice.activity;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nashss.se.yodaservice.activity.requests.EditPHRRequest;
@@ -8,13 +7,12 @@ import com.nashss.se.yodaservice.activity.results.EditPHRResult;
 import com.nashss.se.yodaservice.converters.HealthDataConverter;
 import com.nashss.se.yodaservice.dynamodb.DictationDAO;
 import com.nashss.se.yodaservice.dynamodb.PHRDAO;
-import com.nashss.se.yodaservice.dynamodb.PatientDAO;
-import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Dictation;
 import com.nashss.se.yodaservice.dynamodb.models.PHR;
 
 import com.nashss.se.yodaservice.enums.PHRStatus;
-import com.nashss.se.yodaservice.exceptions.PHRNotFoundException;
+import com.nashss.se.yodaservice.exceptions.PHRException;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.services.comprehendmedical.ComprehendMedicalClient;
@@ -39,37 +37,57 @@ public class EditPHRActivity {
         this.phrdao = phrdao;
     }
 
-    public EditPHRResult handleRequest(final EditPHRRequest request) {
-        //Pending Dictation link check for text in bucket idk??? just an edit criteria idk what we need yet
+    public EditPHRResult handleRequest(final EditPHRRequest request) throws PHRException {
+
+        // Fetching PHR by PHR ID
         PHR phr = phrdao.getPHRsByPHRId(request.getPhrId());
-        Dictation oldDic = dicDao.getDictation(phr.getPhrId(), phr.getDate());
-        //not in the s3 bucket bc its edited
-        oldDic.setDictationText(request.getText());
-        dicDao.afterTranscriptionUpdate(oldDic);
-        //update the phr status to
+
+        // Fetching the associated dictation
+        Dictation oldDictation = dicDao.getDictation(phr.getPhrId(), phr.getDate());
+
+        // Sanitizing and setting the text in the dictation
+        oldDictation.setDictationText(Sanitizer.sanitizeField(request.getText()));
+        dicDao.afterTranscriptionUpdate(oldDictation);
+
+        // Updating the PHR status and transcription
         phr.setStatus(PHRStatus.EDITING_TEXTRECORD.toString());
         phr.setTranscription(request.getText());
         phrdao.savePHR(phr);
-        //push to comprehend model
-        DetectEntitiesV2Request requestDetect = DetectEntitiesV2Request.builder()
+
+        // Detecting entities from the text
+        DetectEntitiesV2Request detectEntitiesRequest = DetectEntitiesV2Request.builder()
                 .text(request.getText())
                 .build();
 
-        DetectEntitiesV2Response responseDetect = comprehendClient.detectEntitiesV2(requestDetect);
-        HealthDataConverter tableMap = new HealthDataConverter();
-        Map<String, Map<String, Map<String, List<Map<String, Object>>>>> mappedItems = tableMap.parse(responseDetect.entities());
+        DetectEntitiesV2Response detectEntitiesResponse = comprehendClient.detectEntitiesV2(detectEntitiesRequest);
+
+        // Parsing and mapping the detected entities
+        HealthDataConverter healthDataConverter = new HealthDataConverter();
+        Map<String, Map<String, Map<String, List<Map<String, Object>>>>> parsedEntities = healthDataConverter.parse(detectEntitiesResponse.entities());
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String jsonMap = objectMapper.writeValueAsString(mappedItems);
-            dicDao.putComprehendToTable(jsonMap, phr);
-            PHR returnsGood = phrdao.getPHR(phr.getPhrId(), phr.getDate());
+            // Converting the mapped entities to JSON
+            String jsonEntities = objectMapper.writeValueAsString(parsedEntities);
+            dicDao.putComprehendToTable(jsonEntities, phr);
+
+            // Fetching the updated PHR and setting the status
+            PHR updatedPHR = phrdao.getPHR(phr.getPhrId(), phr.getDate());
+            updatedPHR.setStatus(PHRStatus.PENDING_SIGNATURE.toString());
+            phrdao.savePHR(updatedPHR);
+
+            log.info("Successfully edited PHR");
+
+            // Returning the edited result
             return EditPHRResult.builder()
-                    .withComprehendData(returnsGood.getComprehendData())
-                    .withTranscription(returnsGood.getTranscription())
+                    .withComprehendData(updatedPHR.getComprehendData())
+                    .withTranscription(updatedPHR.getTranscription())
                     .build();
+
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error("Error while processing JSON", e);
+            throw new PHRException("There was an error editing the PHR", e);
         }
-        throw new PHRNotFoundException("There was an error editing the PHR");
+
     }
 }

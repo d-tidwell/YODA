@@ -13,13 +13,10 @@ public class CreatePatientLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<CreatePatientRequest> input, Context context) {
         CreatePatientRequest unauthenticatedRequest = input.fromBody(CreatePatientRequest.class);
         return super.runActivity(
-                () -> {
-                    CreatePatientRequest authenticatedRequest = CreatePatientRequest.builder()
-                            .withPatientName(unauthenticatedRequest.getPatientName())
-                            .withPatientAge(unauthenticatedRequest.getPatientAge())
-                            .build();
-                    return authenticatedRequest;
-                },
+                () -> CreatePatientRequest.builder()
+                        .withPatientName(unauthenticatedRequest.getPatientName())
+                        .withPatientAge(unauthenticatedRequest.getPatientAge())
+                        .build(),
                 (request, serviceComponent) ->
                         serviceComponent.provideCreatePatientActivity().handleRequest(request)
         );

@@ -1,17 +1,18 @@
-package com.nashss.se.yodaservice.activity;
+package com.nashss.se.yodaservice.exceptions;
 
-public class TranscribeActionException extends Throwable {
+import com.fasterxml.jackson.core.JsonProcessingException;
 
+public class PHRException extends Throwable {
     /**
      * Exception to throw when a provided value has invalid attribute values.
      */
 
-    private static final long serialVersionUID = 8007453316698092699L;
+    private static final long serialVersionUID = 8007453317798002839L;
 
     /**
      * Exception with no message or cause.
      */
-    public TranscribeActionException() {
+    public PHRException() {
         super();
     }
 
@@ -19,7 +20,7 @@ public class TranscribeActionException extends Throwable {
      * Exception with a message, but no cause.
      * @param message A descriptive message for this exception.
      */
-    public TranscribeActionException(String message) {
+    public PHRException(String message) {
         super(message);
     }
 
@@ -27,7 +28,7 @@ public class TranscribeActionException extends Throwable {
      * Exception with no message, but with a cause.
      * @param cause The original throwable resulting in this exception.
      */
-    public TranscribeActionException(Throwable cause) {
+    public PHRException(Throwable cause) {
         super(cause);
     }
 
@@ -36,9 +37,7 @@ public class TranscribeActionException extends Throwable {
      * @param message A descriptive message for this exception.
      * @param cause The original throwable resulting in this exception.
      */
-    public TranscribeActionException(String message, Throwable cause) {
+    public PHRException(String message, Throwable cause) {
         super(message, cause);
     }
 }
-
-

@@ -12,6 +12,7 @@ import com.nashss.se.yodaservice.converters.HealthDataConverter;
 import com.nashss.se.yodaservice.converters.ModelConverter;
 import com.nashss.se.yodaservice.enums.PHRStatus;
 
+import com.nashss.se.yodaservice.exceptions.TranscribeActionException;
 import com.nashss.se.yodaservice.models.ApiResponse;
 import com.nashss.se.yodaservice.models.TranscriptJSON;
 import software.amazon.awssdk.services.comprehendmedical.ComprehendMedicalClient;
@@ -33,8 +34,6 @@ import software.amazon.awssdk.services.transcribe.model.StartMedicalTranscriptio
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

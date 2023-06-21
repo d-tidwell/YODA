@@ -11,10 +11,9 @@ import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 public class PatientDAO {
@@ -49,7 +48,7 @@ public class PatientDAO {
     public List<Patient> getAllPatients() {
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
         PaginatedScanList<Patient> patients = dynamoDbMapper.scan(Patient.class, scanExpression);
-        return patients.stream().collect(Collectors.toList());
+        return new ArrayList<>(patients);
     }
 
 }

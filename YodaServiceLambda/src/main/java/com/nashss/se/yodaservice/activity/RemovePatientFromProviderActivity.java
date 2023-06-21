@@ -28,9 +28,12 @@ public class RemovePatientFromProviderActivity {
     }
 
     public RemovePatientFromProviderResult handleRequest(final RemovePatientFromProviderRequest request) {
+
         patientDAO.getPatient(request.getPatientId());
         Optional<Provider> provider = providerDAO.getProvider(request.getProviderName());
+
         List<String> pendingPatients = provider.get().getPendingPatients();
+
         boolean success = pendingPatients.remove(request.getPatientId()); 
         provider.get().setPendingPatients(pendingPatients);
     

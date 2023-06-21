@@ -27,9 +27,8 @@ public class CreateProviderActivity {
 
     public CreateProviderResult handleRequest(final CreateProviderRequest request) {
         String newProviderId = request.getProviderName();
-        newProviderId.trim();
-        newProviderId.replaceAll("\\s+","");
-        Sanitizer.sanitizeField(newProviderId);
+        newProviderId = newProviderId.replaceAll("\\s+","");
+        newProviderId = Sanitizer.sanitizeField(newProviderId);
         boolean confirmation;
         if (!Objects.isNull(providerDAO.getProvider(newProviderId))) {
             Provider madeProvider = new Provider();

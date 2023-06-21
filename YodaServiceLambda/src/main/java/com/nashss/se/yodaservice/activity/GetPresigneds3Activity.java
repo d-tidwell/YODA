@@ -18,10 +18,10 @@ import java.util.Date;
 import javax.inject.Inject;
 
 public class GetPresigneds3Activity {
-    private final String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
-    private final Logger log = LogManager.getLogger();
+    private static final String BUCKET_NAME = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
+    private static final long EXPIRATION_TIME_IN_MS = 20 * 60 * 1000;  // 20 minutes
+    private static final Logger log = LogManager.getLogger();
     private final AmazonS3 s3client;
-
 
     @Inject
     public GetPresigneds3Activity(AmazonS3 s3client) {
@@ -31,20 +31,21 @@ public class GetPresigneds3Activity {
     public GetPresigneds3Result handleRequest(final GetPresigneds3Request request) {
 
         String objectKey = request.getFileName();
-        Date expiration = new java.util.Date();
 
+        Date expiration = new java.util.Date();
         long expTimeMillis = expiration.getTime();
-        // Add 1 hour.
-        expTimeMillis += 1000 * 60;
+        expTimeMillis += EXPIRATION_TIME_IN_MS;
         expiration.setTime(expTimeMillis);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucketName, objectKey)
+                new GeneratePresignedUrlRequest(BUCKET_NAME, objectKey)
                         .withMethod(HttpMethod.PUT)
                         .withExpiration(expiration);
         generatePresignedUrlRequest.addRequestParameter("Content-Type", "audio/webm");
 
         URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
+
+        log.info("Generated presigned URL for file name: " + request.getFileName());
 
         return GetPresigneds3Result.builder()
                 .withUrl(url.toString())

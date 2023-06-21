@@ -12,8 +12,6 @@ import javax.inject.Inject;
 
 public class GetPHRRangeActivity {
 
-    private final Logger log = LogManager.getLogger();
-
     private final PHRDAO phrdao;
 
     @Inject

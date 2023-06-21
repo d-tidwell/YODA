@@ -642,13 +642,17 @@ export default class YodaClient extends BindingClass {
      */
     handleError(error, errorCallback) {
         console.error(error);
-
+    
         const errorFromApi = error?.response?.data?.error_message;
         if (errorFromApi) {
             console.error(errorFromApi)
             error.message = errorFromApi;
         }
-
+    
+        // Emit a custom event with the error message
+        const errorEvent = new CustomEvent('apiError', { detail: error.message });
+        window.dispatchEvent(errorEvent);
+    
         if (errorCallback) {
             errorCallback(error);
         }

@@ -1,6 +1,6 @@
 package com.nashss.se.yodaservice.lambda;
 
-import com.nashss.se.yodaservice.activity.TranscribeActionException;
+import com.nashss.se.yodaservice.exceptions.TranscribeActionException;
 import com.nashss.se.yodaservice.activity.requests.UpdateDictationRequest;
 import com.nashss.se.yodaservice.activity.results.UpdateDictationResult;
 

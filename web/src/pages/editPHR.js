@@ -33,7 +33,12 @@ class EditPHR extends BindingClass {
   
     async mount() {
       this.header.addHeaderToPage();
-      const loggedIn = await this.client.isLoggedIn();
+      window.addEventListener('apiError', function (e) {
+        // Assuming you have an element with an ID of 'alert'
+        const alertElement = document.getElementById('alert');
+        alertElement.textContent = e.detail;
+        alertElement.style.display = 'block';
+    }, false);
     }
 
 

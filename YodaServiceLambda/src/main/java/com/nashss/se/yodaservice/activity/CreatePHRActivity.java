@@ -37,19 +37,25 @@ public class CreatePHRActivity {
     }
 
     public CreatePHRResult handleRequest(final CreatePHRRequest request) {
+        //validate if this person and provider exist
         patientDAO.getPatient(request.getPatientId());
         providerDAO.getProvider(request.getProviderName());
+
         String phrId = request.getType() + "_" + request.getPatientId() + "_" + request.getDate() + "_" + UUIDGenerator.generateUniqueId();
+
         PHR newPHR = new PHR();
         newPHR.setPhrId(phrId);
         newPHR.setPatientId(request.getPatientId());
         newPHR.setProviderName(request.getProviderName());
         newPHR.setDate(request.getDate());
         newPHR.setStatus(PHRStatus.CREATED.toString());
+
         phrdao.savePHR(newPHR);
         //we need to create a dictation object as well so that it exists on update dict loop
         dictationDAO.createDictation(phrId,newPHR.getPhrId(),request.getDate(), request.getType());
+
         log.error(phrId + newPHR.getPhrId() + request.getDate() + request.getType());
+
         return CreatePHRResult.builder()
                 .withPHR(ModelConverter.phrConvertSingle(newPHR))
                 .build();

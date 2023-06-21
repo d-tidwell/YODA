@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.yodaservice.activity.requests.EditPHRRequest;
 import com.nashss.se.yodaservice.activity.results.EditPHRResult;
+import com.nashss.se.yodaservice.exceptions.PHRException;
 
 
 public class EditPHRLambda
@@ -19,7 +20,13 @@ public class EditPHRLambda
                         .withText(unauthenticatedRequest.getText())
                         .build()),
                 (request, serviceComponent) ->
-                        serviceComponent.provideEditPHRActivity().handleRequest(request)
+                {
+                    try {
+                        return serviceComponent.provideEditPHRActivity().handleRequest(request);
+                    } catch (PHRException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
         );
     }
 }

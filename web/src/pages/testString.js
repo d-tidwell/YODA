@@ -91,6 +91,12 @@ class TestString extends BindingClass {
         createPatientSubmitButton.addEventListener('click', (event) => this.createPatient(event));
         const phrSearchSubmitButton = document.getElementById('submitPHRSearch');
         phrSearchSubmitButton.addEventListener('click', (event) => this.searchPHR(event));
+        window.addEventListener('apiError', function (e) {
+            // Assuming you have an element with an ID of 'alert'
+            const alertElement = document.getElementById('alert');
+            alertElement.textContent = e.detail;
+            alertElement.style.display = 'block';
+        }, false);
         
         
 

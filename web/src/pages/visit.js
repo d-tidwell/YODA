@@ -41,6 +41,11 @@ class Visit extends BindingClass {
       this.stopButton.addEventListener("click", this.stopRecording);
       this.playButton.addEventListener("click", this.playAudio);
       this.submitButton.addEventListener("click", this.submitForm);
+      window.addEventListener('apiError', function (e) {
+        const alertElement = document.getElementById('alert');
+        alertElement.textContent = e.detail;
+        alertElement.style.display = 'block';
+    }, false);
   
     }
   
