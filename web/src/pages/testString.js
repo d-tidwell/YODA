@@ -440,15 +440,20 @@ class TestString extends BindingClass {
                 accordionButton.setAttribute('aria-controls', `collapse${index+1}`);
                 accordionButton.classList.add("text-center","d-block","py-3");
                 // !Change This
-                accordionButton.innerText = `Date ${phr.date}`;
                 const iconSearch = document.createElement('img');
                 iconSearch.classList.add('iconography');
                 iconSearch.src = '/images/Icons/PHR.png';
                 const statusDiv = document.createElement('div');
                 const statusHead = document.createElement("h4");
                 statusHead.innerText += `Status: ${phr.status}`
-                accordionButton.appendChild(iconSearch);
+               
+                const dateIn = document.createElement('h4');
+                dateIn.innerHTML = `Date: ${phr.date}`;
+
                 statusDiv.appendChild(statusHead);
+                
+                accordionButton.appendChild(iconSearch);
+                accordionButton.appendChild(dateIn);
                 accordionButton.appendChild(statusHead);
     
                 const accordionCollapse = document.createElement('div');
@@ -464,6 +469,8 @@ class TestString extends BindingClass {
                 <p>Provider Name: ${phr.providerName}</p>
                 <p>Date: ${phr.date}</p>
                 <p>Status: ${phr.status}</p>
+                <p>Id: ${phr.phrId}</p>
+                <
                 `; 
                 if (phr.comprehendData != null) {
                     this.client.parseComp(phr.comprehendData)

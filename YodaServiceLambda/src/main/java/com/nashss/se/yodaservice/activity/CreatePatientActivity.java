@@ -36,7 +36,7 @@ public class CreatePatientActivity {
         madePatient.setSex( Sanitizer.sanitizeField(request.getSex()));
         madePatient.setAddress(Sanitizer.sanitizeField(request.getAddress()));
         madePatient.setPhoneNumber(Sanitizer.sanitizeField(request.getPhoneNumber()));
-
+        
         boolean confirmation = patientDAO.savePatient(madePatient);
 
         return CreatePatientResult.builder()

@@ -16,6 +16,9 @@ public class CreatePatientLambda
                 () -> CreatePatientRequest.builder()
                         .withPatientName(unauthenticatedRequest.getPatientName())
                         .withPatientAge(unauthenticatedRequest.getPatientAge())
+                        .withSex(unauthenticatedRequest.getSex())
+                        .withAddress(unauthenticatedRequest.getAddress())
+                        .withPhoneNumber(unauthenticatedRequest.getPhoneNumber())
                         .build(),
                 (request, serviceComponent) ->
                         serviceComponent.provideCreatePatientActivity().handleRequest(request)

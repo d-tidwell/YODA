@@ -9,6 +9,21 @@
 
 
 
+#alert {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: 10%;
+    background: rgba(255,255,255,0.8);
+}
+
+#alert h4 {
+    color: red;
+}
 
 .background {
     font-family: 'Baloo 2', cursive;
