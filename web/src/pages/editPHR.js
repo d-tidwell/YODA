@@ -28,17 +28,12 @@ class EditPHR extends BindingClass {
       this.dataStore.set("date", phr.date);
       this.setPatientAttributes(patient);
       this.createEditablePHR(phr);
+      console.log(phr,"EDITABLE RESULT")
   
     }
   
     async mount() {
       this.header.addHeaderToPage();
-      window.addEventListener('apiError', function (e) {
-        // Assuming you have an element with an ID of 'alert'
-        const alertElement = document.getElementById('alert');
-        alertElement.textContent = e.detail;
-        alertElement.style.display = 'block';
-    }, false);
     window.addEventListener('apiError', function (e) {
       // Assuming you have an element with an ID of 'alert'
       const alertElement = document.getElementById('alert');
@@ -157,14 +152,14 @@ class EditPHR extends BindingClass {
                 editBtn.classList.add("btn","seen-btn");
                 editBtn.innerHTML = "edit";
                 editBtn.style.flex = "1";
-                editBtn.id = "Submit Edits";
+                editBtn.id = "edits";
                       // Get reference to record, stop, play buttons, and audio element
 
 
   
                  // Attach event listeners
-                signatureBtn.addEventListener("click", self.submitForm(this.dataStore.get("phrId")));
-                editBtn.addEventListener("click", self.editForm);
+                signatureBtn.addEventListener("click", () => self.submitForm(this.dataStore.get("phrId")));
+                editBtn.addEventListener("click", (event) => self.editForm(event));
 
                 buttonsDiv.appendChild(signatureBtn);
                 buttonsDiv.appendChild(editBtn);
@@ -185,6 +180,7 @@ class EditPHR extends BindingClass {
                 
                 const aiButton = document.createElement("button");
                 aiButton.style = "width: 100%; margin-bottom: 10px;"; // full width button with some margin at the bottom
+                aiButton.id = "differential"
                 aiButton.innerText = "Request Differential Diagnosis";
                 aiButton.style.background = "#f4befb"
                 
@@ -232,22 +228,23 @@ class EditPHR extends BindingClass {
       clostBtn.id = "closer";
       clostBtn.classList.add("btn","seen-btn");
       clostBtn.innerText ="CLOSE OUT PHR";
-      clostBtn.addEventListener('click', this.submitForm(this.dataStore.get("phrId")));
+      clostBtn.addEventListener('click', (event) => this.submitForm(this.dataStore.get("phrId"), event));
       needBtn.appendChild(clostBtn);
     }
   }
     async submitForm(phrId){
-        event.preventDefault();
-        const updated = this.client.updatePHRStatus(phrId, "COMPLETED");
+        const updated = await this.client.updatePHRStatus(phrId, "COMPLETED");
         console.log("updated",updated);
+        await this.createEditablePHR(await this.dataStore.get("phrId"));
+        window.location.reload();
     }
 
     async editForm(event) {
       event.preventDefault();
-      const text = document.getElementById(`patientNotes-${this.dataStore.get("phrId")}`);
-      console.log(this.dataStore.get('patientId'), "recorded ID")
+      const text = await document.getElementById(`patientNotes-${this.dataStore.get("phrId")}`);
+      console.log(await this.dataStore.get('patientId'), "recorded ID")
       const returnText = await this.client.editPHR(this.dataStore.get("phrId"), text.value);
-      this.createEditablePHR(await this.dataStore.get(this.dataStore.get("phrId")));
+      await this.createEditablePHR(await this.dataStore.get("phrId"));
     }
  
   }

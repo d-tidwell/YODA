@@ -46,8 +46,33 @@ class Visit extends BindingClass {
         alertElement.textContent = e.detail;
         alertElement.style.display = 'block';
     }, false);
+    window.addEventListener('apiError', function (e) {
+      // Assuming you have an element with an ID of 'alert'
+      const alertElement = document.getElementById('alert');
+      const h4 = document.createElement('h4');
+      h4.innerText = e.detail;
   
-    }
+      const closer = document.createElement("button");
+      closer.classList.add("btn","seen-btn");
+      closer.id = "closeAlert";
+      closer.innerText = "Ok";
+     
+  
+      alertElement.innerHTML = '';
+      
+      alertElement.appendChild(h4);
+      alertElement.appendChild(closer);
+      alertElement.style.display = 'block';
+  }, false);
+  document.getElementById("alert").addEventListener("click", this.closeAlert);
+}
+
+closeAlert() {
+  console.log("this");
+  document.getElementById('alert').style.display = 'none';
+  
+}
+
   
     async mount() {
       this.header.addHeaderToPage();
@@ -89,6 +114,10 @@ class Visit extends BindingClass {
         const providerName = this.dataStore.get("provider");
         const type = document.getElementById("dictationType").value;
         //create the phr to get the Id - this also creates dict object with the correct name to match s3 bucket filename
+        const checkDuplicate = await this.client.getPHR(this.dataStore.get("patientId"), this.dataStore.get("provider"), dateString, type);
+        if (checkDuplicate.phrId.substring(0,3) === type(0,3)) {
+          type = type + "2";
+        }
         const newPHR = await this.client.createPHR(this.dataStore.get("patientId"), this.dataStore.get("provider"), dateString, type)
         const idForPhr = newPHR.phr.phrId;
         //create the filename

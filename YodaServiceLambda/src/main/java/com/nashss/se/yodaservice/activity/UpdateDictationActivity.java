@@ -64,18 +64,18 @@ public class UpdateDictationActivity {
 
 //        //which record test validity
         PHR existingRecord = phrdao.getPHR(request.getPhrId(), request.getPhrDate());
-        System.out.println("EXISTING RECORD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("EXISTING RECORD FOUND");
 //
 //        //which dictation test it is there
         Dictation dictation = dicDao.getDictation(existingRecord.getPhrId(), existingRecord.getDate());
-        System.out.println("DICTATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("DICTATION FOUND");
 //
 //        //create a job name which ends up the filename in s3
         String transcribeJobName = request.getPhrId();
 //        //get a URL
         String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
         String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
-        System.out.println("AUDIO URL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("AUDIO URL RETRIEVED");
         System.out.println(audioFileUrl);
 //        //build a job
         String languageCode = "en-US";

@@ -480,13 +480,12 @@ class TestString extends BindingClass {
     
                 const accordionBody = document.createElement('div');
                 accordionBody.classList.add('accordion-body');
+                console.log(phr,"phrAccordion");
                 accordionBody.innerHTML = `
                 <p>Patient ID: ${phr.patientId}</p>
                 <p>Provider Name: ${phr.providerName}</p>
                 <p>Date: ${phr.date}</p>
                 <p>Status: ${phr.status}</p>
-                <p>Id: ${phr.phrId}</p>
-                <
                 `; 
                 if (phr.comprehendData != null) {
                     this.client.parseComp(phr.comprehendData)
@@ -513,7 +512,6 @@ class TestString extends BindingClass {
             accordion.appendChild(noResultsMessage);
         }
         document.getElementById('phrId').value = '';
-        document.getElementById('phrDate').value = '';
         document.getElementById('fromDate').value = '';
         document.getElementById('toDate').value = '';
         document.getElementById('patientId').value = '';
