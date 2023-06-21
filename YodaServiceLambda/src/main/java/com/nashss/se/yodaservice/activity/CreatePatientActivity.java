@@ -29,7 +29,8 @@ public class CreatePatientActivity {
         String newPatientId = request.getPatientName() + UUIDGenerator.generateUniqueId();
         Patient madePatient = new Patient();
         madePatient.setPatientId(newPatientId);
-        madePatient.setName( Sanitizer.sanitizeField(request.getPatientName()));
+        String patientName = request.getPatientName().replaceAll("\\s+","");
+        madePatient.setName( Sanitizer.sanitizeField(patientName));
         madePatient.setAge(Sanitizer.sanitizeField(request.getPatientAge()));
         madePatient.setSex(  Sanitizer.sanitizeField(request.getSex()));
         madePatient.setAddress(Sanitizer.sanitizeField(request.getAddress()));

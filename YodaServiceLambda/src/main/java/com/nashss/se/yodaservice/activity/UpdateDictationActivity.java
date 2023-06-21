@@ -61,7 +61,7 @@ public class UpdateDictationActivity {
         this.comprehendClient = comprehendClient;
     }
 
-    public UpdateDictationResult handleRequest(final UpdateDictationRequest request) {
+    public UpdateDictationResult handleRequest(final UpdateDictationRequest request) throws TranscribeActionException {
 
 //        //which record test validity
         PHR existingRecord = phrdao.getPHR(request.getPhrId(), request.getPhrDate());
@@ -100,12 +100,12 @@ public class UpdateDictationActivity {
             throw new TranscribeActionException("There was an error starting the requested Job", e); 
         }
 
-//
-//        //indicate it is transcribing
+
+//        indicate it is transcribing
         existingRecord.setStatus(PHRStatus.TRANSCRIBING.toString());
-//        //save  phr here as state
+//        save  phr here as state
         phrdao.savePHR(existingRecord);
-//        //retries in while loop to confirm completion or fail
+//        retries in while loop to confirm completion or fail
         System.out.println("SAVE ON TRANSCRIBING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         int maxTries = 30;

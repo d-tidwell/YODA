@@ -1,5 +1,6 @@
 package com.nashss.se.yodaservice.lambda;
 
+import com.nashss.se.yodaservice.activity.TranscribeActionException;
 import com.nashss.se.yodaservice.activity.requests.UpdateDictationRequest;
 import com.nashss.se.yodaservice.activity.results.UpdateDictationResult;
 
@@ -19,7 +20,13 @@ public class UpdateDictationLambda
                     .withType(path.get("type"))
                     .build()),
             (request, serviceComponent) ->
-                    serviceComponent.provideUpdateDictationActivity().handleRequest(request)
+            {
+                try {
+                    return serviceComponent.provideUpdateDictationActivity().handleRequest(request);
+                } catch (TranscribeActionException e) {
+                    throw new RuntimeException("Transcription Service Error",e);
+                }
+            }
         );
     }
 }
