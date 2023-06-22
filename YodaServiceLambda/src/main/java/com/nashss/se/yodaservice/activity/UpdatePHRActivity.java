@@ -27,9 +27,9 @@ public class UpdatePHRActivity {
     public UpdatePHRResult handleRequest(final UpdatePHRRequest request) {
         PHR phr = phrdao.getPHRsByPHRId(request.getPhrId());
         phr.setStatus(request.getStatus());
-        boolean response = phrdao.savePHR(phr);
+        Boolean response = phrdao.savePHR(phr);
         return UpdatePHRResult.builder()
-                .withSuccess(response)
+                .withSuccess(response.toString())
                 .build();
     }
 }

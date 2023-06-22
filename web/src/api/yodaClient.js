@@ -191,7 +191,7 @@ export default class YodaClient extends BindingClass {
     async addPatientToProvider(patientId, providerName, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
-            const response = await this.axiosClient.post(`/provider/${providerName}/${patientId}`, {
+            const response = await this.axiosClient.get(`/provider/${providerName}/${patientId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -363,15 +363,15 @@ export default class YodaClient extends BindingClass {
 
     async updateDictation(PhrId, PhrDate, fileName, type, errorCallback) {
         try {
+            console.log(PhrId,PhrDate,fileName, type);
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
-            const response = await this.axiosClient.put(`/dictate/${PhrId}/${PhrDate}/${fileName}/${type}`, {
+            const response = await this.axiosClient.get(`/dictate/${PhrId}/${PhrDate}/${fileName}/${type}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/json'
                 }
             });
-            console.log(response);
-            return response;
+            return response.data;
         } catch (error) {
             this.handleError(error, errorCallback);
         }
@@ -395,7 +395,6 @@ export default class YodaClient extends BindingClass {
         } catch (error) {
             this.handleError(error, errorCallback);
         }
-
     }
     async iconoclass(typeHead) {
         let medicationImage = "/images/Icons/pillhand.png";

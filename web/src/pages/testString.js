@@ -306,8 +306,8 @@ class TestString extends BindingClass {
                     console.log(patient,"loop");
         
                     // Create a new list item for each patient
-                    let li = document.createElement('li');
-                    li.classList.add('list-group-item', 'd-flex', 'justify-content-between','align-items-center');
+                    let li = document.createElement('div');
+                    li.classList.add('d-flex', 'justify-content-between','align-items-center');
                     li.id ="searchAllId";
                     
                     // Create text node for patient name and age
@@ -327,11 +327,11 @@ class TestString extends BindingClass {
         
                     // Add event listener to Add button
                     addButton.addEventListener('click', async () => {
-                        console.log("clicked",patient.id, addButton.id);
+                        console.log("clicked","patientID:" + patient.id, addButton.id);
                         const confirm = await this.client.addPatientToProvider(addButton.id, identity.name);
                         console.log(confirm.success,"confirm success");
                         if(confirm.success == true){
-                            let newProvider = this.client.getProvider(identity.name);
+                            let newProvider = await this.client.getProvider(identity.name);
                             let counterConfirm = 0;
                             let truthyAdd = newProvider.patientsPending.includes(patient.id);
                             while (truthyAdd){
@@ -341,10 +341,10 @@ class TestString extends BindingClass {
                                     console.log(`counterConfirm: ${counterConfirm}`);
                                   }, 1000);
                             }
-                            window.location.reload();
-                            this.getAllPatientsAndDisplay();
+                            // window.location.reload();
+                            // this.getAllPatientsAndDisplay();
                         } else {
-                            console.log("add patient error confirm skipped?")
+                            console.log("add patient error confirm skipped")
                         }
                     });
                     buttonContainer.appendChild(addButton);

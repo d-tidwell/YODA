@@ -48,7 +48,7 @@ public class UpdatePHRActivityTest {
         verify(phrdao, times(1)).getPHRsByPHRId(request.getPhrId());
         verify(phrdao, times(1)).savePHR(phr);
         assertEquals(status, phr.getStatus());
-        assertTrue(result.withSuccess());
+        assertEquals(result.withSuccess(), "true");
     }
 }
 

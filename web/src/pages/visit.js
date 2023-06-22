@@ -123,7 +123,7 @@ closeAlert() {
         console.log(s3string.url);
         const s3response = await this.uploadAudioToS3(s3string.url);
         //make a call to updateDict object and trigger transcription
-        if (s3response.status === "200") {
+        if (s3response.status === "200" || s3response.status === 200) {
           const resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
           //do something for feedback to the user and redirect to desktop
           console.log(resultUpdateDictation,"updateDictation!!!!!");

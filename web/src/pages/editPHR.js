@@ -191,15 +191,20 @@ class EditPHR extends BindingClass {
                     const phrId = self.dataStore.get("phrId");
                     const date = self.dataStore.get("date");
                 
-                    self.client.differential(phrId, date).then(result => {
-                        modelResult.value = result.differential;
-                        openDiv.innerText = "";
-                        console.log(result);
-                    }).catch(error => {
-                        console.log('Error:', error);
-                        openDiv.innerText = "Error occurred. Please try again.";
-                        modelResult.style.visibility = "hidden";  // hide the modelResult again
-                    });
+                    self.client.differential(phrId, date).then(async (result) => {
+                      if (result && result.hasOwnProperty('differential')) {
+                          modelResult.value = result.differential;
+                          openDiv.innerText = "";
+                          console.log(result);
+                      } else {
+                          throw new Error("No differential in result");
+                      }
+                  }).catch(error => {
+                      console.log('Error:', error);
+                      openDiv.innerText = "Error occurred. Please try again.";
+                      modelResult.style.visibility = "hidden";  // hide the modelResult again
+                  });
+                  
                 });
                 
                 modelDiv.appendChild(modelComp); 
@@ -228,7 +233,10 @@ class EditPHR extends BindingClass {
       clostBtn.id = "closer";
       clostBtn.classList.add("btn","seen-btn");
       clostBtn.innerText ="CLOSE OUT PHR";
-      clostBtn.addEventListener('click', (event) => this.submitForm(this.dataStore.get("phrId"), event));
+      clostBtn.addEventListener('click', async (event) => {
+        await this.submitForm(this.dataStore.get("phrId"), event);
+        window.location.reload();
+      });
       needBtn.appendChild(clostBtn);
     }
   }

@@ -206,6 +206,7 @@ Resources:
                     - logs:PutLogEvents
                     - cloudwatch:PutMetricData
                   Resource: '*'
+
           - PolicyName: 'AccessPatientTable'
             PolicyDocument:
               Version: '2012-10-17'
@@ -254,6 +255,16 @@ Resources:
                   Action: secretsmanager:GetSecretValue
                   Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*"
           
+          - PolicyName: 'lambda-transcribe-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - transcribe:StartMedicalTranscriptionJob
+                    - transcribe:GetMedicalTranscriptionJob
+                    - comprehendmedical:DetectEntitiesV2
+                  Resource: '*'
     #-----------------------------------------------------
     # Lambda Functions Configuration
     #-----------------------------------------------------
@@ -316,7 +327,7 @@ Resources:
             Type: Api
             Properties:
               Path: /provider/{providerName}/{patientId}
-              Method: post
+              Method: get
 
     RemovePatientFromProviderLambda:
       Type: AWS::Serverless::Function
@@ -585,7 +596,7 @@ Resources:
         CodeUri: YodaServiceLambda
         Handler: com.nashss.se.yodaservice.lambda.AiLambda::handleRequest
         Runtime: java11
-        Timeout: 120
+        Timeout: 240
         Architectures:
           - x86_64
         MemorySize: 512
@@ -618,7 +629,7 @@ Resources:
             Type: Api
             Properties:
               Path: /dictate/{PhrId}/{PhrDate}/{fileName}/{type}
-              Method: put
+              Method: get
 
     #-----------------------------------------------------
     # DynamoDB Configuration

@@ -72,6 +72,7 @@ public class UpdateDictationActivity {
 //
 //        //create a job name which ends up the filename in s3
         String transcribeJobName = request.getPhrId();
+        System.out.println(transcribeJobName + " :SETTING JOB NAME");
 //        //get a URL
         String bucketName = "nss-s3-c02-capstone-darek-alternate-z-artifacts";
         String audioFileUrl = s3client.getUrl(bucketName, request.getFileName()).toString();
@@ -88,6 +89,7 @@ public class UpdateDictationActivity {
 
         try {
             jobStatus = startResponse.medicalTranscriptionJob().transcriptionJobStatus().toString();
+            System.out.println("jobStatus");
             if (jobStatus == null || jobStatus.isEmpty()) {
                 System.out.println("JOB STATUS FAIL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
@@ -203,7 +205,9 @@ public class UpdateDictationActivity {
             } catch (IOException e) {
                 log.error("Error occurred", e);
             }
-
+            existingRecord.setStatus(PHRStatus.PENDING_SIGNATURE.toString());
+            phrdao.savePHR(existingRecord);
+            System.out.println("PENDING STATUS WAS UPDATED");
             //set the url for the text file & type
             dictation.setDictationText(transcribeJobName);
 //        //save the dictation changes

@@ -1,13 +1,13 @@
 package com.nashss.se.yodaservice.activity.results;
 
 public class UpdatePHRResult {
-    private final boolean success;
+    private final String success;
 
-    public UpdatePHRResult(boolean success) {
+    public UpdatePHRResult(String success) {
         this.success = success;
     }
 
-    public boolean withSuccess() {
+    public String withSuccess() {
         return success;
     }
 
@@ -24,9 +24,9 @@ public class UpdatePHRResult {
     }
 
     public static class Builder {
-        private boolean success;
+        private String success;
 
-        public Builder withSuccess(boolean success){
+        public Builder withSuccess(String success){
             this.success = success;
             return this;
         }
