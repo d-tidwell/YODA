@@ -5,6 +5,9 @@
 /.project
 /eclipse-bin/
 /.idea
+/.vscode
+/.idea/
+/.vscode/
 /annotation-generated-src
 /annotation-generated-tst
 /SAMToolkit.devenv
