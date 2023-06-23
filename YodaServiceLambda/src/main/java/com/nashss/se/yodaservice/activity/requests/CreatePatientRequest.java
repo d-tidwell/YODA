@@ -2,6 +2,7 @@ package com.nashss.se.yodaservice.activity.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 @JsonDeserialize(builder = CreatePatientRequest.Builder.class)
 public class CreatePatientRequest {
 

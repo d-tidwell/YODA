@@ -100,6 +100,10 @@ class EditPHR extends BindingClass {
         <p>Status: ${phr.status}</p>
         <p>ID: ${this.dataStore.get("phrId")}
         `;
+        if(phr.status == "COMPLETED") {
+          window.location.href = "https://d1eulx1mihlfe6.cloudfront.net/desktop.html";
+          return;
+      }
         //console.log(phr.transcription)
         this.dataStore.set("transcription",phr.transcription);
         if (phr.comprehendData != null) {

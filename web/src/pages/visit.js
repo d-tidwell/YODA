@@ -35,6 +35,7 @@ class Visit extends BindingClass {
       this.audioElement = document.getElementById("audio_preview");
       this.submitButton = document.getElementById("submitVisit");
 
+
   
       // Attach event listeners
       this.recordButton.addEventListener("click", this.startRecording);
@@ -77,6 +78,8 @@ closeAlert() {
     async mount() {
       this.header.addHeaderToPage();
       await this.getAllPHR(this.dataStore.get("patientId"));
+      const audioUpdatehandle = document.getElementById("audioConfirm");
+      audioUpdatehandle.style.display = "none";
     }
 
 
@@ -107,44 +110,68 @@ closeAlert() {
       }
 
     async submitForm(event){
-        event.preventDefault();
-
-        const dateString = this.getFormattedDate();
-        const patientName = this.dataStore.get("patientId");
-        const providerName = this.dataStore.get("provider");
-        const type = document.getElementById("dictationType").value;
-        //create the phr to get the Id - this also creates dict object with the correct name to match s3 bucket filename
-        const newPHR = await this.client.createPHR(this.dataStore.get("patientId"), this.dataStore.get("provider"), dateString, type)
-        const idForPhr = newPHR.phr.phrId;
-        //create the filename
-        const filename = idForPhr;
-        console.log(filename,"filename");
-        const s3string = await this.client.getPresignedS3(filename, idForPhr,dateString);
-        console.log(s3string.url);
-        const s3response = await this.uploadAudioToS3(s3string.url);
-        //make a call to updateDict object and trigger transcription
-        if (s3response.status === "200" || s3response.status === 200) {
-          const resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
-          //do something for feedback to the user and redirect to desktop
-          console.log(resultUpdateDictation,"updateDictation!!!!!");
-          if (resultUpdateDictation.status == "SUCCESS") {
-            let toastHTMLElement = document.getElementById('YodaSent');
-            let toastElement = new bootstrap.Toast(toastHTMLElement);
-            toastElement.style = "text-center"
-            toastElement.show();
-            this.recordButton.disabled = false;
-            this.stopButton.disabled = false;
-            this.playButton.disabled = true;
-            this.recordedAudio = null;
-            window.location.href = '/desktop.html';
-          } else {
-            console.log("terrible the update dictation failed: STATUS:", s3response.status);
-            let toastHTMLElement = document.getElementById('YodaSentFail');
-            let toastElement = new bootstrap.Toast(toastHTMLElement);
-            toastElement.style = "text-center"
-            toastElement.show();
-            //resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
+      event.preventDefault();
+      let audioUpdatehandle = document.getElementById("audioConfirm");
+      audioUpdatehandle.style.display = "block";
+      audioUpdatehandle.innerText = "Recording Processing Please Wait .";
+      const dateString = this.getFormattedDate();
+      const patientName = this.dataStore.get("patientId");
+      const providerName = this.dataStore.get("provider");
+      const type = document.getElementById("dictationType").value;
+      // create the phr to get the Id - this also creates dict object with the correct name to match s3 bucket filename
+      const newPHR = await this.client.createPHR(
+        this.dataStore.get("patientId"),
+        this.dataStore.get("provider"),
+        dateString,
+        type
+      );
+      audioUpdatehandle.innerText = "Creating PHR..";
+      const idForPhr = newPHR.phr.phrId;
+      // create the filename
+      const filename = idForPhr;
+      console.log(filename, "filename");
+      const s3string = await this.client.getPresignedS3(filename, idForPhr, dateString);
+      console.log(s3string.url);
+      const s3response = await this.uploadAudioToS3(s3string.url);
+      audioUpdatehandle.innerText = "Implanting Audio...";
+      // make a call to updateDict object and trigger transcription
+      if (s3response.status === "200" || s3response.status === 200) {
+        
+        audioUpdatehandle.innerText = "Dictation Underway....";
+        let counter = 5;
+        const updateInterval = setInterval(function () {
+          audioUpdatehandle.innerText += ".";
+          counter--;
+          if (counter === 0) {
+            clearInterval(updateInterval);
           }
+        }, 1000);
+        audioUpdatehandle.innerText = "Analyizing Entities..........";
+        const resultUpdateDictation = await this.client.updateDictation(
+          idForPhr,
+          dateString,
+          filename,
+          type
+        );
+        // do something for feedback to the user and redirect to desktop
+        this.client.createConfetti();
+        let toastHTMLElement = document.getElementById("YodaSent");
+        let toastElement = new bootstrap.Toast(toastHTMLElement);
+        toastElement.style = "text-center";
+        toastElement.show();
+        this.recordButton.disabled = false;
+        this.stopButton.disabled
+      
+            //After Monolith split return this
+            // window.location.href = '/desktop.html';
+          // } else {
+          //   console.log("terrible the update dictation failed: STATUS:", s3response.status);
+          //   let toastHTMLElement = document.getElementById('YodaSentFail');
+          //   let toastElement = new bootstrap.Toast(toastHTMLElement);
+          //   toastElement.style = "text-center"
+          //   toastElement.show();
+          //   //resultUpdateDictation = await this.client.updateDictation(idForPhr, dateString,filename,type);
+          // }
 
         } else {
           console.log("terrible the update dictation failed: STATUS:", s3response.status);

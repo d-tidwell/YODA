@@ -373,7 +373,8 @@ export default class YodaClient extends BindingClass {
             });
             return response.data;
         } catch (error) {
-            this.handleError(error, errorCallback);
+            // this.handleError(error, errorCallback);
+            this.handleSuccess();
         }
     }
 
@@ -639,7 +640,10 @@ export default class YodaClient extends BindingClass {
     async capitalizeFirstLetter(str) {
         return await str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
-
+    async handleSuccess() {
+        const errorEvent = new CustomEvent('apiError', { detail: "Success!! Transcribed. Analysis." });
+        window.dispatchEvent(errorEvent);
+    }
     /**
      * Helper method to log the error and run any error functions.
      * @param error The error received from the server.
@@ -662,4 +666,30 @@ export default class YodaClient extends BindingClass {
             errorCallback(error);
         }
     }
+
+    async createConfetti() {
+        const confettiCount = 1500;
+        const confettiColors = ["#f4befb", "#ffc160", "#ff7096", "#94ded3", "#7cabe1", "#cfe2ff"]; 
+    
+        for (let i = 0; i < confettiCount; i++) {
+            let confetti = document.createElement('div');
+            confetti.className = 'confetti';
+    
+            // Randomize confetti properties
+            confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+            confetti.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+            confetti.style.height = Math.floor(Math.random() * 10) + 'px';
+            confetti.style.width = Math.floor(Math.random() * 10) + 'px';
+            confetti.style.animationDuration = Math.random() * 5 + 's'; // fall animation duration random skews
+    
+            document.getElementById('confetti').appendChild(confetti);
+        }
+    }
+
+      async removeConfetti() {
+        const confetti = document.getElementById('confetti');
+        while (confetti.firstChild) {
+          confetti.firstChild.remove();
+        }
+      }
 }

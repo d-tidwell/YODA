@@ -257,7 +257,10 @@ li {
     text-shadow: 0px 3px 3px rgb(62, 101, 60), 4px 5px 6px rgb(125, 227, 115);
 }
 
-
+#seeAllId {
+    font-size: 1em;
+    font-family: 'Baloo 2', cursive;
+}
 
 p {
     font-family: 'Baloo 2', cursive;
@@ -298,6 +301,22 @@ h1 h2 h3 h4 h5 h6 {
     background-color: rgb(234, 235, 236);
 }
 
-  .glowing-image {
+.glowing-image {
     filter: url(#glow);
-  }
+}
+
+.confetti {
+    position: absolute;
+    top: 0;
+    animation-name: fall;
+    animation-timing-function: linear;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0%);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}

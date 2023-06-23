@@ -62,8 +62,8 @@ class TestString extends BindingClass {
         toastElement2.show();
        
 
-        await this.populatePatientsPending(provider);
-        await this.populatePhrPending(provider.name);
+        this.populatePatientsPending(provider);
+        this.populatePhrPending(provider.name);
 
         }
         
@@ -328,21 +328,25 @@ class TestString extends BindingClass {
                     // Add event listener to Add button
                     addButton.addEventListener('click', async () => {
                         console.log("clicked","patientID:" + patient.id, addButton.id);
-                        const confirm = await this.client.addPatientToProvider(addButton.id, identity.name);
+                        const identifiery = await this.client.getIdentity();
+                        const confirm = await this.client.addPatientToProvider(addButton.id, identifiery.name);
                         console.log(confirm.success,"confirm success");
                         if(confirm.success == true){
                             let newProvider = await this.client.getProvider(identity.name);
+                            console.log(newProvider.pendingPatients, "patientsPending 335");
+                            console.log("patient id", patient.id)
                             let counterConfirm = 0;
-                            let truthyAdd = newProvider.patientsPending.includes(patient.id);
-                            while (truthyAdd){
+                            let truthyAdd = false;
+                            while (truthyAdd != true){
                                 counterConfirm ++;
-                                console.log(counterConfirm,"counter add patient")
+                                console.log(counterConfirm,"counter add patient false");
+                                truthyAdd = newProvider.pendingPatients.includes(patient.id);
+                                this.populatePatientsPending();
+                                window.location.reload()
                                 setTimeout(function() {
                                     console.log(`counterConfirm: ${counterConfirm}`);
                                   }, 1000);
-                            }
-                            // window.location.reload();
-                            // this.getAllPatientsAndDisplay();
+                                } 
                         } else {
                             console.log("add patient error confirm skipped")
                         }
@@ -409,6 +413,9 @@ class TestString extends BindingClass {
         const toDateInput = document.getElementById('toDate').value;
         const patientIdInput = document.getElementById('patientId').value.trim();  // New patient ID input
 
+        console.log("from date",fromDateInput);
+        console.log("to date",toDateInput);
+
         let phrResultsArray = [];
     
         // Get a reference to the accordion and clear any existing results
@@ -425,9 +432,7 @@ class TestString extends BindingClass {
         } else if (fromDateInput !== "" && toDateInput !== "" && patientIdInput !== "") {
             // For date or date range search, patientIdInput must be provided
             temp = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
-        } else if (fromDateInput !== "" && toDateInput !== "" && patientIdInput !== "") {
-            // For date or date range search, patientIdInput must be provided
-            temp = await this.client.getPHRDateRange(patientIdInput, fromDateInput, toDateInput);
+            console.log("RESULT", temp);
         } 
         if (temp == undefined) { 
             let toastHTMLElement = document.getElementById('YodaSearchBad');
