@@ -9,6 +9,7 @@ import com.nashss.se.yodaservice.dynamodb.PHRDAO;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.models.PHR;
 import com.nashss.se.yodaservice.models.PHRModel;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,8 +30,10 @@ public class GetOpenPHRByProviderActivity {
     }
 
     public GetOpenPHRByProviderResult handleRequest(final GetOpenPHRByProviderRequest request) {
-
-        List<PHR> all = phrdao.getUncompletedPHRsByProvider(request.getProviderName());
+        String cleanProviderId = request.getProviderName();
+        cleanProviderId = cleanProviderId.replaceAll("\\s+","");
+        cleanProviderId = Sanitizer.sanitizeField(cleanProviderId);
+        List<PHR> all = phrdao.getUncompletedPHRsByProvider(cleanProviderId);
         List<PHRModel> results = ModelConverter.convertListPHRtoModels(all);
 
         return GetOpenPHRByProviderResult.builder()

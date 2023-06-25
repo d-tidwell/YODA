@@ -54,9 +54,9 @@ public class ProviderDAOTest {
 
         when(dynamoDbMapper.load(Provider.class, testProviderName)).thenReturn(null);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            providerDAO.getProvider(testProviderName);
-        });
+        Optional<Provider> result = providerDAO.getProvider(testProviderName);
+
+        assertFalse(result.isPresent());
 
         verify(dynamoDbMapper, times(1)).load(Provider.class, testProviderName);
     }

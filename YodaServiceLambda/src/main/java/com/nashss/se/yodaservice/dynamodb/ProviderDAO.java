@@ -29,7 +29,7 @@ public class ProviderDAO {
 
         if (Objects.isNull(provider)) {
             log.error(String.format("ProviderNotFoundException, %s", providerName));
-            throw new NoSuchElementException("Provider not found: " + providerName);
+            return Optional.ofNullable((Provider) provider);
         }
        return Optional.ofNullable((Provider) provider);
     }

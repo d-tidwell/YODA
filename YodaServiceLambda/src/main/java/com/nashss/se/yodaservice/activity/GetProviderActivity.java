@@ -4,6 +4,7 @@ import com.nashss.se.yodaservice.activity.requests.GetProviderRequest;
 import com.nashss.se.yodaservice.activity.results.GetProviderResult;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,10 @@ public class GetProviderActivity {
     }
 
     public GetProviderResult handleRequest(final GetProviderRequest request) {
-        Optional<Provider> providerOpt = providerDAO.getProvider(request.getProviderName());
+        String cleanProviderId = request.getProviderName();
+        cleanProviderId = cleanProviderId.replaceAll("\\s+","");
+        cleanProviderId = Sanitizer.sanitizeField(cleanProviderId);
+        Optional<Provider> providerOpt = providerDAO.getProvider(cleanProviderId);
 
         if (providerOpt.isPresent()) {
             Provider provider = providerOpt.get();

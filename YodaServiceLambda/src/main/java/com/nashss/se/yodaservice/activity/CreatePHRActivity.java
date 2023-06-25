@@ -9,11 +9,15 @@ import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Dictation;
 import com.nashss.se.yodaservice.dynamodb.models.PHR;
+import com.nashss.se.yodaservice.dynamodb.models.Provider;
 import com.nashss.se.yodaservice.enums.PHRStatus;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 import com.nashss.se.yodaservice.utils.UUIDGenerator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Optional;
 
 import javax.inject.Inject;
 public class CreatePHRActivity {
@@ -39,14 +43,17 @@ public class CreatePHRActivity {
     public CreatePHRResult handleRequest(final CreatePHRRequest request) {
         //validate if this person and provider exist
         patientDAO.getPatient(request.getPatientId());
-        providerDAO.getProvider(request.getProviderName());
+        String cleanProviderId = request.getProviderName();
+        cleanProviderId = cleanProviderId.replaceAll("\\s+","");
+        cleanProviderId = Sanitizer.sanitizeField(cleanProviderId);
+        Optional<Provider> existProvider = providerDAO.getProvider(cleanProviderId);
 
         String phrId = request.getType() + "_" + request.getPatientId() + "_" + request.getDate() + "_" + UUIDGenerator.generateUniqueId();
 
         PHR newPHR = new PHR();
         newPHR.setPhrId(phrId);
         newPHR.setPatientId(request.getPatientId());
-        newPHR.setProviderName(request.getProviderName());
+        newPHR.setProviderName(cleanProviderId);
         newPHR.setDate(request.getDate());
         newPHR.setStatus(PHRStatus.CREATED.toString());
 

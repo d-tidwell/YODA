@@ -6,6 +6,7 @@ import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Patient;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +33,10 @@ public class RemovePatientFromProviderActivity {
     public RemovePatientFromProviderResult handleRequest(final RemovePatientFromProviderRequest request) {
 
         Patient patient = patientDAO.getPatient(request.getPatientId());
-        Optional<Provider> provider = providerDAO.getProvider(request.getProviderName());
+        String cleanProviderId = request.getProviderName();
+        cleanProviderId = cleanProviderId.replaceAll("\\s+","");
+        cleanProviderId = Sanitizer.sanitizeField(cleanProviderId);
+        Optional<Provider> provider = providerDAO.getProvider(cleanProviderId);
 
         if(provider.isPresent()){
             Provider optionalProvider = provider.get();

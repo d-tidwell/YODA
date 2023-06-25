@@ -92,9 +92,9 @@ export default class YodaClient extends BindingClass {
             return response.data;
         } catch (error) {
             console.error(error); // or do something with the error
-            if (errorCallback) {
-                errorCallback(error);
-            }
+            // if (errorCallback) {
+            //     errorCallback(error);
+            // }
             throw error; // rethrow the error
         }
     }
@@ -116,21 +116,35 @@ export default class YodaClient extends BindingClass {
             return undefined;
         }
     }
-
     async getPatient(patientId, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
-            const response = await this.axiosClient.get(`/patient/${patientId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+            let retryCount = 0;
+            const maxRetries = 20;
+            const delayBetweenRetries = 500; // milliseconds
+    
+            while (retryCount < maxRetries) {
+                try {
+                    const response = await this.axiosClient.get(`/patient/${patientId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    return response.data;
+                } catch (error) {
+                    retryCount++;
+                    if (retryCount === maxRetries) {
+                        throw error; // Retry limit exceeded, throw the error
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delayBetweenRetries));
                 }
-            });
-            return response.data;
+            }
         } catch (error) {
-            this.handleError(error, errorCallback)
+            this.handleError(error, errorCallback);
         }
     }
+    
 
     async getAllPatients(errorCallback) {
         try {
@@ -284,17 +298,32 @@ export default class YodaClient extends BindingClass {
         console.log("get all by provider");
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
-            const response = await this.axiosClient.get(`/phr/byProviderId/${providerName}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+            let retryCount = 0;
+            const maxRetries = 20;
+            const delayBetweenRetries = 500; // milliseconds
+    
+            while (retryCount < maxRetries) {
+                try {
+                    const response = await this.axiosClient.get(`/phr/byProviderId/${providerName}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    return response.data;
+                } catch (error) {
+                    retryCount++;
+                    if (retryCount === maxRetries) {
+                        throw error; // Retry limit exceeded, throw the error
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delayBetweenRetries));
                 }
-            });
-            return response.data;
+            }
         } catch (error) {
-            this.handleError(error, errorCallback)
+            this.handleError(error, errorCallback);
         }
     }
+    
 
     async getAllPHR(patientId, errorCallback) {
         try {

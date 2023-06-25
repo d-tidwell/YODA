@@ -49,6 +49,7 @@ class TestString extends BindingClass {
             toastElement.show();
             //create this new never before person
             let created = await this.client.createProvider(identity.name, identity.email);
+            console.log("CREATED", created);
             //double check to see if was made and also set the object for the page
             provider = await this.client.getProvider(identity.name);
             console.log(provider,"there");
@@ -71,10 +72,10 @@ class TestString extends BindingClass {
     /**
      * Add the header to the page and load the Client.
      */
-    mount() {
+    async mount() {
 
-        this.clientLoaded();
-        this.header.addHeaderToPage();
+        await this.clientLoaded();
+        await this.header.addHeaderToPage();
 
          // Get the Patients tab button
          let patientTab = document.getElementById('nav-profile-tab-button');
@@ -113,7 +114,7 @@ class TestString extends BindingClass {
     }
 
     closeAlert() {
-        console.log("this");
+        console.log("alert closed");
         document.getElementById('alert').style.display = 'none';
         
     }
@@ -121,6 +122,7 @@ class TestString extends BindingClass {
 
     async populatePhrPending(providerName) {
         const response = await this.client.getAllPHRByProvider(providerName);
+        console.log("RESPONSE PHR PENDING", response);
         const responseId = response.phrId;
         const phrList = document.getElementById('phrPendingList');
     
@@ -219,9 +221,9 @@ class TestString extends BindingClass {
         const identity = await this.client.getIdentity();
         const self = this; 
         let counter = 0;
-        
-        if(provider.pendingPatients) {
-            for (const patient of provider.pendingPatients) {
+        const pendingList = provider.pendingPatients;
+        if(pendingList) {
+            for (const patient of pendingList) {
                 let patientName;
                 try {
                     var listItem = document.createElement('li');

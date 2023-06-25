@@ -5,6 +5,7 @@ import com.nashss.se.yodaservice.activity.results.AddPatientToProviderResult;
 import com.nashss.se.yodaservice.dynamodb.PatientDAO;
 import com.nashss.se.yodaservice.dynamodb.ProviderDAO;
 import com.nashss.se.yodaservice.dynamodb.models.Provider;
+import com.nashss.se.yodaservice.utils.Sanitizer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,11 +35,13 @@ public class AddPatientToProviderActivity {
         if (request == null || request.getPatientId() == null || request.getProviderName() == null) {
             throw new IllegalArgumentException("Invalid request or request parameters");
         }
-
+        String cleanProviderId = request.getProviderName();
+        cleanProviderId = cleanProviderId.replaceAll("\\s+","");
+        cleanProviderId = Sanitizer.sanitizeField(cleanProviderId);
         // Verify that the patient exists
         patientDAO.getPatient(request.getPatientId());
 
-        Provider provider = providerDAO.getProvider(request.getProviderName()).get();
+        Provider provider = providerDAO.getProvider(cleanProviderId).get();
 
 
         List<String> pendingPatients = provider.getPendingPatients();
