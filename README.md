@@ -14,7 +14,7 @@ _Hear you I did. Miss nothing I will._
 #### If you are an employer and would like a demonstration or presentation I can be contacted at tidwelldarek@gmail.com
 
 ![artist:Mid+Dalle+Journey](resources/splash.png)
-
+## Ai Assited Differntials
 ![aIdifferential:example](resources/differential.png)
-
+## Pre, Post and In-Visit Realtime Provider Patient Interaction Records 
 ![invist:recording](resources/invist_recording.png)
