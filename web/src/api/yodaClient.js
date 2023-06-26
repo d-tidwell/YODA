@@ -740,6 +740,7 @@ export default class YodaClient extends BindingClass {
         }
     }
     async removePercentEncoding(str) {
-        return str.replace(/%20/g, ' ');
+        // spaces or literal url spaces
+        return str.replace(/%20| /g, '');
       }
 }
