@@ -103,7 +103,7 @@ export default class YodaClient extends BindingClass {
     async createProvider(providerName, providerEmail, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
-            const response = await this.axiosClient.post(`/provider/create/${providerName}/${providerEmail}`, {
+            const response = await this.axiosClient.get(`/provider/create/${providerName}/${providerEmail}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -184,6 +184,7 @@ export default class YodaClient extends BindingClass {
 
     async createPHR(patientId, providerName, date, type, errorCallback) {
         try {
+            this.removePercentEncoding(providerName);
             const token = await this.getTokenOrThrow("Only authenticated users can create patients.");
             const response = await this.axiosClient.post(`/patient/phr/${patientId}`, {
                 providerName: providerName,
@@ -204,6 +205,7 @@ export default class YodaClient extends BindingClass {
 
     async addPatientToProvider(patientId, providerName, errorCallback) {
         try {
+            this.removePercentEncoding(providerName);
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.get(`/provider/${providerName}/${patientId}`, {
                 headers: {
@@ -219,6 +221,7 @@ export default class YodaClient extends BindingClass {
 
     async removePatient(patientId, providerName, position, errorCallback) {
         try {
+            this.removePercentEncoding(providerName);
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
             const response = await this.axiosClient.put(`/provider/remove/${patientId}/${providerName}`, {
                 position: position,
@@ -301,7 +304,7 @@ export default class YodaClient extends BindingClass {
             let retryCount = 0;
             const maxRetries = 20;
             const delayBetweenRetries = 500; // milliseconds
-    
+            this.removePercentEncoding(providerName);
             while (retryCount < maxRetries) {
                 try {
                     const response = await this.axiosClient.get(`/phr/byProviderId/${providerName}`, {
@@ -654,17 +657,32 @@ export default class YodaClient extends BindingClass {
     async differential(phrId, date, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view patients.");
-            const response = await this.axiosClient.get(`/ai/${phrId}/${date}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-            });
-            return response.data;
+            let retryCount = 0;
+            const maxRetries = 30;
+            const delayBetweenRetries = 1000; // milliseconds
+    
+            while (retryCount < maxRetries) {
+                try {
+                    const response = await this.axiosClient.get(`/ai/${phrId}/${date}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    return response.data;
+                } catch (error) {
+                    console.log(`Error occurred during differential request. Retrying... (${retryCount + 1}/${maxRetries})`);
+                    retryCount++;
+                    await new Promise(resolve => setTimeout(resolve, delayBetweenRetries));
+                }
+            }
+    
+            
         } catch (error) {
-            this.handleError(error, errorCallback);
+            this.handleError(new Error(`Differential request failed after ${maxRetries} retries.`), errorCallback);
         }
     }
+    
     
     async capitalizeFirstLetter(str) {
         return await str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -715,10 +733,13 @@ export default class YodaClient extends BindingClass {
         }
     }
 
-      async removeConfetti() {
-        const confetti = document.getElementById('confetti');
-        while (confetti.firstChild) {
-          confetti.firstChild.remove();
+    async removeConfetti() {
+    const confetti = document.getElementById('confetti');
+    while (confetti.firstChild) {
+        confetti.firstChild.remove();
         }
+    }
+    async removePercentEncoding(str) {
+        return str.replace(/%20/g, ' ');
       }
 }
