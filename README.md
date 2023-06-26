@@ -17,4 +17,6 @@ _Hear you I did. Miss nothing I will._
 ## Ai Assited Differntials
 ![aIdifferential:example](resources/differential.png)
 ## Pre, Post and In-Visit Realtime Provider Patient Interaction Records 
-![invist:recording](resources/invisit_recording.png)
+
+![invisit:recording](resources/invisit_recording.png)
+
