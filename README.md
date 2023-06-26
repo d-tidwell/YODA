@@ -17,4 +17,4 @@ _Hear you I did. Miss nothing I will._
 
 ![aIdifferential:example](resources/differential.png)
 
-![invist:recording](resources/differential.png)
+![invist:recording](resources/invist_recording.png)
