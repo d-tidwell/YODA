@@ -82,6 +82,7 @@ export default class YodaClient extends BindingClass {
 
     async getProvider(providerName, errorCallback) {
         try {
+            this.removePercentEncoding(providerName);
             const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
             const response = await this.axiosClient.get(`/provider/${providerName}`, {
                 headers: {
@@ -102,6 +103,8 @@ export default class YodaClient extends BindingClass {
 
     async createProvider(providerName, providerEmail, errorCallback) {
         try {
+            this.removePercentEncoding(providerName);
+            console.log("CREATE IN CLIENT",providerName);
             const token = await this.getTokenOrThrow("Only authenticated users can view pending.");
             const response = await this.axiosClient.get(`/provider/create/${providerName}/${providerEmail}`, {
                 headers: {
